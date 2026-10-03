@@ -1,0 +1,981 @@
+/* ==========================================================================
+   PERFECT COACHING CLASSES - MAIN STYLESHEET (style.css)
+   Level: Beginner Friendly & Easy to Understand
+   ========================================================================== */
+
+
+    /* Used to keep the color combination same and not search for colors again and again  */
+
+:root {
+  --blue: #1c838b;
+  --navy: #115988;
+  --orange: #d96b27;
+  --orange-hover: #b85418;
+  --ink: #1b3854;
+  --muted: #4e6e87;
+  --pale: #f0f6f9;
+  --line: #d3e3ed;
+}
+
+/* --------------------------------------------------------------------------
+   2. GLOBAL RESET & BASE STYLES
+   Basic settings that apply to all HTML elements on the website.
+-------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box; /* Includes-> content+padding+margin
+  /* Ensures padding and border do not increase element width */
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+               /* Smooth scrolling when clicking links */
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+  background-color: #ffffff;
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: 0.3s;
+}
+
+.container {
+  width: 90%;
+            /* Uses 90% of screen width on smaller screens */
+  max-width: 1180px;
+
+  margin: 0 auto;
+               /* Centers the container horizontally */
+}
+
+/* --------------------------------------------------------------------------
+   3. TOP UTILITY BAR
+   The small bar at the very top showing quick links and contact phone.
+-------------------------------------------------------------------------- */
+
+
+.utility {
+  height: 38px;
+  background-color: #f4f7f9;
+  border-bottom: 1px solid #dfe7ec;
+  font-size: 12px;
+  color: #526677;
+}
+
+.utility .container {
+  height: 100%;
+  display: flex;                    /* Places items side by side */
+
+  justify-content: space-between;
+ 
+  align-items: center;   /* Centers items vertically */
+  
+}
+
+.utility a {
+  color: #526677;
+}
+
+.utility a:hover {
+  color: var(--orange);
+  /* Turns orange on mouse hover */
+}
+
+.utility a + a {
+  margin-left: 18px;
+  /* Space between links */
+}
+
+.utility b {
+  color: var(--blue);
+}
+
+.locations {
+  font-weight: bold;
+  color: var(--blue);
+}
+
+.utility-phone {
+  font-weight: bold;
+  color: var(--ink);
+}
+
+/* --------------------------------------------------------------------------
+   4. HEADER & NAVIGATION BAR
+   The main white bar containing the logo, menu links, and admission button.
+-------------------------------------------------------------------------- */
+header {
+  background-color: #ffffff;
+  position: sticky;
+ 
+  top: 0;
+  z-index: 100;    /* Keeps header above other content */
+ 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  
+}
+
+.nav {
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo Design */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* Space between circular icon and text */
+}
+
+/* Circular Letter Badge 'P' */
+.logo-mark {
+  width: 44px;
+  height: 44px;
+  background-color: var(--blue);
+  color: #ffffff;
+  border-radius: 50%;
+  /* Makes it a perfect circle */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: bold;
+  border: 3px solid #e1eff6;
+}
+
+/* Coaching institute name text */
+.coaching-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--navy);
+  line-height: 1.2;
+}
+
+.textbelowcoaching-name {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  /* Adds breathing space between letters */
+  color: var(--orange);
+  font-weight: bold;
+  margin-top: 3px;
+}
+
+/* Navigation Menu Links */
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  /* Space between each menu item */
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.menu a {
+  color: #446d89;
+  padding: 6px 0;
+}
+
+.menu a:hover {
+  color: var(--orange);
+}
+
+.menu a.active {
+  color: var(--orange);
+  border-bottom: 2px solid var(--orange);
+  /* Line under the current page link */
+}
+
+/* Mobile Hamburger Menu Button (Hidden on computer screens) */
+
+
+.mobile-toggle {
+  display: none;
+  /* Shown only in media queries below */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.mobile-toggle span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: var(--navy);
+  margin: 4px 0;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   5. BUTTONS
+   Standard orange button styles for CTA (Call To Action).
+-------------------------------------------------------------------------- */
+.admission,
+.btn {
+  display: inline-block;
+  background-color: var(--orange);
+  color: #ffffff;
+  padding: 12px 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  /* Converts text to capital letters */
+  letter-spacing: 0.5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.admission:hover,
+.btn:hover {
+  background-color: var(--orange-hover);
+  /* Darker orange on hover */
+  color: #ffffff;
+}
+
+/* Secondary Button (White with blue border) */
+
+
+.secondary {
+  background-color: #ffffff;
+  color: var(--blue);
+  border: 1px solid #bcd7e5;
+  margin-left: 10px;
+}
+
+.secondary:hover {
+  background-color: #eaf4f8;
+  color: var(--navy);
+}
+
+.btn-group {
+  margin-top: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   6. ANNOUNCEMENT BAR
+   The blue stripe below the header showing latest admission news.
+-------------------------------------------------------------------------- */
+.announce {
+  background-color: var(--blue);
+  color: #ffffff;
+}
+
+.announce .container {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 13px;
+  padding: 5px 0;
+}
+
+.announce b {
+  background-color: var(--orange);
+  padding: 6px 14px;
+  font-size: 11px;
+  text-transform: uppercase;
+  border-radius: 3px;
+  white-space: nowrap;
+  /* Prevents text from wrapping to two lines */
+}
+
+.containertext {
+  color: #eaf6fc;
+}
+
+/* --------------------------------------------------------------------------
+   7. HERO SECTION (HOMEPAGE MAIN BANNER)
+   The top banner with main headline, tagline, and decorative card.
+-------------------------------------------------------------------------- */
+
+
+.hero {
+  min-height: 460px;
+  background: linear-gradient(105deg, #e9f4f8 0%, #c1dfeb 100%);
+  padding: 40px 0;
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  /* Left side slightly wider than right side */
+  align-items: center;
+  gap: 30px;
+}
+
+.tag {
+  display: inline-block;
+  background-color: #ffffff;
+  color: var(--blue);
+  padding: 7px 12px;
+  border-left: 3px solid var(--orange);
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.hero h1 {
+  font-family: Georgia, serif;
+  font-size: 42px;
+  line-height: 1.15;
+  color: var(--navy);
+  margin-bottom: 15px;
+}
+
+.hero h1 strong {
+  color: var(--orange);
+}
+
+.hero p {
+  color: #4f6878;
+  line-height: 1.7;
+  font-size: 15px;
+  max-width: 520px;
+}
+
+/* Right side graphic display in Hero */
+.hero-display {
+  position: relative;
+  min-height: 340px;
+}
+
+/* Decorative background circles */
+.circle-a,
+.circle-b {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.circle-a {
+  width: 280px;
+  height: 280px;
+  background-color: #ffffff;
+  right: 20px;
+  top: 20px;
+}
+
+.circle-b {
+  width: 220px;
+  height: 220px;
+  background-color: var(--blue);
+  right: -10px;
+  top: 60px;
+  opacity: 0.8;
+}
+
+/* Floating White Subject Card */
+.subject-card {
+  position: absolute;
+  right: 30px;
+  top: 40px;
+  width: 280px;
+  padding: 24px;
+  background-color: #ffffff;
+  border-bottom: 4px solid var(--orange);
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+
+.subject-card h2 {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+
+.subject-card p {
+  font-size: 12.5px;
+  color: #556c7d;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+/* Small badges inside subject card */
+.subjects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.subjects span {
+  background-color: #eaf3f7;
+  color: var(--blue);
+  padding: 5px 8px;
+  font-size: 10.5px;
+  font-weight: bold;
+  border-radius: 3px;
+}
+
+/* Round Stamp Badge */
+.stamp {
+  position: absolute;
+  left: 10px;
+  bottom: 20px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: var(--orange);
+  border: 4px solid #ffffff;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 1.3;
+  transform: rotate(-9deg);
+  /* Gives a tilted stamp look */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 3;
+}
+
+/* --------------------------------------------------------------------------
+   8. COMMON SECTION HEADINGS & STYLES
+   Shared styles for all general sections on the website.
+-------------------------------------------------------------------------- */
+
+
+
+section {
+  padding: 60px 0;
+}
+
+.section-label {
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: var(--orange);
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.intro {
+  max-width: 650px;
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+
+
+
+/* --------------------------------------------------------------------------
+   9. PROGRAMS GRID (COURSES ON HOMEPAGE)
+   4 cards showing academic offerings side-by-side.
+-------------------------------------------------------------------------- */
+
+
+
+.program-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* 4 equal columns */
+  gap: 18px;
+}
+
+.program {
+  background-color: #ffffff;
+  border: 1px solid var(--line);
+  padding: 24px 20px;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.program:hover {
+  border-color: var(--blue);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  /* Slight lift shadow on hover */
+}
+
+/* Small orange stripe at top of program card */
+.program:before {
+  content: "";
+  display: block;
+  background-color: var(--orange);
+  height: 4px;
+  width: 40px;
+  margin-bottom: 16px;
+}
+
+.program h3 {
+  font-family: Georgia, serif;
+  font-size: 18px;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+
+.program p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.program a,
+.text-link {
+  color: var(--orange);
+  font-size: 11.5px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.program a:hover,
+.text-link:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   10. WHY CHOOSE US SECTION
+   2-column section with colored reason board on left and text on right.
+-------------------------------------------------------------------------- */
+.why {
+  background-color: #f2f7fa;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* 2 equal columns */
+  gap: 50px;
+  align-items: center;
+}
+
+/* Left colored box */
+.reason-board {
+  padding: 35px;
+  background-color: var(--blue);
+  color: #ffffff;
+  border-radius: 6px;
+}
+
+.reason-board h3 {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  line-height: 1.3;
+  margin: 10px 0 20px;
+}
+
+.reason-board .line {
+  margin: 14px 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Numbers: 01, 02, 03, 04 */
+.reason-board .line span {
+  display: inline-block;
+  width: 32px;
+  color: #83c8e2;
+  font-family: Georgia, serif;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.label-light {
+  color: #a9d9ed;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.why-copy h2 {
+  font-family: Georgia, serif;
+  font-size: 28px;
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+
+.why-copy p {
+  color: #4f6878;
+  line-height: 1.7;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   11. RESULTS & ACHIEVEMENTS SECTION
+   Statistics numbers and photo cards showing student results.
+-------------------------------------------------------------------------- */
+
+
+.results {
+  background-color: #f8fafb;
+}
+
+.result-head {
+  text-align: center;
+}
+
+.result-head .intro {
+  margin: 10px auto 30px;
+}
+
+/* 3 statistical outcome boxes */
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 equal columns */
+  gap: 20px;
+}
+
+.result {
+  padding: 26px;
+  background-color: #ffffff;
+  text-align: center;
+  border-bottom: 4px solid var(--orange);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.result b {
+  display: block;
+  color: var(--navy);
+  font-family: Georgia, serif;
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.result span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* 3 Student Photo Cards (Using single wide image split by background-position) */
+
+
+.result-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 equal columns */
+  gap: 18px;
+  margin-top: 25px;
+}
+
+.result-photo {
+  height: 260px;
+  background-image:
+    linear-gradient(0deg, rgba(6, 45, 72, 0.9) 0%, rgba(6, 45, 72, 0.1) 60%),
+    url("assets/student-results.png");
+  background-size: 300% 100%;
+  /* Stretches the image across 3 cards */
+  background-position: left;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.result-photo:nth-child(2) {
+  background-position: center;
+  /* Middle portion of image */
+}
+
+.result-photo:nth-child(3) {
+  background-position: right;
+  /* Right portion of image */
+}
+
+.result-photo div {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  color: #ffffff;
+}
+
+.result-photo b {
+  font-family: Georgia, serif;
+  font-size: 18px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.result-photo span {
+  display: block;
+  font-size: 12px;
+  color: #d9edf6;
+}
+
+.center {
+  text-align: center;
+  margin-top: 30px;
+}
+
+/* --------------------------------------------------------------------------
+   12. ENQUIRY / CALL TO ACTION SECTION
+   Dark navy bar on left + bright orange contact box on right.
+-------------------------------------------------------------------------- */
+.enquiry {
+  padding: 0;
+  background-color: var(--navy);
+  color: #ffffff;
+}
+
+.enquiry-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+}
+
+.enquiry-grid > div:first-child {
+  padding: 50px 30px 50px 0;
+}
+
+.enquiry h2 {
+  font-family: Georgia, serif;
+  font-size: 28px;
+  color: #ffffff;
+  margin: 10px 0 14px;
+}
+
+.enquiry p {
+  color: #c1d7e2;
+  line-height: 1.7;
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+.contact-box {
+  background-color: var(--orange);
+  padding: 50px 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.contact-box b {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.contact-box p {
+  font-size: 13px;
+  color: #ffecd9;
+  margin-bottom: 15px;
+}
+
+.phone-link {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.phone-link:hover {
+  text-decoration: underline;
+}
+
+.contact-box small {
+  color: #ffdeb8;
+  font-size: 12.5px;
+  line-height: 1.5;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   13. FOOTER
+   Dark 3-column footer with logo, addresses, course links, and copyright.
+-------------------------------------------------------------------------- */
+footer {
+  padding: 50px 0 20px;
+  background-color: #04243a;
+  color: #a9c3d1;
+  font-size: 13px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  /* 3 columns */
+  gap: 30px;
+}
+
+.footer-logo {
+  font-family: Georgia, serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.footer-logo span {
+  color: var(--orange);
+}
+
+.footer-about {
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.footer-address {
+  color: #d1e4ef;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.footer-grid b {
+  font-size: 12.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.footer-grid a {
+  display: block;
+  color: #a9c3d1;
+  margin: 8px 0;
+}
+
+.footer-grid a:hover {
+  color: var(--orange);
+}
+
+.copyright {
+  border-top: 1px solid #1a3c54;
+  padding-top: 20px;
+  margin-top: 35px;
+  font-size: 12px;
+  color: #7d9cb0;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   14. RESPONSIVE DESIGN (MEDIA QUERIES)
+   Rules that adjust layouts when viewing on tablets and mobile phones.
+-------------------------------------------------------------------------- */
+
+/* TABLETS (Screens 850px wide or smaller) */
+
+
+@media (max-width: 850px) {
+  /* Show hamburger button, hide desktop menu by default */
+  .mobile-toggle {
+    display: block;
+  }
+
+  .menu {
+    display: none;
+    /* Hidden until hamburger is clicked */
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    flex-direction: column;
+    /* Stacks menu links vertically */
+    padding: 20px;
+    gap: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-bottom: 3px solid var(--orange);
+  }
+
+  /* When JavaScript adds the .open class, show the menu */
+  .menu.open {
+    display: flex;
+  }
+
+  .menu a {
+    width: 100%;
+    border-bottom: 1px solid #eef2f5;
+    padding-bottom: 8px;
+  }
+
+  /* Make multi-column grids single column on tablets */
+  .hero-grid,
+  .why-grid,
+  .enquiry-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .program-grid {
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 columns on tablet */
+  }
+
+  .result-grid,
+  .result-gallery {
+    grid-template-columns: 1fr;
+    /* 1 column on tablet */
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* MOBILE PHONES (Screens 550px wide or smaller) */
+@media (max-width: 550px) {
+  .utility .locations {
+    display: none;
+    /* Hides location text on tiny screens */
+  }
+
+  .utility .container {
+    justify-content: center;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+    /* Smaller headline on phones */
+  }
+
+  .program-grid,
+  .footer-grid {
+    grid-template-columns: 1fr;
+    /* Single column on phones */
+  }
+
+  .subject-card {
+    position: static;
+    /* Places subject card normally */
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .circle-a,
+  .circle-b,
+  .stamp {
+    display: none;
+    /* Hides decorative shapes on small screens */
+  }
+
+  .copyright {
+    text-align: center;
+    justify-content: center;
+  }
+}
