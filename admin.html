@@ -4,879 +4,1573 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Perfect Coaching Classes</title>
+    <title>Admin & Academic Management Dashboard | Perfect Coaching Classes</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            background-color: #f4f8fb;
-            color: var(--ink);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .admin-header {
-            background: linear-gradient(135deg, var(--navy) 0%, #083454 100%);
-            color: #ffffff;
-            padding: 18px 0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
-        }
-
-        .admin-header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .admin-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #ffffff;
-            text-decoration: none;
-        }
-
-        .admin-brand .logo-mark {
-            background: var(--orange);
-            color: #ffffff;
-            font-weight: 800;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            font-size: 20px;
-        }
-
-        .admin-brand h1 {
-            font-size: 18px;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: 0.5px;
-        }
-
-        .admin-brand span {
-            display: block;
-            font-size: 11px;
-            color: #a5cde3;
-            font-weight: 400;
-        }
-
-        .admin-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn-sm {
-            padding: 8px 14px;
-            font-size: 13px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
-            border: none;
-        }
-
-        .btn-white {
-            background: #ffffff;
-            color: var(--navy);
-        }
-
-        .btn-white:hover {
-            background: #e6f1f8;
-        }
-
-        .btn-csv {
-            background: var(--green);
-            color: #ffffff;
-        }
-
-        .btn-csv:hover {
-            background: #059669;
-        }
-
-        /* Stats Grid */
-        .admin-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-            margin: 30px 0 25px;
-        }
-
-        .stat-card {
-            background: #ffffff;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: var(--shadow-sm);
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--blue);
-        }
-
-        .stat-card--new::before {
-            background: var(--orange);
-        }
-
-        .stat-card--demo::before {
-            background: #8b5cf6;
-        }
-
-        .stat-card--enrolled::before {
-            background: var(--green);
-        }
-
-        .stat-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            background: var(--pale);
-            flex-shrink: 0;
-        }
-
-        .stat-info b {
-            display: block;
-            font-size: 26px;
-            font-family: 'Outfit', sans-serif;
-            color: var(--navy);
-            line-height: 1.1;
-        }
-
-        .stat-info span {
-            font-size: 12.5px;
-            color: var(--muted);
-            font-weight: 600;
-        }
-
-        /* Control Bar */
-        .admin-controls {
-            background: #ffffff;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            padding: 16px 20px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            position: relative;
-            flex-grow: 1;
-            max-width: 360px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 9px 12px 9px 34px;
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            font-size: 13.5px;
-            outline: none;
-            transition: 0.2s;
-        }
-
-        .search-box input:focus {
-            border-color: var(--orange);
-            box-shadow: 0 0 0 3px rgba(217, 107, 39, 0.15);
-        }
-
-        .search-box svg {
-            position: absolute;
-            left: 10px;
-            color: var(--muted);
-        }
-
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn-pill {
-            background: var(--pale);
-            border: 1px solid var(--line);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12.5px;
-            font-weight: 600;
-            color: var(--ink);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .filter-btn-pill:hover,
-        .filter-btn-pill.active {
-            background: var(--navy);
-            color: #ffffff;
-            border-color: var(--navy);
-        }
-
-        /* Enquiries Table */
-        .table-container {
-            background: #ffffff;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
-            overflow-x: auto;
-            margin-bottom: 40px;
-        }
-
-        table.admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            text-align: left;
-        }
-
-        table.admin-table th {
-            background: #f8fafc;
-            color: var(--navy);
-            font-weight: 700;
-            padding: 14px 16px;
-            border-bottom: 2px solid var(--line);
-            white-space: nowrap;
-        }
-
-        table.admin-table td {
-            padding: 14px 16px;
-            border-bottom: 1px solid #eef3f7;
-            vertical-align: middle;
-        }
-
-        table.admin-table tr:hover td {
-            background-color: #fafcfe;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-badge--New {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
-
-        .status-badge--Contacted {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .status-badge--Demo {
-            background: #ede9fe;
-            color: #6d28d9;
-        }
-
-        .status-badge--Enrolled {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .status-badge--Closed {
-            background: #e2e8f0;
-            color: #475569;
-        }
-
-        .source-pill {
-            font-size: 10.5px;
-            padding: 2px 7px;
-            background: #eaf4f8;
-            color: var(--navy);
-            border-radius: 4px;
-            font-weight: 600;
-            display: inline-block;
-            margin-top: 4px;
-        }
-
-        .action-btns {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .act-icon-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--line);
-            background: #ffffff;
-            color: var(--ink);
-            text-decoration: none;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .act-icon-btn:hover {
-            border-color: var(--navy);
-            background: #f0f6f9;
-        }
-
-        .act-icon-btn--wa {
-            color: #10b981;
-        }
-
-        .act-icon-btn--wa:hover {
-            background: #ecfdf5;
-            border-color: #10b981;
-        }
-
-        .act-icon-btn--del {
-            color: #ef4444;
-        }
-
-        .act-icon-btn--del:hover {
-            background: #fef2f2;
-            border-color: #ef4444;
-        }
-
-        .select-status {
-            padding: 5px 8px;
-            border: 1px solid var(--line);
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: 600;
-            background: #ffffff;
-            cursor: pointer;
-            outline: none;
-        }
-
-        .select-status:focus {
-            border-color: var(--orange);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--muted);
-        }
-
-        .empty-state svg {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 12px;
-            color: #94a3b8;
-        }
-
-        /* Modal for Counsellor Notes */
-        .notes-modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(4, 18, 30, 0.7);
-            backdrop-filter: blur(4px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-            padding: 20px;
-        }
-
-        .notes-modal-overlay.active {
-            display: flex;
-        }
-
-        .notes-modal-box {
-            background: #ffffff;
-            border-radius: 8px;
-            max-width: 500px;
-            width: 100%;
-            padding: 24px;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .notes-modal-box h3 {
-            margin-top: 0;
-            color: var(--navy);
-            font-size: 18px;
-            margin-bottom: 6px;
-        }
-
-        .notes-modal-box p {
-            color: var(--muted);
-            font-size: 13px;
-            margin-bottom: 16px;
-        }
-
-        .notes-modal-box textarea {
-            width: 100%;
-            height: 120px;
-            padding: 10px;
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 13.5px;
-            box-sizing: border-box;
-            outline: none;
-            resize: vertical;
-        }
-
-        .notes-modal-box textarea:focus {
-            border-color: var(--orange);
-        }
-
-        .notes-modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 16px;
-        }
-
-        @media (max-width: 900px) {
-            .admin-stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 550px) {
-            .admin-stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .search-box {
-                max-width: 100%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="dashboards.css">
 </head>
 
-<body>
+<body class="dash-body">
 
-    <!-- Header -->
-    <header class="admin-header">
+    <!-- Top Admin Header -->
+    <header class="dash-header">
         <div class="container">
-            <a href="admin.html" class="admin-brand">
-                <span class="logo-mark">P</span>
-                <div>
+            <a href="admin.html" class="dash-brand">
+                <div class="dash-logo-icon">P</div>
+                <div class="dash-brand-title">
                     <h1>PERFECT COACHING CLASSES</h1>
-                    <span>Admission Enquiries & Demo Bookings Management</span>
+                    <span>Admin & Academic Management Portal <span class="dash-brand-badge">DIRECTOR CONSOLE</span></span>
                 </div>
             </a>
 
-            <div class="admin-actions">
-                <a href="index.html" class="btn-sm btn-white" target="_blank">
-                    🌐 Open Website
+            <div class="dash-top-actions">
+                <button class="dash-btn dash-btn-primary" onclick="openModal('addStudentModal')">
+                    ➕ New Student
+                </button>
+                <button class="dash-btn dash-btn-teal" onclick="openModal('addMarksModal')">
+                    📝 Enter Marks
+                </button>
+                <a href="student-dashboard.html" class="dash-btn dash-btn-outline" target="_blank" title="Preview Student Portal">
+                    🎓 Student Portal
                 </a>
-                <button id="exportCsvBtn" class="btn-sm btn-csv">
-                    📥 Export CSV
-                </button>
-                <button id="refreshBtn" class="btn-sm btn-white">
-                    🔄 Refresh
-                </button>
+                <a href="index.html" class="dash-btn dash-btn-outline" target="_blank">
+                    🌐 Website
+                </a>
+                <div class="dash-filters-group">
+                    <button class="dash-btn dash-btn-green" onclick="exportData('students')" title="Export Students to CSV">
+                        📥 Students CSV
+                    </button>
+                    <button class="dash-btn dash-btn-light" onclick="exportData('enquiries')" title="Export Enquiries to CSV">
+                        📥 Leads CSV
+                    </button>
+                    <button class="dash-btn dash-btn-light" onclick="refreshAllData()" title="Reload all data">
+                        🔄 Refresh
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="container" style="flex-grow: 1;">
-
-        <!-- Stats Overview -->
-        <div class="admin-stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📋</div>
-                <div class="stat-info">
-                    <b id="statTotal">0</b>
-                    <span>Total Submissions</span>
-                </div>
-            </div>
-
-            <div class="stat-card stat-card--new">
-                <div class="stat-icon">🔔</div>
-                <div class="stat-info">
-                    <b id="statNew">0</b>
-                    <span>New / Uncontacted</span>
-                </div>
-            </div>
-
-            <div class="stat-card stat-card--demo">
-                <div class="stat-icon">🎓</div>
-                <div class="stat-info">
-                    <b id="statDemo">0</b>
-                    <span>Demo Class Bookings</span>
-                </div>
-            </div>
-
-            <div class="stat-card stat-card--enrolled">
-                <div class="stat-icon">🎉</div>
-                <div class="stat-info">
-                    <b id="statEnrolled">0</b>
-                    <span>Enrolled Students</span>
-                </div>
-            </div>
+    <!-- Secondary Sticky Tab Navigation -->
+    <nav class="dash-nav-bar">
+        <div class="container">
+            <button class="dash-tab-btn active" data-tab="tab-students" onclick="switchTab('tab-students')">
+                <span>🎓 Students Directory</span>
+                <span class="dash-tab-badge" id="badgeStudentCount">0</span>
+            </button>
+            <button class="dash-tab-btn" data-tab="tab-attendance" onclick="switchTab('tab-attendance')">
+                <span>📅 Daily Attendance</span>
+            </button>
+            <button class="dash-tab-btn" data-tab="tab-marks" onclick="switchTab('tab-marks')">
+                <span>📝 Marks & Reports</span>
+                <span class="dash-tab-badge" id="badgeTestsCount">0</span>
+            </button>
+            <button class="dash-tab-btn" data-tab="tab-notices" onclick="switchTab('tab-notices')">
+                <span>📢 Announcements</span>
+                <span class="dash-tab-badge" id="badgeNoticesCount">0</span>
+            </button>
+            <button class="dash-tab-btn" data-tab="tab-resources" onclick="switchTab('tab-resources')">
+                <span>📚 Study Material</span>
+                <span class="dash-tab-badge" id="badgeResourcesCount">0</span>
+            </button>
+            <button class="dash-tab-btn" data-tab="tab-enquiries" onclick="switchTab('tab-enquiries')">
+                <span>📥 Admission Leads</span>
+                <span class="dash-tab-badge" id="badgeEnquiryCount">0</span>
+            </button>
         </div>
+    </nav>
 
-        <!-- Controls: Search & Filter Tabs -->
-        <div class="admin-controls">
-            <div class="search-box">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <input type="text" id="searchInput" placeholder="Search by name, mobile, course...">
+    <!-- Main Content Area -->
+    <main class="dash-main">
+        <div class="container">
+
+            <!-- Hero Welcome Card -->
+            <div class="dash-hero-card">
+                <div class="dash-hero-info">
+                    <h2>Academic & Administrative Operations ⚡</h2>
+                    <p>Manage student records, track classroom attendance, publish test scores, broadcast batch announcements, and follow up with new admission leads.</p>
+                </div>
+                <div class="dash-hero-meta">
+                    <div class="hero-pill">
+                        <span>Academic Year:</span>
+                        <b>2026 – 2027</b>
+                    </div>
+                    <div class="hero-pill">
+                        <span>Centre:</span>
+                        <b>Nashik Road Main Branch</b>
+                    </div>
+                </div>
             </div>
 
-            <div class="filter-group">
-                <button class="filter-btn-pill active" data-status="All">All</button>
-                <button class="filter-btn-pill" data-status="New">New</button>
-                <button class="filter-btn-pill" data-status="Contacted">Contacted</button>
-                <button class="filter-btn-pill" data-status="Demo Scheduled">Demo Scheduled</button>
-                <button class="filter-btn-pill" data-status="Enrolled">Enrolled</button>
-                <button class="filter-btn-pill" data-status="Closed">Closed</button>
+            <!-- KPI Stats Grid -->
+            <div class="dash-stats-grid">
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon teal">🎓</div>
+                    <div class="dash-stat-info">
+                        <b id="statTotalStudents">0</b>
+                        <span>Enrolled Students</span>
+                        <div class="dash-stat-subtext" id="statActiveStudents">0 Active in Batches</div>
+                    </div>
+                </div>
+
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon green">📊</div>
+                    <div class="dash-stat-info">
+                        <b id="statAvgAttendance">0%</b>
+                        <span>Average Attendance</span>
+                        <div class="dash-stat-subtext">Classroom Presence Rate</div>
+                    </div>
+                </div>
+
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon orange">💰</div>
+                    <div class="dash-stat-info">
+                        <b id="statFeesCollected">₹0</b>
+                        <span>Fee Collection</span>
+                        <div class="dash-stat-subtext" id="statFeesPending">Pending: ₹0</div>
+                    </div>
+                </div>
+
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon purple">📥</div>
+                    <div class="dash-stat-info">
+                        <b id="statNewLeads">0</b>
+                        <span>Admission Enquiries</span>
+                        <div class="dash-stat-subtext" id="statEnrolledLeads">0 Confirmed Admissions</div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Enquiries Table -->
-        <div class="table-container">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Date & Time</th>
-                        <th>Student Name</th>
-                        <th>Mobile & WhatsApp</th>
-                        <th>Course / Standard</th>
-                        <th>Preferred Shift</th>
-                        <th>Message / Notes</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="enquiriesTableBody">
-                    <tr>
-                        <td colspan="9" style="text-align: center; padding: 40px; color: var(--muted);">
-                            Loading enquiries from database... ⏳
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <!-- ============================================================= -->
+            <!-- TAB 1: STUDENTS SECTION (Directory & Profiles) -->
+            <!-- ============================================================= -->
+            <section id="tab-students" class="dash-tab-content">
+                <div class="dash-control-bar">
+                    <div class="dash-search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="studentSearchInput" placeholder="Search by name, roll no, phone..." oninput="filterStudents()">
+                    </div>
 
+                    <div class="dash-filters-group">
+                        <select id="studentCourseFilter" class="dash-select" onchange="filterStudents()">
+                            <option value="">All Courses</option>
+                            <option value="Class X SSC (Maharashtra Board)">Class X SSC</option>
+                            <option value="Class XII Science (HSC + MHT-CET)">Class XII Science</option>
+                            <option value="Class IX Foundation (SSC / CBSE)">Class IX Foundation</option>
+                        </select>
+
+                        <select id="studentFeeFilter" class="dash-select" onchange="filterStudents()">
+                            <option value="">All Fee Statuses</option>
+                            <option value="Paid">Fee Paid</option>
+                            <option value="Partial">Partial Due</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+
+                        <button class="dash-btn dash-btn-primary" onclick="openModal('addStudentModal')">
+                            ➕ Register Student
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Students Table Card -->
+                <div class="dash-table-card">
+                    <div class="dash-table-header">
+                        <h3>🎓 Enrolled Students Directory</h3>
+                        <span id="studentsDisplayCount" class="dash-tab-badge">Showing 0 students</span>
+                    </div>
+
+                    <div class="dash-table-responsive">
+                        <table class="dash-table" id="studentsTable">
+                            <thead>
+                                <tr>
+                                    <th>Roll No</th>
+                                    <th>Student Details</th>
+                                    <th>Contact & Parent</th>
+                                    <th>Course & Batch</th>
+                                    <th>Fee Status</th>
+                                    <th>Attendance</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTableBody">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 40px; color: var(--dash-muted);">
+                                        Loading student directory...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- TAB 2: ATTENDANCE MANAGEMENT -->
+            <!-- ============================================================= -->
+            <section id="tab-attendance" class="dash-tab-content" style="display: none;">
+                <div class="dash-control-bar">
+                    <div class="dash-filters-group" style="gap: 15px;">
+                        <div>
+                            <label style="font-size: 12px; font-weight: 700; color: var(--dash-muted); display: block; margin-bottom: 4px;">DATE</label>
+                            <input type="date" id="attendanceDatePicker" class="dash-select" style="font-weight: 600;" onchange="loadAttendanceList()">
+                        </div>
+
+                        <div>
+                            <label style="font-size: 12px; font-weight: 700; color: var(--dash-muted); display: block; margin-bottom: 4px;">BATCH TIMING</label>
+                            <select id="attendanceBatchSelect" class="dash-select" onchange="loadAttendanceList()">
+                                <option value="">All Batches</option>
+                                <option value="Morning Batch">Morning Batch (7:00 AM – 10:30 AM)</option>
+                                <option value="Evening Batch">Evening Batch (4:00 PM – 8:00 PM)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="dash-filters-group">
+                        <button class="dash-btn dash-btn-light" onclick="markAllAttendance('Present')">
+                            ✅ Mark All Present
+                        </button>
+                        <button class="dash-btn dash-btn-light" onclick="markAllAttendance('Absent')">
+                            ❌ Mark All Absent
+                        </button>
+                        <button class="dash-btn dash-btn-green" onclick="saveBatchAttendance()">
+                            💾 Save Attendance
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dash-table-card">
+                    <div class="dash-table-header">
+                        <h3>📅 Batch Attendance Checklist</h3>
+                        <span id="attendanceBatchCount" class="dash-tab-badge">0 Students</span>
+                    </div>
+
+                    <div class="dash-table-responsive">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>Roll No</th>
+                                    <th>Student Name</th>
+                                    <th>Course & Batch</th>
+                                    <th>Status (Present / Absent / Late)</th>
+                                    <th>Remarks / Note</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceChecklistBody">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 40px; color: var(--dash-muted);">
+                                        Select date to load attendance checklist.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- TAB 3: MARKS & TEST RESULTS -->
+            <!-- ============================================================= -->
+            <section id="tab-marks" class="dash-tab-content" style="display: none;">
+                <div class="dash-control-bar">
+                    <div class="dash-search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="marksSearchInput" placeholder="Filter by test name or subject..." oninput="filterMarks()">
+                    </div>
+
+                    <div class="dash-filters-group">
+                        <button class="dash-btn dash-btn-primary" onclick="openModal('addMarksModal')">
+                            ➕ Publish New Test Score
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dash-table-card">
+                    <div class="dash-table-header">
+                        <h3>📝 Published Test Results & Class Ranks</h3>
+                        <span id="marksCountBadge" class="dash-tab-badge">0 Scores</span>
+                    </div>
+
+                    <div class="dash-table-responsive">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>Test Name & Date</th>
+                                    <th>Student Details</th>
+                                    <th>Subject</th>
+                                    <th>Marks Obtained</th>
+                                    <th>Percentage</th>
+                                    <th>Class Rank</th>
+                                    <th>Teacher Remarks</th>
+                                    <th style="text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="marksTableBody">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 40px; color: var(--dash-muted);">
+                                        Loading test scores...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- TAB 4: ANNOUNCEMENTS & NOTICEBOARD -->
+            <!-- ============================================================= -->
+            <section id="tab-notices" class="dash-tab-content" style="display: none;">
+                <div class="dash-control-bar">
+                    <p style="margin: 0; font-size: 13.5px; color: var(--dash-muted);">
+                        Announcements posted here appear live on the <b>Student Portal Noticeboard</b> instantly.
+                    </p>
+                    <button class="dash-btn dash-btn-primary" onclick="openModal('addNoticeModal')">
+                        ➕ Broadcast Notice
+                    </button>
+                </div>
+
+                <div class="dash-cards-grid" id="noticesCardsGrid">
+                    <!-- Dynamic Notice Cards injected here -->
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- TAB 5: STUDY RESOURCES -->
+            <!-- ============================================================= -->
+            <section id="tab-resources" class="dash-tab-content" style="display: none;">
+                <div class="dash-control-bar">
+                    <p style="margin: 0; font-size: 13.5px; color: var(--dash-muted);">
+                        Digital notes, formula cheat sheets, and previous year board papers provided to students.
+                    </p>
+                    <button class="dash-btn dash-btn-primary" onclick="openModal('addResourceModal')">
+                        ➕ Upload Material Link
+                    </button>
+                </div>
+
+                <div class="dash-cards-grid" id="resourcesCardsGrid">
+                    <!-- Dynamic Study Resource Cards injected here -->
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- TAB 6: ADMISSION LEADS & ENQUIRIES -->
+            <!-- ============================================================= -->
+            <section id="tab-enquiries" class="dash-tab-content" style="display: none;">
+                <div class="dash-control-bar">
+                    <div class="dash-search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="enquirySearchInput" placeholder="Search inquiries by name, mobile, course..." oninput="filterEnquiries()">
+                    </div>
+
+                    <div class="dash-filters-group">
+                        <select id="enquiryStatusFilter" class="dash-select" onchange="filterEnquiries()">
+                            <option value="">All Statuses</option>
+                            <option value="New">New / Uncontacted</option>
+                            <option value="Contacted">Contacted</option>
+                            <option value="Demo Scheduled">Demo Scheduled</option>
+                            <option value="Enrolled">Enrolled</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                        <button class="dash-btn dash-btn-green" onclick="exportData('enquiries')">
+                            📥 Download Leads CSV
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dash-table-card">
+                    <div class="dash-table-header">
+                        <h3>📥 Admission Inquiries & Demo Class Requests</h3>
+                        <span id="enquiryCountBadge" class="dash-tab-badge">0 Submissions</span>
+                    </div>
+
+                    <div class="dash-table-responsive">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Student Name</th>
+                                    <th>Contact</th>
+                                    <th>Target Course</th>
+                                    <th>Source</th>
+                                    <th>Status Workflow</th>
+                                    <th>Counsellor Remarks</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="enquiriesTableBody">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 40px; color: var(--dash-muted);">
+                                        Loading admission leads...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </div>
     </main>
 
-    <!-- Notes Modal -->
-    <div class="notes-modal-overlay" id="notesModal">
-        <div class="notes-modal-box">
-            <h3 id="notesModalTitle">Counsellor Notes</h3>
-            <p id="notesModalSub">Save private follow-up details and counselling remarks for this student.</p>
-            <textarea id="notesModalText" placeholder="e.g. Called parent on Friday. Interested in Sunday test series and morning classroom batch. Scheduled trial class for Oct 12."></textarea>
-            <div class="notes-modal-actions">
-                <button class="btn-sm btn-white" id="closeNotesModalBtn">Cancel</button>
-                <button class="btn-sm" style="background:var(--navy); color:#fff;" id="saveNotesBtn">Save Notes 💾</button>
+    <!-- ================================================================= -->
+    <!-- MODAL 1: ADD NEW STUDENT -->
+    <!-- ================================================================= -->
+    <div id="addStudentModal" class="dash-modal-overlay">
+        <div class="dash-modal-box">
+            <div class="dash-modal-header">
+                <h3>🎓 Register New Student</h3>
+                <button class="dash-modal-close" onclick="closeModal('addStudentModal')">&times;</button>
+            </div>
+            <form id="addStudentForm" onsubmit="handleCreateStudent(event)">
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Student Full Name *</label>
+                        <input type="text" name="name" placeholder="e.g. Rahul Patil" required>
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Roll Number (optional)</label>
+                        <input type="text" name="roll_no" placeholder="Auto-generated if empty (PCC-1006)">
+                    </div>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Student Mobile Number *</label>
+                        <input type="tel" name="mobile" placeholder="10-digit mobile number" required>
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Student Email (optional)</label>
+                        <input type="email" name="email" placeholder="student@example.com">
+                    </div>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Parent / Guardian Name</label>
+                        <input type="text" name="parent_name" placeholder="Parent name">
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Parent Mobile Number</label>
+                        <input type="tel" name="parent_mobile" placeholder="Parent phone for updates">
+                    </div>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Course Enrollment *</label>
+                        <select name="course" required>
+                            <option value="Class X SSC (Maharashtra Board)">Class X SSC (Maharashtra Board)</option>
+                            <option value="Class XII Science (HSC + MHT-CET)">Class XII Science (HSC + MHT-CET)</option>
+                            <option value="Class IX Foundation (SSC / CBSE)">Class IX Foundation (SSC / CBSE)</option>
+                            <option value="MHT-CET / JEE Crash Course">MHT-CET / JEE Crash Course</option>
+                        </select>
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Batch Timing *</label>
+                        <select name="batch_timing" required>
+                            <option value="Morning Batch (7:00 AM – 10:30 AM)">Morning Batch (7:00 AM – 10:30 AM)</option>
+                            <option value="Evening Batch (4:00 PM – 8:00 PM)">Evening Batch (4:00 PM – 8:00 PM)</option>
+                            <option value="Afternoon Foundation (1:00 PM – 4:00 PM)">Afternoon Foundation (1:00 PM – 4:00 PM)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Total Agreed Course Fee (₹)</label>
+                        <input type="number" name="total_fee" value="35000" min="0">
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Initial Fee Paid (₹)</label>
+                        <input type="number" name="paid_fee" value="15000" min="0">
+                    </div>
+                </div>
+
+                <div class="dash-form-group full">
+                    <label>Internal Counsellor Notes</label>
+                    <textarea name="notes" placeholder="e.g. Target 95%+ in SSC Board, referred by alumni."></textarea>
+                </div>
+
+                <div class="dash-modal-actions">
+                    <button type="button" class="dash-btn dash-btn-light" onclick="closeModal('addStudentModal')">Cancel</button>
+                    <button type="submit" class="dash-btn dash-btn-primary">Register Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 2: STUDENT PROFILE DOSSIER -->
+    <!-- ================================================================= -->
+    <div id="studentDossierModal" class="dash-modal-overlay">
+        <div class="dash-modal-box" style="max-width: 680px;">
+            <div class="dash-modal-header">
+                <h3 id="dossierTitle">🎓 Student Academic Dossier</h3>
+                <button class="dash-modal-close" onclick="closeModal('studentDossierModal')">&times;</button>
+            </div>
+            <div id="dossierContent">
+                <!-- Injected via JS -->
             </div>
         </div>
     </div>
 
-    <!-- Admin Client Script -->
+    <!-- ================================================================= -->
+    <!-- MODAL 3: ENTER TEST MARKS -->
+    <!-- ================================================================= -->
+    <div id="addMarksModal" class="dash-modal-overlay">
+        <div class="dash-modal-box">
+            <div class="dash-modal-header">
+                <h3>📝 Record Student Test Score</h3>
+                <button class="dash-modal-close" onclick="closeModal('addMarksModal')">&times;</button>
+            </div>
+            <form id="addMarksForm" onsubmit="handleCreateMarks(event)">
+                <div class="dash-form-group full">
+                    <label>Select Student *</label>
+                    <select id="marksStudentSelect" name="student_id" required>
+                        <!-- Dynamic student options -->
+                    </select>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Test Title / Exam Name *</label>
+                        <input type="text" name="test_name" placeholder="e.g. Unit Test 2 - Geometry" required>
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Subject *</label>
+                        <input type="text" name="subject" placeholder="e.g. Mathematics II" required>
+                    </div>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Maximum Marks *</label>
+                        <input type="number" name="max_marks" value="40" min="1" required>
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Marks Obtained *</label>
+                        <input type="number" step="0.5" name="marks_obtained" placeholder="e.g. 38.5" min="0" required>
+                    </div>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Class Rank (Optional)</label>
+                        <input type="number" name="rank" placeholder="e.g. 1" min="1">
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Date of Test</label>
+                        <input type="date" name="test_date" id="marksDateInput" required>
+                    </div>
+                </div>
+
+                <div class="dash-form-group full">
+                    <label>Faculty Remarks</label>
+                    <textarea name="remarks" placeholder="e.g. Excellent presentation in circle theorem derivations."></textarea>
+                </div>
+
+                <div class="dash-modal-actions">
+                    <button type="button" class="dash-btn dash-btn-light" onclick="closeModal('addMarksModal')">Cancel</button>
+                    <button type="submit" class="dash-btn dash-btn-teal">Publish Score</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 4: BROADCAST NOTICE -->
+    <!-- ================================================================= -->
+    <div id="addNoticeModal" class="dash-modal-overlay">
+        <div class="dash-modal-box">
+            <div class="dash-modal-header">
+                <h3>📢 Broadcast Notice to Student Portal</h3>
+                <button class="dash-modal-close" onclick="closeModal('addNoticeModal')">&times;</button>
+            </div>
+            <form id="addNoticeForm" onsubmit="handleCreateNotice(event)">
+                <div class="dash-form-group full">
+                    <label>Announcement Title *</label>
+                    <input type="text" name="title" placeholder="e.g. Special Sunday Calculus Revision" required>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Category *</label>
+                        <select name="category" required>
+                            <option value="Exam">Exam / Test Series</option>
+                            <option value="Schedule">Schedule / Timetable</option>
+                            <option value="Holiday">Holiday / Vacation</option>
+                            <option value="General">General Notice</option>
+                        </select>
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Priority *</label>
+                        <select name="priority" required>
+                            <option value="High">High Priority (Red Alert)</option>
+                            <option value="Normal" selected>Normal</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dash-form-group full">
+                    <label>Target Audience / Batch</label>
+                    <input type="text" name="target_course" placeholder="e.g. All Batches, or Class X SSC" value="All Batches">
+                </div>
+
+                <div class="dash-form-group full">
+                    <label>Notice Content *</label>
+                    <textarea name="content" rows="4" placeholder="Type full announcement message here..." required></textarea>
+                </div>
+
+                <div class="dash-modal-actions">
+                    <button type="button" class="dash-btn dash-btn-light" onclick="closeModal('addNoticeModal')">Cancel</button>
+                    <button type="submit" class="dash-btn dash-btn-primary">Broadcast Notice</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 5: UPLOAD STUDY RESOURCE -->
+    <!-- ================================================================= -->
+    <div id="addResourceModal" class="dash-modal-overlay">
+        <div class="dash-modal-box">
+            <div class="dash-modal-header">
+                <h3>📚 Add Study Material Link</h3>
+                <button class="dash-modal-close" onclick="closeModal('addResourceModal')">&times;</button>
+            </div>
+            <form id="addResourceForm" onsubmit="handleCreateResource(event)">
+                <div class="dash-form-group full">
+                    <label>Document Title *</label>
+                    <input type="text" name="title" placeholder="e.g. Class 10 SSC Geometry Theorem Handbook" required>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Subject *</label>
+                        <input type="text" name="subject" placeholder="e.g. Mathematics" required>
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Target Course *</label>
+                        <input type="text" name="course" placeholder="e.g. Class X SSC (Maharashtra Board)" required>
+                    </div>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Download URL / Target Link</label>
+                        <input type="text" name="file_url" value="study-material.html#notes" required>
+                    </div>
+                    <div class="dash-form-group">
+                        <label>File Size</label>
+                        <input type="text" name="file_size" value="3.5 MB">
+                    </div>
+                </div>
+
+                <div class="dash-modal-actions">
+                    <button type="button" class="dash-btn dash-btn-light" onclick="closeModal('addResourceModal')">Cancel</button>
+                    <button type="submit" class="dash-btn dash-btn-teal">Save Resource</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 6: COUNSELLOR NOTES (FOR ENQUIRIES) -->
+    <!-- ================================================================= -->
+    <div id="notesModal" class="dash-modal-overlay">
+        <div class="dash-modal-box" style="max-width: 500px;">
+            <div class="dash-modal-header">
+                <h3>📝 Counsellor Follow-up Remarks</h3>
+                <button class="dash-modal-close" onclick="closeModal('notesModal')">&times;</button>
+            </div>
+            <p id="notesStudentLabel" style="font-size: 13px; color: var(--dash-muted); margin-top: 0;">Add private remarks for follow-up:</p>
+            <textarea id="notesModalTextarea" style="width: 100%; height: 110px; padding: 10px; border: 1px solid var(--dash-border); border-radius: 6px; font-family: inherit; font-size: 13.5px;"></textarea>
+            <div class="dash-modal-actions">
+                <button type="button" class="dash-btn dash-btn-light" onclick="closeModal('notesModal')">Cancel</button>
+                <button type="button" class="dash-btn dash-btn-primary" onclick="saveCounsellorNotes()">Save Remarks</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Toast Element -->
+    <div id="dashToast" class="dash-toast">
+        <span id="toastIcon">✅</span>
+        <span id="toastMsg">Action completed successfully.</span>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- DASHBOARD JAVASCRIPT LOGIC -->
+    <!-- ================================================================= -->
     <script>
-        const API_BASE = window.location.origin.includes('localhost:5000') 
-            ? '' 
-            : 'http://localhost:5000';
+        // State Store
+        const state = {
+            stats: {},
+            students: [],
+            attendanceDateRecords: [],
+            marks: [],
+            notices: [],
+            resources: [],
+            enquiries: [],
+            activeDossierStudent: null,
+            editingEnquiryId: null
+        };
 
-        let currentStatusFilter = 'All';
-        let searchQuery = '';
-        let activeEnquiryIdForNotes = null;
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set default date for attendance & marks
+            const todayStr = new Date().toISOString().split('T')[0];
+            const datePicker = document.getElementById('attendanceDatePicker');
+            if (datePicker) datePicker.value = todayStr;
+            const marksDate = document.getElementById('marksDateInput');
+            if (marksDate) marksDate.value = todayStr;
 
-        // Elements
-        const tableBody = document.querySelector('#enquiriesTableBody');
-        const searchInput = document.querySelector('#searchInput');
-        const filterBtns = document.querySelectorAll('.filter-btn-pill');
-        const refreshBtn = document.querySelector('#refreshBtn');
-        const exportCsvBtn = document.querySelector('#exportCsvBtn');
+            // Load initial data
+            refreshAllData();
+        });
 
-        const statTotal = document.querySelector('#statTotal');
-        const statNew = document.querySelector('#statNew');
-        const statDemo = document.querySelector('#statDemo');
-        const statEnrolled = document.querySelector('#statEnrolled');
-
-        const notesModal = document.querySelector('#notesModal');
-        const notesModalTitle = document.querySelector('#notesModalTitle');
-        const notesModalText = document.querySelector('#notesModalText');
-        const closeNotesModalBtn = document.querySelector('#closeNotesModalBtn');
-        const saveNotesBtn = document.querySelector('#saveNotesBtn');
-
-        // Fetch & Render Stats
-        async function fetchStats() {
-            try {
-                const res = await fetch(`${API_BASE}/api/stats`);
-                const data = await res.json();
-                if (data.success && data.stats) {
-                    statTotal.textContent = data.stats.total;
-                    statNew.textContent = data.stats.newCount;
-                    statDemo.textContent = data.stats.demoCount;
-                    statEnrolled.textContent = data.stats.enrolledCount;
-                }
-            } catch (err) {
-                console.error('Error loading stats:', err);
+        // =====================================================================
+        // TAB SWITCHING
+        // =====================================================================
+        function switchTab(tabId) {
+            document.querySelectorAll('.dash-tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabId);
+            });
+            document.querySelectorAll('.dash-tab-content').forEach(section => {
+                section.style.display = (section.id === tabId) ? 'block' : 'none';
+            });
+            if (tabId === 'tab-attendance') {
+                loadAttendanceList();
             }
         }
 
-        // Fetch & Render Enquiries
-        async function fetchEnquiries() {
+        // =====================================================================
+        // TOAST NOTIFICATIONS
+        // =====================================================================
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('dashToast');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMsg');
+            icon.textContent = isSuccess ? '✅' : '⚠️';
+            msg.textContent = message;
+            toast.className = `dash-toast ${isSuccess ? 'success' : 'error'} show`;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // =====================================================================
+        // MODALS MANAGEMENT
+        // =====================================================================
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('active');
+        }
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('active');
+        }
+
+        // =====================================================================
+        // DATA FETCHING & SYNCHRONIZATION
+        // =====================================================================
+        async function refreshAllData() {
             try {
-                let url = `${API_BASE}/api/enquiries?limit=200`;
-                if (currentStatusFilter !== 'All') url += `&status=${encodeURIComponent(currentStatusFilter)}`;
-                if (searchQuery.trim().length > 0) url += `&search=${encodeURIComponent(searchQuery.trim())}`;
+                await Promise.all([
+                    fetchStats(),
+                    fetchStudents(),
+                    fetchMarks(),
+                    fetchNotices(),
+                    fetchResources(),
+                    fetchEnquiries()
+                ]);
+            } catch (err) {
+                console.error('Error refreshing data:', err);
+            }
+        }
 
-                const res = await fetch(url);
+        async function fetchStats() {
+            const res = await fetch('/api/stats');
+            const data = await res.json();
+            if (data.success && data.stats) {
+                state.stats = data.stats;
+                document.getElementById('statTotalStudents').textContent = data.stats.totalStudents || 0;
+                document.getElementById('statActiveStudents').textContent = `${data.stats.activeStudents || 0} Active in Batches`;
+                document.getElementById('statAvgAttendance').textContent = `${data.stats.averageAttendance || 0}%`;
+                document.getElementById('statFeesCollected').textContent = `₹${(data.stats.totalFeesCollected || 0).toLocaleString('en-IN')}`;
+                document.getElementById('statFeesPending').textContent = `Pending: ₹${(data.stats.pendingFees || 0).toLocaleString('en-IN')}`;
+                document.getElementById('statNewLeads').textContent = data.stats.total || 0;
+                document.getElementById('statEnrolledLeads').textContent = `${data.stats.enrolledCount || 0} Confirmed Admissions`;
+                document.getElementById('badgeTestsCount').textContent = data.stats.totalTests || 0;
+                document.getElementById('badgeNoticesCount').textContent = data.stats.announcementsCount || 0;
+                document.getElementById('badgeResourcesCount').textContent = data.stats.totalResources || 0;
+                document.getElementById('badgeEnquiryCount').textContent = data.stats.total || 0;
+            }
+        }
+
+        // =====================================================================
+        // 1. STUDENTS MANAGEMENT
+        // =====================================================================
+        async function fetchStudents() {
+            const res = await fetch('/api/students');
+            const data = await res.json();
+            if (data.success) {
+                state.students = data.students || [];
+                document.getElementById('badgeStudentCount').textContent = state.students.length;
+                populateStudentsSelect();
+                filterStudents();
+            }
+        }
+
+        function populateStudentsSelect() {
+            const select = document.getElementById('marksStudentSelect');
+            if (!select) return;
+            select.innerHTML = '<option value="">-- Choose Enrolled Student --</option>' +
+                state.students.map(s => `<option value="${s.id}">${s.roll_no} — ${s.name} (${s.course})</option>`).join('');
+        }
+
+        function filterStudents() {
+            const query = (document.getElementById('studentSearchInput').value || '').toLowerCase();
+            const courseFilter = document.getElementById('studentCourseFilter').value;
+            const feeFilter = document.getElementById('studentFeeFilter').value;
+
+            const filtered = state.students.filter(s => {
+                const matchesQuery = !query ||
+                    s.name.toLowerCase().includes(query) ||
+                    s.roll_no.toLowerCase().includes(query) ||
+                    (s.mobile && s.mobile.includes(query)) ||
+                    (s.parent_mobile && s.parent_mobile.includes(query));
+                const matchesCourse = !courseFilter || s.course === courseFilter;
+                const matchesFee = !feeFilter || s.fee_status === feeFilter;
+                return matchesQuery && matchesCourse && matchesFee;
+            });
+
+            renderStudentsTable(filtered);
+        }
+
+        function renderStudentsTable(list) {
+            const tbody = document.getElementById('studentsTableBody');
+            document.getElementById('studentsDisplayCount').textContent = `Showing ${list.length} of ${state.students.length}`;
+
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 40px; color: var(--dash-muted);">No students found matching your criteria.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(s => {
+                const initials = s.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const cleanPhone = (s.mobile || '').replace(/[^0-9]/g, '');
+                const cleanParentPhone = (s.parent_mobile || '').replace(/[^0-9]/g, '');
+                const feeBadgeClass = s.fee_status === 'Paid' ? 'dash-badge--paid' : (s.fee_status === 'Partial' ? 'dash-badge--partial' : 'dash-badge--pending');
+                const pct = s.attendance_pct || 90;
+                const pctColorClass = pct >= 90 ? '' : (pct >= 75 ? 'warning' : 'danger');
+
+                return `
+                <tr>
+                    <td>
+                        <span class="dash-roll-badge">${s.roll_no}</span>
+                    </td>
+                    <td>
+                        <div class="student-name-cell">
+                            <div class="student-avatar">${initials}</div>
+                            <div class="student-info-text">
+                                <b>${s.name}</b>
+                                <span>${s.email || 'No email registered'}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span>📱 ${s.mobile}</span>
+                            <a href="https://wa.me/91${cleanPhone}?text=Hello%20${encodeURIComponent(s.name)},%20Greetings%20from%20Perfect%20Coaching%20Classes." target="_blank" class="dash-icon-btn wa" title="WhatsApp Student">💬</a>
+                            <a href="tel:${cleanPhone}" class="dash-icon-btn" title="Call Student">📞</a>
+                        </div>
+                        ${s.parent_mobile ? `<div style="font-size: 11.5px; color: var(--dash-muted); margin-top: 4px;">Parent: ${s.parent_name || 'Guardian'} (${s.parent_mobile})</div>` : ''}
+                    </td>
+                    <td>
+                        <div style="font-weight: 600; color: var(--dash-navy);">${s.course}</div>
+                        <div style="font-size: 11px; color: var(--dash-muted);">${s.batch_timing}</div>
+                    </td>
+                    <td>
+                        <span class="dash-badge ${feeBadgeClass}">${s.fee_status}</span>
+                        <div style="font-size: 11.5px; color: var(--dash-muted); margin-top: 3px;">
+                            ₹${(s.paid_fee || 0).toLocaleString('en-IN')} / ₹${(s.total_fee || 0).toLocaleString('en-IN')}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="pct-bar-wrapper">
+                            <div class="pct-bar">
+                                <div class="pct-bar-fill ${pctColorClass}" style="width: ${Math.min(100, pct)}%;"></div>
+                            </div>
+                            <span style="font-weight: 700; font-size: 12px;">${pct}%</span>
+                        </div>
+                    </td>
+                    <td style="text-align: right;">
+                        <div style="display: inline-flex; gap: 6px;">
+                            <button class="dash-icon-btn" onclick="viewStudentDossier(${s.id})" title="View Complete Academic Record">👁️</button>
+                            <button class="dash-icon-btn" onclick="openMarksForStudent(${s.id})" title="Record Test Score">📝</button>
+                            <button class="dash-icon-btn delete" onclick="deleteStudent(${s.id}, '${s.name.replace(/'/g, "\\'")}')" title="Delete Student">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        async function handleCreateStudent(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch('/api/students', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
                 const data = await res.json();
+                if (data.success) {
+                    showToast(`Student ${data.student.name} registered! (Roll: ${data.student.roll_no})`);
+                    closeModal('addStudentModal');
+                    form.reset();
+                    await fetchStats();
+                    await fetchStudents();
+                } else {
+                    showToast(data.error || 'Failed to create student.', false);
+                }
+            } catch (err) {
+                showToast('Network error while registering student.', false);
+            }
+        }
 
-                if (!data.success || !data.enquiries || data.enquiries.length === 0) {
-                    tableBody.innerHTML = `
-                        <tr>
-                            <td colspan="9">
-                                <div class="empty-state">
-                                    <div style="font-size:36px; margin-bottom:8px;">📭</div>
-                                    <b>No enquiries found</b>
-                                    <p style="margin-top:4px; font-size:13px;">No student submissions match the current filter or search criteria.</p>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+        async function viewStudentDossier(studentId) {
+            try {
+                const res = await fetch(`/api/students/${studentId}`);
+                const data = await res.json();
+                if (!data.success) {
+                    showToast('Failed to load dossier.', false);
+                    return;
+                }
+                const s = data.student;
+                const tests = data.tests || [];
+                const attendance = data.attendance || [];
+
+                document.getElementById('dossierTitle').textContent = `🎓 ${s.name} (${s.roll_no})`;
+                const container = document.getElementById('dossierContent');
+
+                container.innerHTML = `
+                    <div style="background: var(--dash-bg); padding: 16px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
+                        <div><b>Course:</b> ${s.course}</div>
+                        <div><b>Batch:</b> ${s.batch_timing}</div>
+                        <div><b>Mobile:</b> ${s.mobile}</div>
+                        <div><b>Parent:</b> ${s.parent_name || 'Guardian'} (${s.parent_mobile || 'N/A'})</div>
+                        <div><b>Fee Status:</b> <span class="dash-badge ${s.fee_status === 'Paid' ? 'dash-badge--paid' : 'dash-badge--partial'}">${s.fee_status}</span> (₹${s.paid_fee} / ₹${s.total_fee})</div>
+                        <div><b>Attendance:</b> <b>${s.attendance_pct}%</b></div>
+                        ${s.notes ? `<div style="grid-column: 1/-1;"><b>Notes:</b> ${s.notes}</div>` : ''}
+                    </div>
+
+                    <h4 style="margin: 15px 0 10px; color: var(--dash-navy); font-size: 15px;">📊 Recent Test Scores (${tests.length})</h4>
+                    ${tests.length === 0 ? '<p style="font-size: 13px; color: var(--dash-muted);">No tests recorded yet.</p>' : `
+                    <div style="max-height: 200px; overflow-y: auto; border: 1px solid var(--dash-border); border-radius: 6px;">
+                        <table class="dash-table" style="font-size: 12px;">
+                            <thead>
+                                <tr>
+                                    <th>Test</th>
+                                    <th>Subject</th>
+                                    <th>Score</th>
+                                    <th>Rank</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${tests.map(t => `
+                                <tr>
+                                    <td>${t.test_name}</td>
+                                    <td>${t.subject}</td>
+                                    <td><b>${t.marks_obtained}</b> / ${t.max_marks} (${Math.round((t.marks_obtained/t.max_marks)*100)}%)</td>
+                                    <td>${t.rank ? `Rank #${t.rank}` : '-'}</td>
+                                </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    `}
+
+                    <div class="dash-modal-actions" style="margin-top: 20px;">
+                        <a href="/api/student/portal/${s.roll_no}" target="_blank" class="dash-btn dash-btn-teal">
+                            🌐 View Raw JSON Payload
+                        </a>
+                        <button class="dash-btn dash-btn-light" onclick="closeModal('studentDossierModal')">Close</button>
+                    </div>
+                `;
+                openModal('studentDossierModal');
+            } catch (err) {
+                showToast('Error loading student profile.', false);
+            }
+        }
+
+        async function deleteStudent(id, name) {
+            if (!confirm(`Are you sure you want to remove student "${name}"? This will delete all their test scores and attendance records.`)) return;
+            try {
+                const res = await fetch(`/api/students/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`Student ${name} removed.`);
+                    await fetchStats();
+                    await fetchStudents();
+                } else {
+                    showToast(data.error || 'Failed to delete student.', false);
+                }
+            } catch (err) {
+                showToast('Network error deleting student.', false);
+            }
+        }
+
+        function openMarksForStudent(studentId) {
+            const select = document.getElementById('marksStudentSelect');
+            if (select) select.value = studentId;
+            openModal('addMarksModal');
+        }
+
+        // =====================================================================
+        // 2. ATTENDANCE MANAGEMENT
+        // =====================================================================
+        async function loadAttendanceList() {
+            const date = document.getElementById('attendanceDatePicker').value;
+            const batch = document.getElementById('attendanceBatchSelect').value;
+            if (!date) return;
+
+            try {
+                const res = await fetch(`/api/attendance?date=${date}${batch ? '&batch=' + encodeURIComponent(batch) : ''}`);
+                const data = await res.json();
+                const existingMap = {};
+                (data.records || []).forEach(r => {
+                    existingMap[r.student_id] = r;
+                });
+
+                // Filter students who match batch
+                const targetStudents = state.students.filter(s => {
+                    if (!batch) return true;
+                    return s.batch_timing.toLowerCase().includes(batch.toLowerCase());
+                });
+
+                document.getElementById('attendanceBatchCount').textContent = `${targetStudents.length} Students`;
+                const tbody = document.getElementById('attendanceChecklistBody');
+
+                if (targetStudents.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 30px; color: var(--dash-muted);">No students in this batch.</td></tr>`;
                     return;
                 }
 
-                tableBody.innerHTML = data.enquiries.map(e => {
-                    const dateFormatted = new Date(e.created_at).toLocaleDateString('en-IN', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    });
-
-                    const cleanWaMobile = (e.mobile || '').replace(/[^0-9]/g, '');
-                    const waText = encodeURIComponent(`Hello ${e.name}, greetings from Perfect Coaching Classes Nashik Road! Regarding your enquiry for ${e.course}:`);
-                    const waLink = `https://wa.me/91${cleanWaMobile}?text=${waText}`;
-
-                    const statusClass = `status-badge--${e.status.replace(/\s+/g, '')}`;
+                tbody.innerHTML = targetStudents.map(s => {
+                    const existing = existingMap[s.id];
+                    const currentStatus = existing ? existing.status : 'Present';
+                    const currentNotes = existing && existing.notes ? existing.notes : '';
 
                     return `
-                        <tr data-id="${e.id}">
-                            <td><b>#${e.id}</b></td>
-                            <td style="white-space:nowrap; color:var(--muted); font-size:12px;">${dateFormatted}</td>
-                            <td>
-                                <strong style="color:var(--navy); font-size:14px;">${escapeHtml(e.name)}</strong>
-                                <div><span class="source-pill">${escapeHtml(e.source || 'Website')}</span></div>
-                            </td>
-                            <td>
-                                <div style="display:flex; align-items:center; gap:8px;">
-                                    <span style="font-weight:600;">${escapeHtml(e.mobile)}</span>
-                                    <a class="act-icon-btn act-icon-btn--wa" href="${waLink}" target="_blank" title="Chat on WhatsApp">
-                                        💬
-                                    </a>
-                                    <a class="act-icon-btn" href="tel:+91${cleanWaMobile}" title="Call Phone">
-                                        📞
-                                    </a>
-                                </div>
-                                ${e.email ? `<div style="font-size:11px; color:var(--muted); margin-top:3px;">${escapeHtml(e.email)}</div>` : ''}
-                            </td>
-                            <td><strong style="color:var(--ink);">${escapeHtml(e.course)}</strong></td>
-                            <td style="color:var(--muted);">${escapeHtml(e.timing || 'Flexible')}</td>
-                            <td style="max-width:240px;">
-                                ${e.message ? `<div style="font-size:12px; line-height:1.4; color:#334155; margin-bottom:4px;">${escapeHtml(e.message)}</div>` : '<em style="color:#94a3b8; font-size:12px;">No message</em>'}
-                                ${e.counsellor_notes ? `<div style="background:#fffbeb; border-left:3px solid #f59e0b; padding:4px 8px; font-size:11.5px; color:#92400e; border-radius:2px; margin-top:4px;"><strong>Note:</strong> ${escapeHtml(e.counsellor_notes)}</div>` : ''}
-                            </td>
-                            <td>
-                                <select class="select-status" onchange="updateStatus(${e.id}, this.value)">
-                                    <option value="New" ${e.status === 'New' ? 'selected' : ''}>New</option>
-                                    <option value="Contacted" ${e.status === 'Contacted' ? 'selected' : ''}>Contacted</option>
-                                    <option value="Demo Scheduled" ${e.status === 'Demo Scheduled' ? 'selected' : ''}>Demo Scheduled</option>
-                                    <option value="Enrolled" ${e.status === 'Enrolled' ? 'selected' : ''}>Enrolled</option>
-                                    <option value="Closed" ${e.status === 'Closed' ? 'selected' : ''}>Closed</option>
-                                </select>
-                            </td>
-                            <td>
-                                <div class="action-btns">
-                                    <button class="act-icon-btn" onclick="openNotesModal(${e.id}, '${escapeJs(e.name)}', '${escapeJs(e.counsellor_notes || '')}')" title="Edit Counsellor Notes">
-                                        📝
-                                    </button>
-                                    <button class="act-icon-btn act-icon-btn--del" onclick="deleteEnquiry(${e.id}, '${escapeJs(e.name)}')" title="Delete Enquiry">
-                                        🗑️
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                    <tr data-student-id="${s.id}">
+                        <td><span class="dash-roll-badge">${s.roll_no}</span></td>
+                        <td><b>${s.name}</b></td>
+                        <td style="font-size: 12px; color: var(--dash-muted);">${s.course}<br>${s.batch_timing}</td>
+                        <td>
+                            <div style="display: flex; gap: 6px;">
+                                <button type="button" class="dash-btn dash-btn-light att-toggle-btn ${currentStatus === 'Present' ? 'dash-btn-green' : ''}" onclick="setRowAttendance(this, 'Present')">Present</button>
+                                <button type="button" class="dash-btn dash-btn-light att-toggle-btn ${currentStatus === 'Absent' ? 'dash-btn-primary' : ''}" onclick="setRowAttendance(this, 'Absent')">Absent</button>
+                                <button type="button" class="dash-btn dash-btn-light att-toggle-btn ${currentStatus === 'Late' ? 'dash-btn-teal' : ''}" onclick="setRowAttendance(this, 'Late')">Late</button>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="dash-select att-row-notes" placeholder="Note (optional)" value="${currentNotes}" style="width: 100%;">
+                        </td>
+                    </tr>
                     `;
                 }).join('');
             } catch (err) {
-                console.error('Error fetching enquiries:', err);
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="9" style="text-align:center; padding:30px; color:#ef4444;">
-                            ⚠️ Could not connect to backend server. Make sure <code>node server.js</code> is running on port 5000.
-                        </td>
-                    </tr>
-                `;
+                console.error('Error loading attendance checklist:', err);
             }
         }
 
-        // Update Enquiry Status
-        async function updateStatus(id, newStatus) {
+        function setRowAttendance(btn, status) {
+            const row = btn.closest('tr');
+            row.querySelectorAll('.att-toggle-btn').forEach(b => {
+                b.classList.remove('dash-btn-green', 'dash-btn-primary', 'dash-btn-teal');
+            });
+            if (status === 'Present') btn.classList.add('dash-btn-green');
+            else if (status === 'Absent') btn.classList.add('dash-btn-primary');
+            else if (status === 'Late') btn.classList.add('dash-btn-teal');
+        }
+
+        function markAllAttendance(status) {
+            document.querySelectorAll('#attendanceChecklistBody tr').forEach(row => {
+                row.querySelectorAll('.att-toggle-btn').forEach(btn => {
+                    btn.classList.remove('dash-btn-green', 'dash-btn-primary', 'dash-btn-teal');
+                    if (btn.textContent.trim() === status) {
+                        if (status === 'Present') btn.classList.add('dash-btn-green');
+                        else if (status === 'Absent') btn.classList.add('dash-btn-primary');
+                        else if (status === 'Late') btn.classList.add('dash-btn-teal');
+                    }
+                });
+            });
+        }
+
+        async function saveBatchAttendance() {
+            const date = document.getElementById('attendanceDatePicker').value;
+            const batch = document.getElementById('attendanceBatchSelect').value || 'General Batch';
+            const rows = document.querySelectorAll('#attendanceChecklistBody tr[data-student-id]');
+
+            if (rows.length === 0) {
+                showToast('No students to save attendance for.', false);
+                return;
+            }
+
+            const records = [];
+            rows.forEach(row => {
+                const studentId = parseInt(row.getAttribute('data-student-id'));
+                let status = 'Present';
+                if (row.querySelector('.dash-btn-primary')) status = 'Absent';
+                else if (row.querySelector('.dash-btn-teal')) status = 'Late';
+
+                const notes = row.querySelector('.att-row-notes').value.trim();
+                records.push({ student_id: studentId, status, notes });
+            });
+
             try {
-                const res = await fetch(`${API_BASE}/api/enquiries/${id}`, {
+                const res = await fetch('/api/attendance/batch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ date, batch, records })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.message || 'Attendance saved successfully!');
+                    await fetchStats();
+                    await fetchStudents();
+                } else {
+                    showToast(data.error || 'Failed to save attendance.', false);
+                }
+            } catch (err) {
+                showToast('Network error saving attendance.', false);
+            }
+        }
+
+        // =====================================================================
+        // 3. MARKS & TEST RESULTS
+        // =====================================================================
+        async function fetchMarks() {
+            const res = await fetch('/api/tests/results');
+            const data = await res.json();
+            if (data.success) {
+                state.marks = data.results || [];
+                document.getElementById('marksCountBadge').textContent = `${state.marks.length} Scores`;
+                filterMarks();
+            }
+        }
+
+        function filterMarks() {
+            const query = (document.getElementById('marksSearchInput').value || '').toLowerCase();
+            const filtered = state.marks.filter(m => {
+                return !query ||
+                    m.test_name.toLowerCase().includes(query) ||
+                    m.subject.toLowerCase().includes(query) ||
+                    (m.student_name && m.student_name.toLowerCase().includes(query)) ||
+                    (m.roll_no && m.roll_no.toLowerCase().includes(query));
+            });
+            renderMarksTable(filtered);
+        }
+
+        function renderMarksTable(list) {
+            const tbody = document.getElementById('marksTableBody');
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 40px; color: var(--dash-muted);">No test marks found. Click "+ Publish New Test Score" to add.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(m => {
+                const pct = Math.round((m.marks_obtained / m.max_marks) * 100);
+                const pctColor = pct >= 90 ? 'var(--dash-green)' : (pct >= 75 ? 'var(--dash-teal)' : 'var(--dash-orange)');
+                return `
+                <tr>
+                    <td>
+                        <b>${m.test_name}</b>
+                        <div style="font-size: 11.5px; color: var(--dash-muted);">${m.test_date}</div>
+                    </td>
+                    <td>
+                        <span class="dash-roll-badge">${m.roll_no}</span>
+                        <span style="font-weight: 600; margin-left: 6px;">${m.student_name}</span>
+                    </td>
+                    <td><span class="category-tag">${m.subject}</span></td>
+                    <td><b>${m.marks_obtained}</b> / ${m.max_marks}</td>
+                    <td><b style="color: ${pctColor};">${pct}%</b></td>
+                    <td>${m.rank ? `<span class="dash-badge dash-badge--paid">Rank #${m.rank}</span>` : '-'}</td>
+                    <td style="font-size: 12px; color: var(--dash-muted); max-width: 200px;">${m.remarks || 'No remarks'}</td>
+                    <td style="text-align: right;">
+                        <button class="dash-icon-btn delete" onclick="deleteTestMark(${m.id})" title="Delete score">🗑️</button>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        async function handleCreateMarks(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const payload = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch('/api/tests/results', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Test score published to student portal!');
+                    closeModal('addMarksModal');
+                    e.target.reset();
+                    await fetchStats();
+                    await fetchMarks();
+                } else {
+                    showToast(data.error || 'Failed to record marks.', false);
+                }
+            } catch (err) {
+                showToast('Network error publishing score.', false);
+            }
+        }
+
+        async function deleteTestMark(id) {
+            if (!confirm('Are you sure you want to delete this test result?')) return;
+            try {
+                const res = await fetch(`/api/tests/results/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Test record deleted.');
+                    await fetchStats();
+                    await fetchMarks();
+                }
+            } catch (err) {
+                showToast('Failed to delete score.', false);
+            }
+        }
+
+        // =====================================================================
+        // 4. ANNOUNCEMENTS & NOTICES
+        // =====================================================================
+        async function fetchNotices() {
+            const res = await fetch('/api/announcements');
+            const data = await res.json();
+            if (data.success) {
+                state.notices = data.announcements || [];
+                renderNotices(state.notices);
+            }
+        }
+
+        function renderNotices(list) {
+            const container = document.getElementById('noticesCardsGrid');
+            if (list.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--dash-muted); padding: 40px;">No announcements posted yet. Click "+ Broadcast Notice" to add.</p>`;
+                return;
+            }
+            container.innerHTML = list.map(n => `
+                <div class="notice-card">
+                    <div>
+                        <div class="card-top-meta">
+                            <span class="category-tag ${(n.category || '').toLowerCase()}">${n.category || 'General'}</span>
+                            ${n.priority === 'High' ? '<span class="priority-indicator">🔴 HIGH PRIORITY</span>' : '<span style="font-size: 11px; color: var(--dash-muted);">Normal</span>'}
+                        </div>
+                        <h4 style="margin: 0 0 8px; font-size: 15px; color: var(--dash-navy);">${n.title}</h4>
+                        <p style="font-size: 13px; color: var(--dash-muted); line-height: 1.5; margin: 0 0 12px;">${n.content}</p>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--dash-border); padding-top: 10px; font-size: 11.5px; color: var(--dash-muted);">
+                        <span>Target: <b>${n.target_course || 'All Batches'}</b></span>
+                        <button class="dash-icon-btn delete" onclick="deleteNotice(${n.id})" title="Delete Notice">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function handleCreateNotice(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const payload = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch('/api/announcements', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Notice broadcasted to all students!');
+                    closeModal('addNoticeModal');
+                    e.target.reset();
+                    await fetchStats();
+                    await fetchNotices();
+                }
+            } catch (err) {
+                showToast('Failed to post announcement.', false);
+            }
+        }
+
+        async function deleteNotice(id) {
+            if (!confirm('Remove this announcement from student noticeboard?')) return;
+            try {
+                const res = await fetch(`/api/announcements/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Notice deleted.');
+                    await fetchStats();
+                    await fetchNotices();
+                }
+            } catch (err) {
+                showToast('Failed to remove notice.', false);
+            }
+        }
+
+        // =====================================================================
+        // 5. STUDY RESOURCES
+        // =====================================================================
+        async function fetchResources() {
+            const res = await fetch('/api/resources');
+            const data = await res.json();
+            if (data.success) {
+                state.resources = data.resources || [];
+                renderResources(state.resources);
+            }
+        }
+
+        function renderResources(list) {
+            const container = document.getElementById('resourcesCardsGrid');
+            if (list.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--dash-muted); padding: 40px;">No study resources available.</p>`;
+                return;
+            }
+            container.innerHTML = list.map(r => `
+                <div class="resource-card">
+                    <div>
+                        <div class="card-top-meta">
+                            <span class="category-tag">${r.subject}</span>
+                            <span class="dash-badge dash-badge--paid">${r.file_type || 'PDF'}</span>
+                        </div>
+                        <h4 style="margin: 0 0 6px; font-size: 15px; color: var(--dash-navy);">${r.title}</h4>
+                        <div style="font-size: 12px; color: var(--dash-muted); margin-bottom: 12px;">Course: ${r.course}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--dash-border); padding-top: 10px; font-size: 12px;">
+                        <span style="color: var(--dash-muted);">${r.file_size || '2.5 MB'}</span>
+                        <div style="display: flex; gap: 6px;">
+                            <a href="${r.file_url}" target="_blank" class="dash-btn dash-btn-teal" style="padding: 4px 10px; font-size: 11.5px;">Download</a>
+                            <button class="dash-icon-btn delete" onclick="deleteResource(${r.id})" title="Remove">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function handleCreateResource(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const payload = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch('/api/resources', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Study material published!');
+                    closeModal('addResourceModal');
+                    e.target.reset();
+                    await fetchStats();
+                    await fetchResources();
+                }
+            } catch (err) {
+                showToast('Failed to upload material.', false);
+            }
+        }
+
+        async function deleteResource(id) {
+            if (!confirm('Remove this study material?')) return;
+            try {
+                const res = await fetch(`/api/resources/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Resource removed.');
+                    await fetchStats();
+                    await fetchResources();
+                }
+            } catch (err) {
+                showToast('Failed to delete resource.', false);
+            }
+        }
+
+        // =====================================================================
+        // 6. ADMISSION ENQUIRIES WORKFLOW
+        // =====================================================================
+        async function fetchEnquiries() {
+            const res = await fetch('/api/enquiries');
+            const data = await res.json();
+            if (data.success) {
+                state.enquiries = data.enquiries || [];
+                filterEnquiries();
+            }
+        }
+
+        function filterEnquiries() {
+            const query = (document.getElementById('enquirySearchInput').value || '').toLowerCase();
+            const statusFilter = document.getElementById('enquiryStatusFilter').value;
+
+            const filtered = state.enquiries.filter(e => {
+                const matchesQuery = !query ||
+                    e.name.toLowerCase().includes(query) ||
+                    (e.mobile && e.mobile.includes(query)) ||
+                    (e.course && e.course.toLowerCase().includes(query)) ||
+                    (e.message && e.message.toLowerCase().includes(query));
+                const matchesStatus = !statusFilter || e.status === statusFilter;
+                return matchesQuery && matchesStatus;
+            });
+
+            renderEnquiriesTable(filtered);
+        }
+
+        function renderEnquiriesTable(list) {
+            const tbody = document.getElementById('enquiriesTableBody');
+            document.getElementById('enquiryCountBadge').textContent = `${list.length} Inquiries`;
+
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 40px; color: var(--dash-muted);">No admission enquiries found.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(e => {
+                const cleanPhone = (e.mobile || '').replace(/[^0-9]/g, '');
+                const formattedDate = new Date(e.created_at).toLocaleDateString('en-IN', {
+                    day: 'numeric', month: 'short', year: 'numeric'
+                });
+
+                return `
+                <tr>
+                    <td style="font-size: 12px; color: var(--dash-muted); white-space: nowrap;">${formattedDate}</td>
+                    <td>
+                        <b>${e.name}</b>
+                        ${e.email ? `<div style="font-size: 11px; color: var(--dash-muted);">${e.email}</div>` : ''}
+                    </td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span>${e.mobile}</span>
+                            <a href="https://wa.me/91${cleanPhone}?text=Hello%20${encodeURIComponent(e.name)},%20Thank%20you%20for%20contacting%20Perfect%20Coaching%20Classes%20regarding%20admission." target="_blank" class="dash-icon-btn wa" title="WhatsApp Parent">💬</a>
+                            <a href="tel:${cleanPhone}" class="dash-icon-btn" title="Call">📞</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="font-weight: 600; color: var(--dash-navy);">${e.course}</div>
+                        ${e.timing ? `<div style="font-size: 11px; color: var(--dash-muted);">${e.timing}</div>` : ''}
+                    </td>
+                    <td>
+                        <span class="category-tag">${e.source || 'Website'}</span>
+                    </td>
+                    <td>
+                        <select class="dash-select" style="font-size: 12px; font-weight: 700;" onchange="updateEnquiryStatus(${e.id}, this.value)">
+                            <option value="New" ${e.status === 'New' ? 'selected' : ''}>New</option>
+                            <option value="Contacted" ${e.status === 'Contacted' ? 'selected' : ''}>Contacted</option>
+                            <option value="Demo Scheduled" ${e.status === 'Demo Scheduled' ? 'selected' : ''}>Demo Scheduled</option>
+                            <option value="Enrolled" ${e.status === 'Enrolled' ? 'selected' : ''}>Enrolled</option>
+                            <option value="Closed" ${e.status === 'Closed' ? 'selected' : ''}>Closed</option>
+                        </select>
+                    </td>
+                    <td>
+                        <span style="font-size: 12px; color: ${e.counsellor_notes ? 'var(--dash-ink)' : 'var(--dash-muted)'}; cursor: pointer;" onclick="openNotesModal(${e.id}, '${e.name.replace(/'/g, "\\'")}', '${(e.counsellor_notes || '').replace(/'/g, "\\'")}')">
+                            ${e.counsellor_notes ? e.counsellor_notes.substring(0, 30) + '...' : '➕ Add Remarks'}
+                        </span>
+                    </td>
+                    <td style="text-align: right;">
+                        <button class="dash-icon-btn delete" onclick="deleteEnquiry(${e.id})" title="Delete inquiry">🗑️</button>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        async function updateEnquiryStatus(id, newStatus) {
+            try {
+                const res = await fetch(`/api/enquiries/${id}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: newStatus })
                 });
                 const data = await res.json();
                 if (data.success) {
-                    fetchStats();
-                } else {
-                    alert('Error updating status: ' + data.error);
+                    showToast(`Status updated to "${newStatus}"!`);
+                    await fetchStats();
+                    await fetchEnquiries();
                 }
             } catch (err) {
-                alert('Connection error while updating status.');
+                showToast('Failed to update status.', false);
             }
         }
 
-        // Delete Enquiry
-        async function deleteEnquiry(id, name) {
-            if (!confirm(`Are you sure you want to permanently delete enquiry #${id} for ${name}?`)) {
-                return;
-            }
+        function openNotesModal(id, studentName, notes) {
+            state.editingEnquiryId = id;
+            document.getElementById('notesStudentLabel').textContent = `Follow-up remarks for: ${studentName}`;
+            document.getElementById('notesModalTextarea').value = notes || '';
+            openModal('notesModal');
+        }
 
+        async function saveCounsellorNotes() {
+            if (!state.editingEnquiryId) return;
+            const notes = document.getElementById('notesModalTextarea').value;
             try {
-                const res = await fetch(`${API_BASE}/api/enquiries/${id}`, { method: 'DELETE' });
-                const data = await res.json();
-                if (data.success) {
-                    fetchEnquiries();
-                    fetchStats();
-                } else {
-                    alert('Error deleting enquiry: ' + data.error);
-                }
-            } catch (err) {
-                alert('Connection error while deleting enquiry.');
-            }
-        }
-
-        // Counsellor Notes Modal
-        function openNotesModal(id, studentName, existingNotes) {
-            activeEnquiryIdForNotes = id;
-            notesModalTitle.textContent = `Counsellor Notes for ${studentName}`;
-            notesModalText.value = existingNotes;
-            notesModal.classList.add('active');
-            notesModalText.focus();
-        }
-
-        function closeNotesModal() {
-            notesModal.classList.remove('active');
-            activeEnquiryIdForNotes = null;
-        }
-
-        closeNotesModalBtn.addEventListener('click', closeNotesModal);
-        notesModal.addEventListener('click', (e) => {
-            if (e.target === notesModal) closeNotesModal();
-        });
-
-        saveNotesBtn.addEventListener('click', async () => {
-            if (!activeEnquiryIdForNotes) return;
-            const notes = notesModalText.value.trim();
-
-            try {
-                const res = await fetch(`${API_BASE}/api/enquiries/${activeEnquiryIdForNotes}`, {
+                const res = await fetch(`/api/enquiries/${state.editingEnquiryId}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ counsellor_notes: notes })
                 });
                 const data = await res.json();
                 if (data.success) {
-                    closeNotesModal();
-                    fetchEnquiries();
-                } else {
-                    alert('Failed to save notes: ' + data.error);
+                    showToast('Counsellor remarks saved.');
+                    closeModal('notesModal');
+                    await fetchEnquiries();
                 }
             } catch (err) {
-                alert('Connection error while saving notes.');
+                showToast('Failed to save notes.', false);
             }
-        });
-
-        // Filter Pills
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentStatusFilter = btn.getAttribute('data-status');
-                fetchEnquiries();
-            });
-        });
-
-        // Search Input (with debounce)
-        let searchTimer = null;
-        searchInput.addEventListener('input', () => {
-            clearTimeout(searchTimer);
-            searchTimer = setTimeout(() => {
-                searchQuery = searchInput.value;
-                fetchEnquiries();
-            }, 300);
-        });
-
-        // Refresh Button
-        refreshBtn.addEventListener('click', () => {
-            fetchStats();
-            fetchEnquiries();
-        });
-
-        // Export CSV
-        exportCsvBtn.addEventListener('click', () => {
-            window.location.href = `${API_BASE}/api/enquiries/export/csv`;
-        });
-
-        // Helper escaping functions
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
         }
 
-        function escapeJs(str) {
-            if (!str) return '';
-            return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '');
+        async function deleteEnquiry(id) {
+            if (!confirm('Are you sure you want to delete this enquiry?')) return;
+            try {
+                const res = await fetch(`/api/enquiries/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Inquiry removed.');
+                    await fetchStats();
+                    await fetchEnquiries();
+                }
+            } catch (err) {
+                showToast('Failed to delete enquiry.', false);
+            }
         }
 
-        // Initial Load
-        fetchStats();
-        fetchEnquiries();
+        // =====================================================================
+        // CSV EXPORT HELPER
+        // =====================================================================
+        function exportData(type) {
+            if (type === 'students') {
+                window.location.href = '/api/students/export/csv';
+            } else {
+                window.location.href = '/api/enquiries/export/csv';
+            }
+            showToast(`Generating ${type} CSV export...`);
+        }
     </script>
 </body>
 

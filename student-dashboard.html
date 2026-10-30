@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Academic Portal | Perfect Coaching Classes</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboards.css">
+    <style>
+        /* Specific enhancements for Student Portal */
+        .student-hero {
+            background: linear-gradient(135deg, #072538 0%, #0b3954 60%, #15577e 100%);
+            border-radius: var(--dash-radius);
+            color: #ffffff;
+            padding: 26px 30px;
+            margin-bottom: 24px;
+            box-shadow: var(--dash-shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-hero-profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .student-big-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--dash-orange), #ff8c42);
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(217, 107, 39, 0.4);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .student-hero-text h2 {
+            font-size: 24px;
+            margin: 0 0 4px;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .student-hero-text p {
+            font-size: 14px;
+            color: #bfe0f5;
+            margin: 0 0 8px;
+        }
+
+        .student-quick-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .quick-tag {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11.5px;
+            font-weight: 600;
+        }
+
+        /* Timetable Grid */
+        .timetable-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .timetable-day-card {
+            background: #ffffff;
+            border: 1px solid var(--dash-border);
+            border-radius: 8px;
+            padding: 14px;
+            box-shadow: var(--dash-shadow);
+        }
+
+        .timetable-day-card.today {
+            border-color: var(--dash-orange);
+            background: #fffbf8;
+            box-shadow: 0 4px 14px rgba(217, 107, 39, 0.15);
+        }
+
+        .timetable-day-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--dash-navy);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--dash-border);
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .timetable-slot {
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .timetable-slot b {
+            display: block;
+            color: var(--dash-ink);
+        }
+
+        .timetable-slot span {
+            color: var(--dash-muted);
+            font-size: 11px;
+        }
+
+        /* Doubt item card */
+        .doubt-item {
+            background: #ffffff;
+            border: 1px solid var(--dash-border);
+            border-radius: var(--dash-radius);
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: var(--dash-shadow);
+        }
+
+        .doubt-answer-box {
+            background: var(--dash-green-bg);
+            border-left: 3px solid var(--dash-green);
+            padding: 12px 14px;
+            border-radius: 0 6px 6px 0;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+            .timetable-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 580px) {
+            .timetable-grid {
+                grid-template-columns: 1fr;
+            }
+            .student-hero {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body class="dash-body">
+
+    <!-- Top Student Header -->
+    <header class="dash-header">
+        <div class="container">
+            <a href="student-dashboard.html" class="dash-brand">
+                <div class="dash-logo-icon">P</div>
+                <div class="dash-brand-title">
+                    <h1>PERFECT COACHING CLASSES</h1>
+                    <span>Student Academic Portal <span class="dash-brand-badge">STUDENT DESK</span></span>
+                </div>
+            </a>
+
+            <div class="dash-top-actions">
+                <!-- Quick Student Switcher for Demo & Multi-Student Testing -->
+                <div class="dash-user-selector">
+                    <span>👤 Student:</span>
+                    <select id="studentSwitcher" onchange="switchCurrentStudent(this.value)">
+                        <option value="PCC-1001">Pawan Aher (PCC-1001 - Class X)</option>
+                        <option value="PCC-1002">Sneha Patil (PCC-1002 - Class XII)</option>
+                        <option value="PCC-1003">Aditya Deshmukh (PCC-1003 - Class X)</option>
+                        <option value="PCC-1004">Ananya Kulkarni (PCC-1004 - Class XII)</option>
+                        <option value="PCC-1005">Rohit Shinde (PCC-1005 - Class IX)</option>
+                    </select>
+                </div>
+
+                <button class="dash-btn dash-btn-teal" onclick="openModal('idCardModal')">
+                    🪪 ID Card
+                </button>
+                <button class="dash-btn dash-btn-primary" onclick="openModal('askDoubtModal')">
+                    💬 Ask Doubt
+                </button>
+                <a href="admin.html" class="dash-btn dash-btn-outline" target="_blank" title="Open Admin Portal">
+                    ⚙️ Admin Portal
+                </a>
+                <a href="index.html" class="dash-btn dash-btn-outline" target="_blank">
+                    🌐 Website
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Secondary Tab Navigation -->
+    <nav class="dash-nav-bar">
+        <div class="container">
+            <button class="dash-tab-btn active" data-tab="tab-overview" onclick="switchStudentTab('tab-overview')">
+                <span>📊 Dashboard Home</span>
+            </button>
+            <button class="dash-tab-btn" data-tab="tab-scores" onclick="switchStudentTab('tab-scores')">
+                <span>📈 Test Results</span>
+                <span class="dash-tab-badge" id="studentScoresBadge">0</span>
+            </button>
+            <button class="dash-tab-btn" data-tab="tab-attendance" onclick="switchStudentTab('tab-attendance')">
+                <span>📅 Attendance Log</span>
+                <span class="dash-tab-badge" id="studentAttendanceBadge">0%</span>
+            </button>
+            <button class="dash-tab-btn" data-tab="tab-resources" onclick="switchStudentTab('tab-resources')">
+                <span>📚 Study Resources</span>
+                <span class="dash-tab-badge" id="studentResourcesBadge">0</span>
+            </button>
+            <button class="dash-tab-btn" data-tab="tab-notices" onclick="switchStudentTab('tab-notices')">
+                <span>📢 Notice Board</span>
+                <span class="dash-tab-badge" id="studentNoticesBadge">0</span>
+            </button>
+            <button class="dash-tab-btn" data-tab="tab-doubts" onclick="switchStudentTab('tab-doubts')">
+                <span>💬 Doubts & Q&A</span>
+                <span class="dash-tab-badge" id="studentDoubtsBadge">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="dash-main">
+        <div class="container">
+
+            <!-- Student Profile Hero Card -->
+            <div class="student-hero">
+                <div class="student-hero-profile">
+                    <div class="student-big-avatar" id="heroAvatar">PA</div>
+                    <div class="student-hero-text">
+                        <h2>
+                            <span id="heroStudentName">Pawan Aher</span>
+                            <span class="dash-roll-badge" id="heroRollNo" style="font-size: 13px;">PCC-1001</span>
+                        </h2>
+                        <p id="heroCourse">Class X SSC (Maharashtra Board) — Morning Batch (7:00 AM – 10:30 AM)</p>
+                        <div class="student-quick-tags">
+                            <span class="quick-tag" id="heroBatchTime">⏰ Morning Batch</span>
+                            <span class="quick-tag" id="heroAdmissionDate">📅 Admitted: June 2026</span>
+                            <span class="quick-tag" id="heroFeeStatus">💰 Fees Paid (Full)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <button class="dash-btn dash-btn-light" onclick="printReportCard()">
+                        🖨️ Print Scorecard
+                    </button>
+                    <button class="dash-btn dash-btn-primary" onclick="openModal('idCardModal')">
+                        🪪 View Digital ID
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI Stats Grid -->
+            <div class="dash-stats-grid">
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon green">📅</div>
+                    <div class="dash-stat-info">
+                        <b id="kpiAttendancePct">0%</b>
+                        <span>Class Attendance</span>
+                        <div class="dash-stat-subtext" id="kpiAttendanceDays">0 / 0 Days Present</div>
+                    </div>
+                </div>
+
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon teal">🏆</div>
+                    <div class="dash-stat-info">
+                        <b id="kpiLatestScore">--</b>
+                        <span>Latest Test Score</span>
+                        <div class="dash-stat-subtext" id="kpiLatestRank">Rank: --</div>
+                    </div>
+                </div>
+
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon orange">📝</div>
+                    <div class="dash-stat-info">
+                        <b id="kpiTotalTests">0</b>
+                        <span>Tests Completed</span>
+                        <div class="dash-stat-subtext" id="kpiAvgScore">Avg: 0%</div>
+                    </div>
+                </div>
+
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon purple">💰</div>
+                    <div class="dash-stat-info">
+                        <b id="kpiFeeStatus">Paid</b>
+                        <span>Tuition Fee Status</span>
+                        <div class="dash-stat-subtext" id="kpiFeeAmount">₹35,000 / ₹35,000</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================= -->
+            <!-- TAB 1: OVERVIEW & WEEKLY TIMETABLE -->
+            <!-- ============================================================= -->
+            <section id="tab-overview" class="student-tab-content">
+
+                <!-- Alert Notice Banner -->
+                <div id="urgentNoticeBanner" style="display: none; background: #fff3cd; border-left: 4px solid var(--dash-orange); padding: 14px 18px; border-radius: 6px; margin-bottom: 24px; font-size: 13.5px; color: #856404;">
+                    <!-- Injected via JS -->
+                </div>
+
+                <!-- Weekly Batch Timetable -->
+                <div class="dash-table-card">
+                    <div class="dash-table-header">
+                        <h3>📅 Weekly Class Schedule & Lecture Timings</h3>
+                        <span class="dash-tab-badge">Classroom: Hall A (1st Floor)</span>
+                    </div>
+
+                    <div style="padding: 20px;">
+                        <div class="timetable-grid">
+                            <div class="timetable-day-card" id="day-mon">
+                                <div class="timetable-day-title">Mon <span>Day 1</span></div>
+                                <div class="timetable-slot">
+                                    <b>7:00 – 8:45 AM</b>
+                                    <span>Mathematics (Algebra) — Director Sir</span>
+                                </div>
+                                <div class="timetable-slot">
+                                    <b>9:00 – 10:30 AM</b>
+                                    <span>Science I (Physics Numericals)</span>
+                                </div>
+                            </div>
+
+                            <div class="timetable-day-card" id="day-tue">
+                                <div class="timetable-day-title">Tue <span>Day 2</span></div>
+                                <div class="timetable-slot">
+                                    <b>7:00 – 8:45 AM</b>
+                                    <span>Mathematics (Geometry Proofs)</span>
+                                </div>
+                                <div class="timetable-slot">
+                                    <b>9:00 – 10:30 AM</b>
+                                    <span>Chemistry & Equation Balancing</span>
+                                </div>
+                            </div>
+
+                            <div class="timetable-day-card" id="day-wed">
+                                <div class="timetable-day-title">Wed <span>Day 3</span></div>
+                                <div class="timetable-slot">
+                                    <b>7:00 – 8:45 AM</b>
+                                    <span>Mathematics (Daily Practice Problem)</span>
+                                </div>
+                                <div class="timetable-slot">
+                                    <b>9:00 – 10:30 AM</b>
+                                    <span>Biology & Life Processes Diagrams</span>
+                                </div>
+                            </div>
+
+                            <div class="timetable-day-card" id="day-thu">
+                                <div class="timetable-day-title">Thu <span>Day 4</span></div>
+                                <div class="timetable-slot">
+                                    <b>7:00 – 8:45 AM</b>
+                                    <span>English Grammar & Essay Writing</span>
+                                </div>
+                                <div class="timetable-slot">
+                                    <b>9:00 – 10:30 AM</b>
+                                    <span>Science II (Environmental Science)</span>
+                                </div>
+                            </div>
+
+                            <div class="timetable-day-card" id="day-fri">
+                                <div class="timetable-day-title">Fri <span>Day 5</span></div>
+                                <div class="timetable-slot">
+                                    <b>7:00 – 8:45 AM</b>
+                                    <span>Social Studies / History & Civics</span>
+                                </div>
+                                <div class="timetable-slot">
+                                    <b>9:00 – 10:30 AM</b>
+                                    <span>Geography & Map Work Session</span>
+                                </div>
+                            </div>
+
+                            <div class="timetable-day-card today" id="day-sat">
+                                <div class="timetable-day-title">Sat <span style="color: var(--dash-orange);">Weekend Test</span></div>
+                                <div class="timetable-slot">
+                                    <b>7:30 – 9:00 AM</b>
+                                    <span>Weekly Revision Test</span>
+                                </div>
+                                <div class="timetable-slot">
+                                    <b>9:15 – 10:30 AM</b>
+                                    <span>One-on-One Doubt Clearing</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Test Highlights & Recent Doubts -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="dash-table-card">
+                        <div class="dash-table-header">
+                            <h3>🏆 Latest Test Performance</h3>
+                            <button class="dash-btn dash-btn-light" style="padding: 4px 10px; font-size: 12px;" onclick="switchStudentTab('tab-scores')">View All</button>
+                        </div>
+                        <div style="padding: 20px;" id="overviewTestHighlights">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+
+                    <div class="dash-table-card">
+                        <div class="dash-table-header">
+                            <h3>📢 Latest Notices & Updates</h3>
+                            <button class="dash-btn dash-btn-light" style="padding: 4px 10px; font-size: 12px;" onclick="switchStudentTab('tab-notices')">View All</button>
+                        </div>
+                        <div style="padding: 20px;" id="overviewNoticeHighlights">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- TAB 2: TEST SCORES & PERFORMANCE REPORT -->
+            <!-- ============================================================= -->
+            <section id="tab-scores" class="student-tab-content" style="display: none;">
+                <div class="dash-control-bar">
+                    <p style="margin: 0; font-size: 13.5px; color: var(--dash-muted);">
+                        Official report of all weekly tests, unit tests, and prelim board mock examinations.
+                    </p>
+                    <button class="dash-btn dash-btn-primary" onclick="printReportCard()">
+                        🖨️ Print Report Card
+                    </button>
+                </div>
+
+                <div class="dash-table-card" id="printableReportSection">
+                    <div class="dash-table-header">
+                        <h3>📈 Official Academic Scorecard</h3>
+                        <span id="scoresSummaryBadge" class="dash-tab-badge">0 Tests Recorded</span>
+                    </div>
+
+                    <div class="dash-table-responsive">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>Test Exam Name</th>
+                                    <th>Subject</th>
+                                    <th>Date</th>
+                                    <th>Marks Obtained</th>
+                                    <th>Percentage</th>
+                                    <th>Batch Rank</th>
+                                    <th>Teacher Feedback</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentScoresTableBody">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 40px; color: var(--dash-muted);">Loading test results...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- TAB 3: ATTENDANCE LOG -->
+            <!-- ============================================================= -->
+            <section id="tab-attendance" class="student-tab-content" style="display: none;">
+                <div class="dash-control-bar">
+                    <div style="font-size: 13.5px;">
+                        <span>Minimum Board Exam Attendance Requirement: <b>75%</b> | Your Status: </span>
+                        <span id="attendanceRequirementStatus" class="dash-badge dash-badge--paid">Eligible</span>
+                    </div>
+                </div>
+
+                <div class="dash-table-card">
+                    <div class="dash-table-header">
+                        <h3>📅 Classroom Attendance Record Log</h3>
+                        <span id="attendanceCountBadge" class="dash-tab-badge">0 Days Logged</span>
+                    </div>
+
+                    <div class="dash-table-responsive">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Day</th>
+                                    <th>Batch Session</th>
+                                    <th>Presence Status</th>
+                                    <th>Remarks / Note</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentAttendanceTableBody">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 40px; color: var(--dash-muted);">Loading attendance history...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- TAB 4: STUDY RESOURCES -->
+            <!-- ============================================================= -->
+            <section id="tab-resources" class="student-tab-content" style="display: none;">
+                <div class="dash-control-bar">
+                    <p style="margin: 0; font-size: 13.5px; color: var(--dash-muted);">
+                        Downloadable PDF notes, formula sheets, diagrams, and question banks curated for your course.
+                    </p>
+                    <a href="study-material.html" target="_blank" class="dash-btn dash-btn-teal">
+                        🌐 Open Study Material Library
+                    </a>
+                </div>
+
+                <div class="dash-cards-grid" id="studentResourcesGrid">
+                    <!-- Dynamic study material cards -->
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- TAB 5: NOTICE BOARD -->
+            <!-- ============================================================= -->
+            <section id="tab-notices" class="student-tab-content" style="display: none;">
+                <div class="dash-cards-grid" id="studentNoticesGrid">
+                    <!-- Dynamic announcements -->
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- TAB 6: DOUBTS & Q&A -->
+            <!-- ============================================================= -->
+            <section id="tab-doubts" class="student-tab-content" style="display: none;">
+                <div class="dash-control-bar">
+                    <p style="margin: 0; font-size: 13.5px; color: var(--dash-muted);">
+                        Stuck on a tricky problem? Submit your question and Director Sir or faculty will post a solution!
+                    </p>
+                    <button class="dash-btn dash-btn-primary" onclick="openModal('askDoubtModal')">
+                        ➕ Submit a Doubt
+                    </button>
+                </div>
+
+                <div id="studentDoubtsContainer">
+                    <!-- Dynamic doubt cards -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ================================================================= -->
+    <!-- MODAL: DIGITAL STUDENT ID CARD -->
+    <!-- ================================================================= -->
+    <div id="idCardModal" class="dash-modal-overlay">
+        <div class="dash-modal-box" style="max-width: 480px; text-align: center;">
+            <div class="dash-modal-header">
+                <h3>🪪 Student Digital Identity Card</h3>
+                <button class="dash-modal-close" onclick="closeModal('idCardModal')">&times;</button>
+            </div>
+
+            <div class="student-id-card" id="printableIdCard">
+                <div class="id-card-header">
+                    <div style="text-align: left;">
+                        <b style="font-size: 14px; letter-spacing: 0.5px; font-family: 'Outfit';">PERFECT COACHING CLASSES</b>
+                        <span style="font-size: 10.5px; color: #aed5ed; display: block;">Nashik Road | Estd. 2012</span>
+                    </div>
+                    <span class="dash-badge dash-badge--paid" style="font-size: 10px;">VALID 2026-27</span>
+                </div>
+
+                <div class="id-card-body">
+                    <div class="id-photo" id="idCardPhoto">
+                        🎓
+                    </div>
+                    <div class="id-details" style="text-align: left;">
+                        <b id="idCardRoll">PCC-1001</b>
+                        <span id="idCardName" style="font-size: 16px; font-weight: 700;">Pawan Aher</span>
+                        <div style="font-size: 12px; color: #e1f0fa;" id="idCardCourse">Class X SSC Board</div>
+                        <div style="font-size: 11px; color: #aed5ed;" id="idCardBatch">Morning Batch</div>
+                        <div style="font-size: 11px; color: #ffd299; margin-top: 4px;" id="idCardEmergency">Emergency: 9822114455</div>
+                    </div>
+                </div>
+
+                <div class="id-barcode">
+                    <span>Authorized Student Hall Pass</span>
+                    <span style="font-family: monospace; letter-spacing: 2px;">|||||| |||| |||||||</span>
+                </div>
+            </div>
+
+            <div class="dash-modal-actions" style="justify-content: center; margin-top: 20px;">
+                <button type="button" class="dash-btn dash-btn-light" onclick="closeModal('idCardModal')">Close</button>
+                <button type="button" class="dash-btn dash-btn-primary" onclick="window.print()">🖨️ Print ID Card</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- MODAL: ASK A DOUBT -->
+    <!-- ================================================================= -->
+    <div id="askDoubtModal" class="dash-modal-overlay">
+        <div class="dash-modal-box">
+            <div class="dash-modal-header">
+                <h3>💬 Submit Doubt / Question to Faculty</h3>
+                <button class="dash-modal-close" onclick="closeModal('askDoubtModal')">&times;</button>
+            </div>
+            <form id="askDoubtForm" onsubmit="handleAskDoubt(event)">
+                <div class="dash-form-group full">
+                    <label>Subject *</label>
+                    <select name="subject" required>
+                        <option value="Mathematics">Mathematics (Algebra / Geometry)</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology / Science II</option>
+                        <option value="English">English / Grammar</option>
+                        <option value="General">Other / Exam Strategy</option>
+                    </select>
+                </div>
+
+                <div class="dash-form-group full">
+                    <label>Describe your Doubt / Question Details *</label>
+                    <textarea name="question" rows="4" placeholder="Enter problem details, exercise/chapter name, or step you're stuck on..." required></textarea>
+                </div>
+
+                <div class="dash-modal-actions">
+                    <button type="button" class="dash-btn dash-btn-light" onclick="closeModal('askDoubtModal')">Cancel</button>
+                    <button type="submit" class="dash-btn dash-btn-primary">Submit to Teacher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="dashToast" class="dash-toast">
+        <span id="toastIcon">✅</span>
+        <span id="toastMsg">Action completed successfully.</span>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- CLIENT JAVASCRIPT LOGIC -->
+    <!-- ================================================================= -->
+    <script>
+        // Active student session
+        let currentRoll = 'PCC-1001';
+        let currentStudentData = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check URL query param ?roll= or ?student=
+            const urlParams = new URLSearchParams(window.location.search);
+            const rollParam = urlParams.get('roll') || urlParams.get('student');
+            if (rollParam) {
+                currentRoll = rollParam.trim();
+                const switcher = document.getElementById('studentSwitcher');
+                if (switcher) switcher.value = currentRoll;
+            }
+
+            loadStudentData(currentRoll);
+        });
+
+        function switchCurrentStudent(rollNo) {
+            currentRoll = rollNo;
+            loadStudentData(rollNo);
+        }
+
+        function switchStudentTab(tabId) {
+            document.querySelectorAll('.dash-tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabId);
+            });
+            document.querySelectorAll('.student-tab-content').forEach(section => {
+                section.style.display = (section.id === tabId) ? 'block' : 'none';
+            });
+        }
+
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('dashToast');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMsg');
+            icon.textContent = isSuccess ? '✅' : '⚠️';
+            msg.textContent = message;
+            toast.className = `dash-toast ${isSuccess ? 'success' : 'error'} show`;
+            setTimeout(() => { toast.classList.remove('show'); }, 3500);
+        }
+
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('active');
+        }
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('active');
+        }
+
+        async function loadStudentData(identifier) {
+            try {
+                const res = await fetch(`/api/student/portal/${encodeURIComponent(identifier)}`);
+                const data = await res.json();
+                if (!data.success) {
+                    showToast(data.error || 'Student not found.', false);
+                    return;
+                }
+
+                currentStudentData = data;
+                renderStudentProfile(data.student);
+                renderStudentStats(data);
+                renderOverview(data);
+                renderScores(data.tests || []);
+                renderAttendance(data.attendance || [], data.student);
+                renderResources(data.resources || []);
+                renderNotices(data.announcements || []);
+                renderDoubts(data.doubts || []);
+
+            } catch (err) {
+                console.error('Error loading student portal:', err);
+                showToast('Failed to connect to student server.', false);
+            }
+        }
+
+        function renderStudentProfile(s) {
+            const initials = s.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById('heroAvatar').textContent = initials;
+            document.getElementById('heroStudentName').textContent = s.name;
+            document.getElementById('heroRollNo').textContent = s.roll_no;
+            document.getElementById('heroCourse').textContent = `${s.course} — ${s.batch_timing}`;
+            document.getElementById('heroBatchTime').textContent = `⏰ ${s.batch_timing}`;
+            document.getElementById('heroAdmissionDate').textContent = `📅 Admitted: ${s.admission_date || '2026'}`;
+            document.getElementById('heroFeeStatus').textContent = `💰 Fee Status: ${s.fee_status}`;
+
+            // Populate ID Card modal
+            document.getElementById('idCardPhoto').textContent = initials;
+            document.getElementById('idCardName').textContent = s.name;
+            document.getElementById('idCardRoll').textContent = s.roll_no;
+            document.getElementById('idCardCourse').textContent = s.course;
+            document.getElementById('idCardBatch').textContent = s.batch_timing;
+            document.getElementById('idCardEmergency').textContent = `Emergency Contact: ${s.parent_mobile || s.mobile}`;
+        }
+
+        function renderStudentStats(data) {
+            const s = data.student;
+            const tests = data.tests || [];
+            const att = data.attendance || [];
+
+            // Attendance KPI
+            const pct = s.computedAttendancePct || s.attendance_pct || 90;
+            document.getElementById('kpiAttendancePct').textContent = `${pct}%`;
+            document.getElementById('studentAttendanceBadge').textContent = `${pct}%`;
+            document.getElementById('kpiAttendanceDays').textContent = `${s.totalClassesAttended || 0} / ${s.totalClassesConducted || 0} Days Present`;
+
+            // Tests KPI
+            document.getElementById('kpiTotalTests').textContent = tests.length;
+            document.getElementById('studentScoresBadge').textContent = tests.length;
+
+            if (tests.length > 0) {
+                const latest = tests[0];
+                const pctLatest = Math.round((latest.marks_obtained / latest.max_marks) * 100);
+                document.getElementById('kpiLatestScore').textContent = `${pctLatest}%`;
+                document.getElementById('kpiLatestRank').textContent = latest.rank ? `Rank #${latest.rank} in Batch` : `${latest.subject}`;
+
+                const avgPct = Math.round(tests.reduce((acc, t) => acc + (t.marks_obtained / t.max_marks) * 100, 0) / tests.length);
+                document.getElementById('kpiAvgScore').textContent = `Avg Score: ${avgPct}%`;
+            } else {
+                document.getElementById('kpiLatestScore').textContent = '--';
+                document.getElementById('kpiLatestRank').textContent = 'No tests yet';
+                document.getElementById('kpiAvgScore').textContent = 'Avg: --';
+            }
+
+            // Fee KPI
+            document.getElementById('kpiFeeStatus').textContent = s.fee_status;
+            document.getElementById('kpiFeeAmount').textContent = `₹${(s.paid_fee || 0).toLocaleString('en-IN')} / ₹${(s.total_fee || 0).toLocaleString('en-IN')}`;
+        }
+
+        function renderOverview(data) {
+            const tests = data.tests || [];
+            const notices = data.announcements || [];
+
+            // Urgent notice alert banner
+            const highNotice = notices.find(n => n.priority === 'High');
+            const banner = document.getElementById('urgentNoticeBanner');
+            if (highNotice) {
+                banner.style.display = 'block';
+                banner.innerHTML = `<b>🔔 IMPORTANT NOTICE: ${highNotice.title}</b> — ${highNotice.content}`;
+            } else {
+                banner.style.display = 'none';
+            }
+
+            // Test Highlights Card
+            const testContainer = document.getElementById('overviewTestHighlights');
+            if (tests.length === 0) {
+                testContainer.innerHTML = '<p style="color: var(--dash-muted); margin: 0;">No tests recorded yet.</p>';
+            } else {
+                testContainer.innerHTML = tests.slice(0, 3).map(t => {
+                    const pct = Math.round((t.marks_obtained / t.max_marks) * 100);
+                    return `
+                    <div style="border-bottom: 1px solid var(--dash-border); padding-bottom: 10px; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <b style="font-size: 13.5px; color: var(--dash-navy);">${t.test_name}</b>
+                            <span class="dash-badge dash-badge--paid">${pct}%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--dash-muted);">
+                            <span>Subject: <b>${t.subject}</b></span>
+                            <span>Score: <b>${t.marks_obtained}</b> / ${t.max_marks} ${t.rank ? `(Rank #${t.rank})` : ''}</span>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+            }
+
+            // Notice Highlights Card
+            const noticeContainer = document.getElementById('overviewNoticeHighlights');
+            if (notices.length === 0) {
+                noticeContainer.innerHTML = '<p style="color: var(--dash-muted); margin: 0;">No announcements posted.</p>';
+            } else {
+                noticeContainer.innerHTML = notices.slice(0, 3).map(n => `
+                    <div style="border-bottom: 1px solid var(--dash-border); padding-bottom: 10px; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+                            <b style="font-size: 13.5px; color: var(--dash-navy);">${n.title}</b>
+                            <span class="category-tag ${(n.category||'').toLowerCase()}">${n.category}</span>
+                        </div>
+                        <p style="font-size: 12.5px; color: var(--dash-muted); margin: 0; line-height: 1.4;">${n.content.substring(0, 95)}...</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function renderScores(tests) {
+            const tbody = document.getElementById('studentScoresTableBody');
+            document.getElementById('scoresSummaryBadge').textContent = `${tests.length} Tests Recorded`;
+
+            if (tests.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 40px; color: var(--dash-muted);">No test results recorded yet.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = tests.map(t => {
+                const pct = Math.round((t.marks_obtained / t.max_marks) * 100);
+                const pctColor = pct >= 90 ? 'var(--dash-green)' : (pct >= 75 ? 'var(--dash-teal)' : 'var(--dash-orange)');
+                return `
+                <tr>
+                    <td><b>${t.test_name}</b></td>
+                    <td><span class="category-tag">${t.subject}</span></td>
+                    <td style="font-size: 12px; color: var(--dash-muted);">${t.test_date}</td>
+                    <td><b style="font-size: 14px;">${t.marks_obtained}</b> / ${t.max_marks}</td>
+                    <td><b style="color: ${pctColor}; font-size: 14px;">${pct}%</b></td>
+                    <td>${t.rank ? `<span class="dash-badge dash-badge--paid">Rank #${t.rank}</span>` : '-'}</td>
+                    <td style="font-size: 12.5px; color: var(--dash-muted);">${t.remarks || 'Very good effort.'}</td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function renderAttendance(attendanceList, student) {
+            const tbody = document.getElementById('studentAttendanceTableBody');
+            document.getElementById('attendanceCountBadge').textContent = `${attendanceList.length} Sessions Logged`;
+
+            const pct = student.computedAttendancePct || student.attendance_pct || 90;
+            const reqStatus = document.getElementById('attendanceRequirementStatus');
+            if (pct >= 75) {
+                reqStatus.textContent = 'Eligible for Board Exams (Above 75%)';
+                reqStatus.className = 'dash-badge dash-badge--paid';
+            } else {
+                reqStatus.textContent = 'Warning: Attendance Below 75%';
+                reqStatus.className = 'dash-badge dash-badge--pending';
+            }
+
+            if (attendanceList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 40px; color: var(--dash-muted);">No attendance logged yet.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = attendanceList.map(a => {
+                const dateObj = new Date(a.date);
+                const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
+                const statusBadge = a.status === 'Present' ? 'dash-badge--present' : (a.status === 'Late' ? 'dash-badge--late' : 'dash-badge--absent');
+
+                return `
+                <tr>
+                    <td><b>${a.date}</b></td>
+                    <td style="color: var(--dash-muted);">${dayName}</td>
+                    <td>${a.batch || 'Classroom Batch'}</td>
+                    <td><span class="dash-badge ${statusBadge}">${a.status}</span></td>
+                    <td style="font-size: 12px; color: var(--dash-muted);">${a.notes || '—'}</td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function renderResources(resources) {
+            document.getElementById('studentResourcesBadge').textContent = resources.length;
+            const container = document.getElementById('studentResourcesGrid');
+
+            if (resources.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--dash-muted); padding: 40px;">No study resources available.</p>`;
+                return;
+            }
+
+            container.innerHTML = resources.map(r => `
+                <div class="resource-card">
+                    <div>
+                        <div class="card-top-meta">
+                            <span class="category-tag">${r.subject}</span>
+                            <span class="dash-badge dash-badge--paid">${r.file_type || 'PDF'}</span>
+                        </div>
+                        <h4 style="margin: 0 0 6px; font-size: 15px; color: var(--dash-navy);">${r.title}</h4>
+                        <div style="font-size: 12px; color: var(--dash-muted); margin-bottom: 12px;">Course: ${r.course}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--dash-border); padding-top: 10px; font-size: 12px;">
+                        <span style="color: var(--dash-muted);">${r.file_size || '3.0 MB'}</span>
+                        <a href="${r.file_url}" target="_blank" class="dash-btn dash-btn-teal" style="padding: 5px 12px; font-size: 12px;">
+                            📥 Download
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderNotices(notices) {
+            document.getElementById('studentNoticesBadge').textContent = notices.length;
+            const container = document.getElementById('studentNoticesGrid');
+
+            if (notices.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--dash-muted); padding: 40px;">No notices published.</p>`;
+                return;
+            }
+
+            container.innerHTML = notices.map(n => `
+                <div class="notice-card">
+                    <div>
+                        <div class="card-top-meta">
+                            <span class="category-tag ${(n.category||'').toLowerCase()}">${n.category || 'General'}</span>
+                            ${n.priority === 'High' ? '<span class="priority-indicator">🔴 HIGH PRIORITY</span>' : ''}
+                        </div>
+                        <h4 style="margin: 0 0 8px; font-size: 15px; color: var(--dash-navy);">${n.title}</h4>
+                        <p style="font-size: 13px; color: var(--dash-muted); line-height: 1.5; margin: 0 0 12px;">${n.content}</p>
+                    </div>
+                    <div style="border-top: 1px solid var(--dash-border); padding-top: 8px; font-size: 11.5px; color: var(--dash-muted);">
+                        Audience: <b>${n.target_course || 'All Batches'}</b>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDoubts(doubts) {
+            document.getElementById('studentDoubtsBadge').textContent = doubts.length;
+            const container = document.getElementById('studentDoubtsContainer');
+
+            if (doubts.length === 0) {
+                container.innerHTML = `
+                <div class="dash-table-card" style="text-align: center; padding: 40px; color: var(--dash-muted);">
+                    <p style="margin: 0 0 12px;">You haven't asked any doubts yet.</p>
+                    <button class="dash-btn dash-btn-primary" onclick="openModal('askDoubtModal')">💬 Ask your first question</button>
+                </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = doubts.map(d => `
+                <div class="doubt-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span class="category-tag">${d.subject}</span>
+                        <span class="dash-badge ${d.status === 'Answered' ? 'dash-badge--paid' : 'dash-badge--pending'}">${d.status}</span>
+                    </div>
+                    <h4 style="margin: 0 0 6px; font-size: 15px; color: var(--dash-navy);">${d.question}</h4>
+                    <span style="font-size: 11px; color: var(--dash-muted);">Submitted: ${new Date(d.created_at).toLocaleDateString('en-IN')}</span>
+
+                    ${d.status === 'Answered' ? `
+                    <div class="doubt-answer-box">
+                        <b>👨‍🏫 Teacher's Solution (${d.answered_by || 'Director Sir'}):</b>
+                        <p style="margin: 4px 0 0; color: var(--dash-ink);">${d.answer}</p>
+                    </div>
+                    ` : `
+                    <div style="font-size: 12px; color: var(--dash-orange); margin-top: 8px; font-weight: 600;">
+                        ⏳ Faculty review in progress... Solution will appear here.
+                    </div>
+                    `}
+                </div>
+            `).join('');
+        }
+
+        async function handleAskDoubt(e) {
+            e.preventDefault();
+            if (!currentStudentData || !currentStudentData.student) {
+                showToast('Please select an active student.', false);
+                return;
+            }
+
+            const formData = new FormData(e.target);
+            const payload = {
+                student_id: currentStudentData.student.id,
+                student_name: currentStudentData.student.name,
+                subject: formData.get('subject'),
+                question: formData.get('question')
+            };
+
+            try {
+                const res = await fetch('/api/doubts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Doubt submitted to faculty! Teacher will answer shortly.');
+                    closeModal('askDoubtModal');
+                    e.target.reset();
+                    await loadStudentData(currentRoll);
+                    switchStudentTab('tab-doubts');
+                }
+            } catch (err) {
+                showToast('Failed to submit doubt.', false);
+            }
+        }
+
+        function printReportCard() {
+            window.print();
+        }
+    </script>
+</body>
+
+</html>
