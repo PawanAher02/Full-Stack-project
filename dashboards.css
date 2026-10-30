@@ -960,3 +960,109 @@ table.dash-table tr:hover td {
     max-width: 100%;
   }
 }
+
+/* ==========================================================================
+   ADMIN LOGIN GATEWAY STYLES
+   ========================================================================== */
+.admin-login-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: radial-gradient(circle at 50% 20%, #0d4668 0%, #062234 60%, #02111c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.admin-login-screen.hidden {
+  display: none !important;
+}
+
+.admin-login-box {
+  background: #ffffff;
+  border-radius: 14px;
+  max-width: 440px;
+  width: 100%;
+  padding: 36px 32px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  position: relative;
+  animation: loginAppear 0.35s ease-out;
+}
+
+@keyframes loginAppear {
+  from { opacity: 0; transform: translateY(-20px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.admin-login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.admin-login-logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--dash-orange), #ff7828);
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(217, 107, 39, 0.4);
+}
+
+.admin-login-brand h2 {
+  font-size: 20px;
+  margin: 0;
+  color: var(--dash-navy);
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.admin-login-brand span {
+  font-size: 13px;
+  color: var(--dash-muted);
+}
+
+.admin-login-alert {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  display: none;
+  text-align: left;
+}
+
+.admin-login-demo-chip {
+  background: #f0f7fb;
+  border: 1px solid #cde4f2;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--dash-navy);
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.admin-login-demo-chip code {
+  background: #e2eff7;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  color: var(--dash-orange);
+}

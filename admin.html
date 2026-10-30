@@ -7,9 +7,69 @@
     <title>Admin & Academic Management Dashboard | Perfect Coaching Classes</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="dashboards.css">
+    <script>
+        // Synchronous auth check before page render
+        (function() {
+            var token = localStorage.getItem('pcc_admin_token');
+            if (!token) {
+                window.location.replace('login.html');
+            }
+        })();
+    </script>
 </head>
 
 <body class="dash-body">
+
+    <!-- ================================================================= -->
+    <!-- SECURE ADMIN LOGIN SCREEN OVERLAY -->
+    <!-- ================================================================= -->
+    <div id="adminLoginScreen" class="admin-login-screen">
+        <div class="admin-login-box">
+            <div class="admin-login-brand">
+                <div class="admin-login-logo">P</div>
+                <h2>PERFECT COACHING CLASSES</h2>
+                <span>Director & Admin Management Portal</span>
+            </div>
+
+            <div id="loginErrorAlert" class="admin-login-alert">
+                ⚠️ Invalid username or password. Please try again.
+            </div>
+
+            <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+                <div class="dash-form-group" style="text-align: left; margin-bottom: 16px;">
+                    <label style="font-weight: 700; color: var(--dash-navy);">Admin Username / Email</label>
+                    <input type="text" id="loginUsername" placeholder="e.g. admin" required autocomplete="username" style="padding: 12px; font-size: 14px;">
+                </div>
+
+                <div class="dash-form-group" style="text-align: left; margin-bottom: 20px;">
+                    <label style="font-weight: 700; color: var(--dash-navy); display: flex; justify-content: space-between;">
+                        <span>Password</span>
+                        <a href="javascript:void(0)" onclick="togglePasswordVisibility()" style="font-size: 11.5px; color: var(--dash-orange); text-decoration: none;">Show Password</a>
+                    </label>
+                    <div style="position: relative;">
+                        <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password" style="padding: 12px; font-size: 14px; width: 100%;">
+                    </div>
+                </div>
+
+                <button type="submit" id="loginSubmitBtn" class="dash-btn dash-btn-primary" style="width: 100%; justify-content: center; padding: 13px; font-size: 14.5px; border-radius: 8px;">
+                    🔐 Login to Admin Portal
+                </button>
+
+                <div class="admin-login-demo-chip">
+                    <div>
+                        <b>Default Credentials:</b><br>
+                        User: <code>admin</code> | Pass: <code>admin123</code>
+                    </div>
+                    <button type="button" class="dash-btn dash-btn-light" style="padding: 4px 10px; font-size: 11.5px;" onclick="fillDemoCredentials()">
+                        Autofill
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD APPLICATION WRAPPER (Hidden until authenticated) -->
+    <div id="adminAppContent" style="display: none;">
 
     <!-- Top Admin Header -->
     <header class="dash-header">
@@ -23,15 +83,19 @@
             </a>
 
             <div class="dash-top-actions">
+                <div class="dash-user-selector" style="background: rgba(255, 255, 255, 0.18);">
+                    <span>👤</span>
+                    <b id="activeAdminLabel">Director Sir</b>
+                </div>
+                <button class="dash-btn dash-btn-outline" onclick="handleAdminLogout()" title="Logout of Admin Portal" style="border-color: rgba(239, 68, 68, 0.4); color: #fca5a5;">
+                    🚪 Logout
+                </button>
                 <button class="dash-btn dash-btn-primary" onclick="openModal('addStudentModal')">
                     ➕ New Student
                 </button>
                 <button class="dash-btn dash-btn-teal" onclick="openModal('addMarksModal')">
                     📝 Enter Marks
                 </button>
-                <a href="student-dashboard.html" class="dash-btn dash-btn-outline" target="_blank" title="Preview Student Portal">
-                    🎓 Student Portal
-                </a>
                 <a href="index.html" class="dash-btn dash-btn-outline" target="_blank">
                     🌐 Website
                 </a>
@@ -130,12 +194,12 @@
                     </div>
                 </div>
 
-                <div class="dash-stat-card">
+                <div class="dash-stat-card" onclick="switchTab('tab-enquiries')" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'" title="Click to view all Admission Leads">
                     <div class="dash-stat-icon purple">📥</div>
                     <div class="dash-stat-info">
                         <b id="statNewLeads">0</b>
                         <span>Admission Enquiries</span>
-                        <div class="dash-stat-subtext" id="statEnrolledLeads">0 Confirmed Admissions</div>
+                        <div class="dash-stat-subtext" id="statEnrolledLeads">0 Confirmed &bull; <span style="color:var(--dash-orange); font-weight:700;">View Leads &rarr;</span></div>
                     </div>
                 </div>
             </div>
@@ -144,6 +208,21 @@
             <!-- TAB 1: STUDENTS SECTION (Directory & Profiles) -->
             <!-- ============================================================= -->
             <section id="tab-students" class="dash-tab-content">
+
+                <!-- Real-Time Admission Inquiries Quick Alert Banner -->
+                <div id="newLeadsAlertBanner" style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 1.5px solid #fed7aa; border-radius: 10px; padding: 12px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; box-shadow: 0 2px 8px rgba(217, 107, 39, 0.08);">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 22px;">📥</span>
+                        <div>
+                            <b style="color: #9a3412; font-size: 14px;" id="leadsAlertTitle">Admission Enquiries Received</b>
+                            <div style="font-size: 12.5px; color: #7c2d12;" id="leadsAlertSubtitle">Connecting with server...</div>
+                        </div>
+                    </div>
+                    <button class="dash-btn dash-btn-primary" style="padding: 6px 14px; font-size: 12px; white-space: nowrap;" onclick="switchTab('tab-enquiries')">
+                        View All Inquiries &rarr;
+                    </button>
+                </div>
+
                 <div class="dash-control-bar">
                     <div class="dash-search-box">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -659,9 +738,22 @@
                         <input type="text" name="subject" placeholder="e.g. Mathematics" required>
                     </div>
                     <div class="dash-form-group">
-                        <label>Target Course *</label>
-                        <input type="text" name="course" placeholder="e.g. Class X SSC (Maharashtra Board)" required>
+                        <label>Target Course / Category *</label>
+                        <input type="text" name="course" list="courseSuggestions" placeholder="Select or type course..." required>
+                        <datalist id="courseSuggestions">
+                            <option value="Class X SSC (Maharashtra Board)"></option>
+                            <option value="Class X ICSE Board"></option>
+                            <option value="Class XI & XII Science (HSC)"></option>
+                            <option value="MHT-CET & Entrance (PCM/PCB)"></option>
+                            <option value="Sunday Test Series"></option>
+                            <option value="Class VII–IX Foundation"></option>
+                        </datalist>
                     </div>
+                </div>
+
+                <div class="dash-form-group full">
+                    <label>Resource Description (Shown on Main Website)</label>
+                    <textarea name="description" rows="2" placeholder="Brief outline of formula sheets, chapter coverage, or model answers..."></textarea>
                 </div>
 
                 <div class="dash-form-row">
@@ -670,14 +762,119 @@
                         <input type="text" name="file_url" value="study-material.html#notes" required>
                     </div>
                     <div class="dash-form-group">
-                        <label>File Size</label>
-                        <input type="text" name="file_size" value="3.5 MB">
+                        <label>File Size / Page Count</label>
+                        <input type="text" name="file_size" value="3.5 MB • PDF">
                     </div>
                 </div>
 
                 <div class="dash-modal-actions">
                     <button type="button" class="dash-btn dash-btn-light" onclick="closeModal('addResourceModal')">Cancel</button>
                     <button type="submit" class="dash-btn dash-btn-teal">Save Resource</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 5B: EDIT ANNOUNCEMENT -->
+    <!-- ================================================================= -->
+    <div id="editNoticeModal" class="dash-modal-overlay">
+        <div class="dash-modal-box">
+            <div class="dash-modal-header">
+                <h3>✏️ Edit Announcement</h3>
+                <button class="dash-modal-close" onclick="closeModal('editNoticeModal')">&times;</button>
+            </div>
+            <form id="editNoticeForm" onsubmit="handleUpdateNotice(event)">
+                <input type="hidden" name="id" id="editNoticeId">
+                <div class="dash-form-group full">
+                    <label>Announcement Title *</label>
+                    <input type="text" name="title" id="editNoticeTitle" required>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Category *</label>
+                        <select name="category" id="editNoticeCategory" required>
+                            <option value="Exam">Exam / Test Series</option>
+                            <option value="Schedule">Schedule / Timetable</option>
+                            <option value="Holiday">Holiday / Vacation</option>
+                            <option value="General">General Notice</option>
+                        </select>
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Priority *</label>
+                        <select name="priority" id="editNoticePriority" required>
+                            <option value="High">High Priority (Red Alert)</option>
+                            <option value="Normal">Normal</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dash-form-group full">
+                    <label>Target Audience / Batch</label>
+                    <input type="text" name="target_course" id="editNoticeTarget" placeholder="e.g. All Batches">
+                </div>
+
+                <div class="dash-form-group full">
+                    <label>Notice Content *</label>
+                    <textarea name="content" id="editNoticeContent" rows="4" required></textarea>
+                </div>
+
+                <div class="dash-modal-actions">
+                    <button type="button" class="dash-btn dash-btn-light" onclick="closeModal('editNoticeModal')">Cancel</button>
+                    <button type="submit" class="dash-btn dash-btn-primary">Update Notice</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 5C: EDIT STUDY RESOURCE -->
+    <!-- ================================================================= -->
+    <div id="editResourceModal" class="dash-modal-overlay">
+        <div class="dash-modal-box">
+            <div class="dash-modal-header">
+                <h3>✏️ Edit Study Material</h3>
+                <button class="dash-modal-close" onclick="closeModal('editResourceModal')">&times;</button>
+            </div>
+            <form id="editResourceForm" onsubmit="handleUpdateResource(event)">
+                <input type="hidden" name="id" id="editResourceId">
+                <div class="dash-form-group full">
+                    <label>Document Title *</label>
+                    <input type="text" name="title" id="editResourceTitle" required>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Subject *</label>
+                        <input type="text" name="subject" id="editResourceSubject" required>
+                    </div>
+                    <div class="dash-form-group">
+                        <label>Target Course / Category *</label>
+                        <input type="text" name="course" id="editResourceCourse" list="courseSuggestions" required>
+                    </div>
+                </div>
+
+                <div class="dash-form-group full">
+                    <label>Resource Description (Shown on Main Website)</label>
+                    <textarea name="description" id="editResourceDescription" rows="2"></textarea>
+                </div>
+
+                <div class="dash-form-row">
+                    <div class="dash-form-group">
+                        <label>Download URL / Target Link</label>
+                        <input type="text" name="file_url" id="editResourceUrl" required>
+                    </div>
+                    <div class="dash-form-group">
+                        <label>File Size / Page Count</label>
+                        <input type="text" name="file_size" id="editResourceSize">
+                    </div>
+                </div>
+
+                <div class="dash-modal-actions">
+                    <button type="button" class="dash-btn dash-btn-light" onclick="closeModal('editResourceModal')">Cancel</button>
+                    <button type="submit" class="dash-btn dash-btn-teal">Update Resource</button>
                 </div>
             </form>
         </div>
@@ -700,6 +897,7 @@
             </div>
         </div>
     </div>
+    </div> <!-- /#adminAppContent -->
 
     <!-- Global Toast Element -->
     <div id="dashToast" class="dash-toast">
@@ -721,11 +919,17 @@
             resources: [],
             enquiries: [],
             activeDossierStudent: null,
-            editingEnquiryId: null
+            editingEnquiryId: null,
+            convertingEnquiryId: null
         };
 
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', () => {
+        // API Base URL Detection (works in production deployment, localhost:5000, or Live Server)
+        const API_BASE = (window.location.protocol === 'file:' || window.location.port === '5500' || window.location.port === '3000')
+            ? 'http://localhost:5000'
+            : '';
+
+        // Initialize on load with authentication check
+        document.addEventListener('DOMContentLoaded', async () => {
             // Set default date for attendance & marks
             const todayStr = new Date().toISOString().split('T')[0];
             const datePicker = document.getElementById('attendanceDatePicker');
@@ -733,9 +937,152 @@
             const marksDate = document.getElementById('marksDateInput');
             if (marksDate) marksDate.value = todayStr;
 
-            // Load initial data
-            refreshAllData();
+            // Check if admin is already logged in
+            const isAuth = await checkAdminAuth();
+            if (isAuth) {
+                await refreshAllData();
+            }
+
+            // Real-time synchronization polling every 5 seconds for new leads & stats
+            setInterval(async () => {
+                const token = localStorage.getItem('pcc_admin_token');
+                const appContent = document.getElementById('adminAppContent');
+                if (token && appContent && appContent.style.display !== 'none') {
+                    const prevCount = state.enquiries ? state.enquiries.length : 0;
+                    await Promise.all([fetchStats(), fetchEnquiries()]);
+                    if (prevCount > 0 && state.enquiries && state.enquiries.length > prevCount) {
+                        const newCount = state.enquiries.length - prevCount;
+                        const latest = state.enquiries[0];
+                        showToast(`🔔 ${newCount} New Admission Lead received: ${latest.name} (${latest.course})!`);
+                    }
+                }
+            }, 5000);
         });
+
+        // =====================================================================
+        // AUTHENTICATION & LOGIN MANAGEMENT
+        // =====================================================================
+        async function checkAdminAuth() {
+            const token = localStorage.getItem('pcc_admin_token');
+            const loginScreen = document.getElementById('adminLoginScreen');
+            const appContent = document.getElementById('adminAppContent');
+
+            if (!token) {
+                if (appContent) appContent.style.display = 'none';
+                if (loginScreen) loginScreen.classList.remove('hidden');
+                window.location.replace('login.html');
+                return false;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/verify`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success && data.authenticated) {
+                    if (loginScreen) loginScreen.classList.add('hidden');
+                    if (appContent) appContent.style.display = 'block';
+                    const adminLabel = document.getElementById('activeAdminLabel');
+                    if (adminLabel && data.user) {
+                        adminLabel.textContent = data.user.name || 'Director Sir';
+                    }
+                    return true;
+                } else {
+                    localStorage.removeItem('pcc_admin_token');
+                    localStorage.removeItem('pcc_admin_user');
+                    if (appContent) appContent.style.display = 'none';
+                    if (loginScreen) loginScreen.classList.remove('hidden');
+                    window.location.replace('login.html');
+                    return false;
+                }
+            } catch (err) {
+                console.warn('Admin auth verification server offline or network error:', err);
+                if (token && token.startsWith('pcc_token_')) {
+                    if (loginScreen) loginScreen.classList.add('hidden');
+                    if (appContent) appContent.style.display = 'block';
+                    return true;
+                }
+                window.location.replace('login.html');
+                return false;
+            }
+        }
+
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            const usernameInput = document.getElementById('loginUsername');
+            const passwordInput = document.getElementById('loginPassword');
+            const errorAlert = document.getElementById('loginErrorAlert');
+            const submitBtn = document.getElementById('loginSubmitBtn');
+            const appContent = document.getElementById('adminAppContent');
+
+            errorAlert.style.display = 'none';
+            submitBtn.textContent = 'Verifying credentials...';
+            submitBtn.disabled = true;
+
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: usernameInput.value,
+                        password: passwordInput.value
+                    })
+                });
+
+                const data = await res.json();
+                if (data.success && data.token) {
+                    localStorage.setItem('pcc_admin_token', data.token);
+                    if (data.user) {
+                        localStorage.setItem('pcc_admin_user', JSON.stringify(data.user));
+                        document.getElementById('activeAdminLabel').textContent = data.user.name || 'Director Sir';
+                    }
+                    document.getElementById('adminLoginScreen').classList.add('hidden');
+                    if (appContent) appContent.style.display = 'block';
+                    showToast(`Welcome back, ${data.user ? data.user.name : 'Director Sir'}!`);
+                    refreshAllData();
+                } else {
+                    errorAlert.textContent = data.error || 'Invalid credentials. Please try again.';
+                    errorAlert.style.display = 'block';
+                }
+            } catch (err) {
+                errorAlert.textContent = 'Unable to connect to server. Please try again.';
+                errorAlert.style.display = 'block';
+            } finally {
+                submitBtn.textContent = '🔐 Login to Admin Portal';
+                submitBtn.disabled = false;
+            }
+        }
+
+        async function handleAdminLogout() {
+            if (!confirm('Are you sure you want to log out of the Admin Portal?')) return;
+            const token = localStorage.getItem('pcc_admin_token');
+            if (token) {
+                try {
+                    await fetch(`${API_BASE}/api/admin/logout`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                } catch (e) {}
+            }
+            localStorage.removeItem('pcc_admin_token');
+            localStorage.removeItem('pcc_admin_user');
+            window.location.replace('login.html?logged_out=1');
+        }
+
+        function togglePasswordVisibility() {
+            const pass = document.getElementById('loginPassword');
+            if (pass.type === 'password') {
+                pass.type = 'text';
+            } else {
+                pass.type = 'password';
+            }
+        }
+
+        function fillDemoCredentials() {
+            document.getElementById('loginUsername').value = 'admin';
+            document.getElementById('loginPassword').value = 'admin123';
+            document.getElementById('loginErrorAlert').style.display = 'none';
+        }
 
         // =====================================================================
         // TAB SWITCHING
@@ -798,7 +1145,7 @@
         }
 
         async function fetchStats() {
-            const res = await fetch('/api/stats');
+            const res = await fetch(`${API_BASE}/api/stats`);
             const data = await res.json();
             if (data.success && data.stats) {
                 state.stats = data.stats;
@@ -820,7 +1167,7 @@
         // 1. STUDENTS MANAGEMENT
         // =====================================================================
         async function fetchStudents() {
-            const res = await fetch('/api/students');
+            const res = await fetch(`${API_BASE}/api/students`);
             const data = await res.json();
             if (data.success) {
                 state.students = data.students || [];
@@ -932,7 +1279,7 @@
             const payload = Object.fromEntries(formData.entries());
 
             try {
-                const res = await fetch('/api/students', {
+                const res = await fetch(`${API_BASE}/api/students`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -942,6 +1289,17 @@
                     showToast(`Student ${data.student.name} registered! (Roll: ${data.student.roll_no})`);
                     closeModal('addStudentModal');
                     form.reset();
+                    if (state.convertingEnquiryId) {
+                        try {
+                            await fetch(`${API_BASE}/api/enquiries/${state.convertingEnquiryId}`, {
+                                method: 'PATCH',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ status: 'Enrolled' })
+                            });
+                        } catch (e) {}
+                        state.convertingEnquiryId = null;
+                        await fetchEnquiries();
+                    }
                     await fetchStats();
                     await fetchStudents();
                 } else {
@@ -954,7 +1312,7 @@
 
         async function viewStudentDossier(studentId) {
             try {
-                const res = await fetch(`/api/students/${studentId}`);
+                const res = await fetch(`${API_BASE}/api/students/${studentId}`);
                 const data = await res.json();
                 if (!data.success) {
                     showToast('Failed to load dossier.', false);
@@ -1020,7 +1378,7 @@
         async function deleteStudent(id, name) {
             if (!confirm(`Are you sure you want to remove student "${name}"? This will delete all their test scores and attendance records.`)) return;
             try {
-                const res = await fetch(`/api/students/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${API_BASE}/api/students/${id}`, { method: 'DELETE' });
                 const data = await res.json();
                 if (data.success) {
                     showToast(`Student ${name} removed.`);
@@ -1049,7 +1407,7 @@
             if (!date) return;
 
             try {
-                const res = await fetch(`/api/attendance?date=${date}${batch ? '&batch=' + encodeURIComponent(batch) : ''}`);
+                const res = await fetch(`${API_BASE}/api/attendance?date=${date}${batch ? '&batch=' + encodeURIComponent(batch) : ''}`);
                 const data = await res.json();
                 const existingMap = {};
                 (data.records || []).forEach(r => {
@@ -1143,7 +1501,7 @@
             });
 
             try {
-                const res = await fetch('/api/attendance/batch', {
+                const res = await fetch(`${API_BASE}/api/attendance/batch`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ date, batch, records })
@@ -1165,7 +1523,7 @@
         // 3. MARKS & TEST RESULTS
         // =====================================================================
         async function fetchMarks() {
-            const res = await fetch('/api/tests/results');
+            const res = await fetch(`${API_BASE}/api/tests/results`);
             const data = await res.json();
             if (data.success) {
                 state.marks = data.results || [];
@@ -1225,7 +1583,7 @@
             const payload = Object.fromEntries(formData.entries());
 
             try {
-                const res = await fetch('/api/tests/results', {
+                const res = await fetch(`${API_BASE}/api/tests/results`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -1248,7 +1606,7 @@
         async function deleteTestMark(id) {
             if (!confirm('Are you sure you want to delete this test result?')) return;
             try {
-                const res = await fetch(`/api/tests/results/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${API_BASE}/api/tests/results/${id}`, { method: 'DELETE' });
                 const data = await res.json();
                 if (data.success) {
                     showToast('Test record deleted.');
@@ -1264,7 +1622,7 @@
         // 4. ANNOUNCEMENTS & NOTICES
         // =====================================================================
         async function fetchNotices() {
-            const res = await fetch('/api/announcements');
+            const res = await fetch(`${API_BASE}/api/announcements`);
             const data = await res.json();
             if (data.success) {
                 state.notices = data.announcements || [];
@@ -1290,7 +1648,10 @@
                     </div>
                     <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--dash-border); padding-top: 10px; font-size: 11.5px; color: var(--dash-muted);">
                         <span>Target: <b>${n.target_course || 'All Batches'}</b></span>
-                        <button class="dash-icon-btn delete" onclick="deleteNotice(${n.id})" title="Delete Notice">🗑️</button>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="dash-icon-btn" onclick="openEditNoticeModal(${n.id})" title="Edit Announcement">✏️</button>
+                            <button class="dash-icon-btn delete" onclick="deleteNotice(${n.id})" title="Delete Notice">🗑️</button>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -1302,16 +1663,17 @@
             const payload = Object.fromEntries(formData.entries());
 
             try {
-                const res = await fetch('/api/announcements', {
+                const res = await fetch(`${API_BASE}/api/announcements`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
                 const data = await res.json();
                 if (data.success) {
-                    showToast('Notice broadcasted to all students!');
+                    showToast('Notice broadcasted to all students & main website!');
                     closeModal('addNoticeModal');
                     e.target.reset();
+                    localStorage.setItem('pcc_data_sync', Date.now().toString());
                     await fetchStats();
                     await fetchNotices();
                 }
@@ -1320,13 +1682,52 @@
             }
         }
 
-        async function deleteNotice(id) {
-            if (!confirm('Remove this announcement from student noticeboard?')) return;
+        function openEditNoticeModal(id) {
+            const notice = (state.notices || []).find(n => n.id == id);
+            if (!notice) return;
+            document.getElementById('editNoticeId').value = notice.id;
+            document.getElementById('editNoticeTitle').value = notice.title || '';
+            document.getElementById('editNoticeCategory').value = notice.category || 'General';
+            document.getElementById('editNoticePriority').value = notice.priority || 'Normal';
+            document.getElementById('editNoticeTarget').value = notice.target_course || 'All Batches';
+            document.getElementById('editNoticeContent').value = notice.content || '';
+            openModal('editNoticeModal');
+        }
+
+        async function handleUpdateNotice(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const payload = Object.fromEntries(formData.entries());
+
             try {
-                const res = await fetch(`/api/announcements/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${API_BASE}/api/announcements/${payload.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
                 const data = await res.json();
                 if (data.success) {
-                    showToast('Notice deleted.');
+                    showToast('Notice updated successfully!');
+                    closeModal('editNoticeModal');
+                    localStorage.setItem('pcc_data_sync', Date.now().toString());
+                    await fetchStats();
+                    await fetchNotices();
+                } else {
+                    showToast(data.error || 'Failed to update notice.', false);
+                }
+            } catch (err) {
+                showToast('Network error updating announcement.', false);
+            }
+        }
+
+        async function deleteNotice(id) {
+            if (!confirm('Remove this announcement from student noticeboard & main website?')) return;
+            try {
+                const res = await fetch(`${API_BASE}/api/announcements/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Notice removed.');
+                    localStorage.setItem('pcc_data_sync', Date.now().toString());
                     await fetchStats();
                     await fetchNotices();
                 }
@@ -1339,7 +1740,7 @@
         // 5. STUDY RESOURCES
         // =====================================================================
         async function fetchResources() {
-            const res = await fetch('/api/resources');
+            const res = await fetch(`${API_BASE}/api/resources`);
             const data = await res.json();
             if (data.success) {
                 state.resources = data.resources || [];
@@ -1361,11 +1762,13 @@
                             <span class="dash-badge dash-badge--paid">${r.file_type || 'PDF'}</span>
                         </div>
                         <h4 style="margin: 0 0 6px; font-size: 15px; color: var(--dash-navy);">${r.title}</h4>
-                        <div style="font-size: 12px; color: var(--dash-muted); margin-bottom: 12px;">Course: ${r.course}</div>
+                        <div style="font-size: 12px; color: var(--dash-muted); margin-bottom: 8px;">Course: ${r.course}</div>
+                        ${r.description ? `<p style="font-size: 12px; color: var(--dash-muted); line-height: 1.45; margin: 0 0 10px;">${r.description}</p>` : ''}
                     </div>
                     <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--dash-border); padding-top: 10px; font-size: 12px;">
                         <span style="color: var(--dash-muted);">${r.file_size || '2.5 MB'}</span>
                         <div style="display: flex; gap: 6px;">
+                            <button class="dash-icon-btn" onclick="openEditResourceModal(${r.id})" title="Edit Resource">✏️</button>
                             <a href="${r.file_url}" target="_blank" class="dash-btn dash-btn-teal" style="padding: 4px 10px; font-size: 11.5px;">Download</a>
                             <button class="dash-icon-btn delete" onclick="deleteResource(${r.id})" title="Remove">🗑️</button>
                         </div>
@@ -1380,16 +1783,17 @@
             const payload = Object.fromEntries(formData.entries());
 
             try {
-                const res = await fetch('/api/resources', {
+                const res = await fetch(`${API_BASE}/api/resources`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
                 const data = await res.json();
                 if (data.success) {
-                    showToast('Study material published!');
+                    showToast('Study material published to main website!');
                     closeModal('addResourceModal');
                     e.target.reset();
+                    localStorage.setItem('pcc_data_sync', Date.now().toString());
                     await fetchStats();
                     await fetchResources();
                 }
@@ -1398,13 +1802,53 @@
             }
         }
 
-        async function deleteResource(id) {
-            if (!confirm('Remove this study material?')) return;
+        function openEditResourceModal(id) {
+            const res = (state.resources || []).find(r => r.id == id);
+            if (!res) return;
+            document.getElementById('editResourceId').value = res.id;
+            document.getElementById('editResourceTitle').value = res.title || '';
+            document.getElementById('editResourceSubject').value = res.subject || '';
+            document.getElementById('editResourceCourse').value = res.course || '';
+            document.getElementById('editResourceDescription').value = res.description || '';
+            document.getElementById('editResourceUrl').value = res.file_url || 'study-material.html';
+            document.getElementById('editResourceSize').value = res.file_size || '3.5 MB';
+            openModal('editResourceModal');
+        }
+
+        async function handleUpdateResource(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const payload = Object.fromEntries(formData.entries());
+
             try {
-                const res = await fetch(`/api/resources/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${API_BASE}/api/resources/${payload.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Study material updated successfully!');
+                    closeModal('editResourceModal');
+                    localStorage.setItem('pcc_data_sync', Date.now().toString());
+                    await fetchStats();
+                    await fetchResources();
+                } else {
+                    showToast(data.error || 'Failed to update resource.', false);
+                }
+            } catch (err) {
+                showToast('Network error updating material.', false);
+            }
+        }
+
+        async function deleteResource(id) {
+            if (!confirm('Remove this study material from website?')) return;
+            try {
+                const res = await fetch(`${API_BASE}/api/resources/${id}`, { method: 'DELETE' });
                 const data = await res.json();
                 if (data.success) {
                     showToast('Resource removed.');
+                    localStorage.setItem('pcc_data_sync', Date.now().toString());
                     await fetchStats();
                     await fetchResources();
                 }
@@ -1417,11 +1861,35 @@
         // 6. ADMISSION ENQUIRIES WORKFLOW
         // =====================================================================
         async function fetchEnquiries() {
-            const res = await fetch('/api/enquiries');
+            const res = await fetch(`${API_BASE}/api/enquiries`);
             const data = await res.json();
             if (data.success) {
                 state.enquiries = data.enquiries || [];
                 filterEnquiries();
+                updateLeadsAlertBanner();
+            }
+        }
+
+        function updateLeadsAlertBanner() {
+            const alertBox = document.getElementById('newLeadsAlertBanner');
+            const title = document.getElementById('leadsAlertTitle');
+            const subtitle = document.getElementById('leadsAlertSubtitle');
+            if (!alertBox || !title || !subtitle) return;
+
+            const newLeads = state.enquiries.filter(e => e.status === 'New');
+            if (state.enquiries.length === 0) {
+                alertBox.style.display = 'none';
+                return;
+            }
+
+            alertBox.style.display = 'flex';
+            const latest = state.enquiries[0];
+            if (newLeads.length > 0) {
+                title.innerHTML = `🔥 ${newLeads.length} New Admission ${newLeads.length === 1 ? 'Enquiry' : 'Enquiries'} Awaiting Callback!`;
+                subtitle.innerHTML = `Latest from <strong>${latest.name}</strong> (${latest.course} &bull; 📱 ${latest.mobile}) &bull; ${new Date(latest.created_at).toLocaleDateString('en-IN', {month:'short', day:'numeric'})}`;
+            } else {
+                title.innerHTML = `📥 ${state.enquiries.length} Total Admission Leads in Database`;
+                subtitle.innerHTML = `All leads currently contacted or scheduled for demo classes.`;
             }
         }
 
@@ -1474,6 +1942,7 @@
                     <td>
                         <div style="font-weight: 600; color: var(--dash-navy);">${e.course}</div>
                         ${e.timing ? `<div style="font-size: 11px; color: var(--dash-muted);">${e.timing}</div>` : ''}
+                        ${e.message ? `<div style="font-size: 11px; color: #b45309; margin-top: 3px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${e.message.replace(/"/g, '&quot;')}">💬 ${e.message}</div>` : ''}
                     </td>
                     <td>
                         <span class="category-tag">${e.source || 'Website'}</span>
@@ -1493,16 +1962,66 @@
                         </span>
                     </td>
                     <td style="text-align: right;">
-                        <button class="dash-icon-btn delete" onclick="deleteEnquiry(${e.id})" title="Delete inquiry">🗑️</button>
+                        <div style="display: inline-flex; gap: 6px; align-items: center;">
+                            <button class="dash-btn dash-btn-teal" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px;" onclick="convertEnquiryToStudent(${e.id})" title="Enroll this lead as an official student">
+                                🎓 Enroll
+                            </button>
+                            <button class="dash-icon-btn delete" onclick="deleteEnquiry(${e.id})" title="Delete inquiry">🗑️</button>
+                        </div>
                     </td>
                 </tr>
                 `;
             }).join('');
         }
 
+        function convertEnquiryToStudent(enquiryId) {
+            const e = state.enquiries.find(x => x.id === enquiryId);
+            if (!e) return;
+
+            openModal('addStudentModal');
+            const modal = document.getElementById('addStudentModal');
+
+            modal.querySelector('input[name="name"]').value = e.name || '';
+            modal.querySelector('input[name="mobile"]').value = e.mobile || '';
+            const emailInput = modal.querySelector('input[name="email"]');
+            if (emailInput) emailInput.value = e.email || '';
+
+            // Auto select course
+            const courseSelect = modal.querySelector('select[name="course"]');
+            if (courseSelect && e.course) {
+                for (let i = 0; i < courseSelect.options.length; i++) {
+                    const optVal = courseSelect.options[i].value.toLowerCase();
+                    if (e.course.toLowerCase().includes(optVal.split(' ')[0])) {
+                        courseSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            // Auto select timing
+            const batchSelect = modal.querySelector('select[name="batch_timing"]');
+            if (batchSelect && e.timing) {
+                for (let i = 0; i < batchSelect.options.length; i++) {
+                    const optVal = batchSelect.options[i].value.toLowerCase();
+                    if (e.timing.toLowerCase().includes(optVal.split(' ')[0])) {
+                        batchSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            const notesEl = modal.querySelector('textarea[name="notes"]');
+            if (notesEl) {
+                notesEl.value = `Enrolled from Website Lead #${e.id} (${e.source || 'Website Enquiry'}). Inquired for: ${e.course}. Notes: ${e.message || 'None'}`;
+            }
+
+            state.convertingEnquiryId = e.id;
+            showToast(`Prefilled form for ${e.name}. Complete registration to mark lead as Enrolled.`);
+        }
+
         async function updateEnquiryStatus(id, newStatus) {
             try {
-                const res = await fetch(`/api/enquiries/${id}`, {
+                const res = await fetch(`${API_BASE}/api/enquiries/${id}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: newStatus })
@@ -1529,7 +2048,7 @@
             if (!state.editingEnquiryId) return;
             const notes = document.getElementById('notesModalTextarea').value;
             try {
-                const res = await fetch(`/api/enquiries/${state.editingEnquiryId}`, {
+                const res = await fetch(`${API_BASE}/api/enquiries/${state.editingEnquiryId}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ counsellor_notes: notes })
@@ -1548,7 +2067,7 @@
         async function deleteEnquiry(id) {
             if (!confirm('Are you sure you want to delete this enquiry?')) return;
             try {
-                const res = await fetch(`/api/enquiries/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${API_BASE}/api/enquiries/${id}`, { method: 'DELETE' });
                 const data = await res.json();
                 if (data.success) {
                     showToast('Inquiry removed.');
@@ -1565,9 +2084,9 @@
         // =====================================================================
         function exportData(type) {
             if (type === 'students') {
-                window.location.href = '/api/students/export/csv';
+                window.location.href = `${API_BASE}/api/students/export/csv`;
             } else {
-                window.location.href = '/api/enquiries/export/csv';
+                window.location.href = `${API_BASE}/api/enquiries/export/csv`;
             }
             showToast(`Generating ${type} CSV export...`);
         }

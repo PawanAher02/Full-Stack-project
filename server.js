@@ -1,12 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const crypto = require('crypto');
 require('dotenv').config();
 
 const db = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Active Admin In-Memory Session Store
+const activeAdminSessions = new Map();
 
 // Enable CORS so the API works from any port (Live Server 3000, 5500, or direct 5000)
 app.use(cors());
@@ -21,6 +25,14 @@ app.use(express.static(path.join(__dirname)));
 // Admin route alias
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// Admin Login route aliases
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
+app.get('/admin/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
 });
 
 // Student Dashboard route aliases
@@ -46,6 +58,108 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
     database: 'sqlite'
   });
+});
+
+// ============================================================================
+// ADMIN AUTHENTICATION ROUTES
+// ============================================================================
+
+/**
+ * Admin Login Endpoint
+ * POST /api/admin/login
+ */
+app.post('/api/admin/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({ success: false, error: 'Username and password are required.' });
+    }
+
+    const cleanUser = username.trim().toLowerCase();
+    const envUser = (process.env.ADMIN_USERNAME || 'admin').toLowerCase();
+    const envPass = process.env.ADMIN_PASSWORD || 'admin123';
+
+    // Check against SQLite admins table or environment variables
+    const dbAdmin = await db.getAsync('SELECT * FROM admins WHERE LOWER(username) = ?', [cleanUser]);
+    let isValid = false;
+    let adminRecord = null;
+
+    if (dbAdmin && (dbAdmin.password_hash === password || dbAdmin.password_hash === crypto.createHash('sha256').update(password).digest('hex'))) {
+      isValid = true;
+      adminRecord = dbAdmin;
+    } else if (cleanUser === envUser && password === envPass) {
+      isValid = true;
+      adminRecord = {
+        username: envUser,
+        full_name: 'Director Sir',
+        role: 'Super Admin'
+      };
+    }
+
+    if (!isValid) {
+      return res.status(401).json({ success: false, error: 'Invalid username or password. Please try again.' });
+    }
+
+    // Generate secure token
+    const token = 'pcc_token_' + crypto.randomBytes(24).toString('hex');
+    activeAdminSessions.set(token, {
+      username: adminRecord.username,
+      name: adminRecord.full_name || 'Director Sir',
+      role: adminRecord.role || 'Super Admin',
+      timestamp: Date.now()
+    });
+
+    return res.json({
+      success: true,
+      message: 'Login successful!',
+      token,
+      user: {
+        username: adminRecord.username,
+        name: adminRecord.full_name || 'Director Sir',
+        role: adminRecord.role || 'Super Admin'
+      }
+    });
+  } catch (err) {
+    console.error('Admin login error:', err);
+    return res.status(500).json({ success: false, error: 'Internal server authentication error.' });
+  }
+});
+
+/**
+ * Verify Active Admin Session
+ * GET /api/admin/verify
+ */
+app.get('/api/admin/verify', (req, res) => {
+  const authHeader = req.headers['authorization'] || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '') || req.headers['x-admin-token'] || req.query.token;
+
+  if (token && activeAdminSessions.has(token)) {
+    const session = activeAdminSessions.get(token);
+    return res.json({
+      success: true,
+      authenticated: true,
+      user: {
+        username: session.username,
+        name: session.name,
+        role: session.role
+      }
+    });
+  }
+
+  return res.status(401).json({ success: false, authenticated: false, error: 'No active session.' });
+});
+
+/**
+ * Admin Logout
+ * POST /api/admin/logout
+ */
+app.post('/api/admin/logout', (req, res) => {
+  const authHeader = req.headers['authorization'] || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '') || req.headers['x-admin-token'];
+  if (token) {
+    activeAdminSessions.delete(token);
+  }
+  return res.json({ success: true, message: 'Logged out successfully.' });
 });
 
 /**
@@ -875,6 +989,32 @@ app.post('/api/announcements', async (req, res) => {
 });
 
 /**
+ * Update Announcement
+ * PUT /api/announcements/:id
+ */
+app.put('/api/announcements/:id', async (req, res) => {
+  try {
+    const { title, content, category, target_course, priority } = req.body;
+    if (!title || !content) {
+      return res.status(400).json({ success: false, error: 'Notice title and message are required.' });
+    }
+    await db.runAsync(`
+      UPDATE announcements
+      SET title = ?, content = ?, category = ?, target_course = ?, priority = ?
+      WHERE id = ?
+    `, [title.trim(), content.trim(), category || 'General', target_course || 'All Batches', priority || 'Normal', req.params.id]);
+
+    const updated = await db.getAsync('SELECT * FROM announcements WHERE id = ?', [req.params.id]);
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Announcement not found.' });
+    }
+    return res.json({ success: true, message: 'Notice updated successfully!', announcement: updated });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: 'Failed to update notice.' });
+  }
+});
+
+/**
  * Delete Announcement
  * DELETE /api/announcements/:id
  */
@@ -910,19 +1050,62 @@ app.get('/api/resources', async (req, res) => {
  */
 app.post('/api/resources', async (req, res) => {
   try {
-    const { title, subject, course, file_type, file_url, file_size } = req.body;
+    const { title, subject, course, file_type, file_url, file_size, description } = req.body;
     if (!title || !subject || !course) {
       return res.status(400).json({ success: false, error: 'Resource title, subject, and course are required.' });
     }
     const result = await db.runAsync(`
-      INSERT INTO study_resources (title, subject, course, file_type, file_url, file_size)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `, [title.trim(), subject.trim(), course.trim(), file_type || 'PDF', file_url || 'study-material.html', file_size || '3.5 MB']);
+      INSERT INTO study_resources (title, subject, course, file_type, file_url, file_size, description)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `, [
+      title.trim(),
+      subject.trim(),
+      course.trim(),
+      file_type || 'PDF',
+      file_url || 'study-material.html',
+      file_size || '3.5 MB',
+      description ? description.trim() : null
+    ]);
 
     const created = await db.getAsync('SELECT * FROM study_resources WHERE id = ?', [result.id]);
     return res.status(201).json({ success: true, message: 'Study material uploaded for students!', resource: created });
   } catch (error) {
     return res.status(500).json({ success: false, error: 'Failed to upload resource.' });
+  }
+});
+
+/**
+ * Update Study Resource
+ * PUT /api/resources/:id
+ */
+app.put('/api/resources/:id', async (req, res) => {
+  try {
+    const { title, subject, course, file_type, file_url, file_size, description } = req.body;
+    if (!title || !subject || !course) {
+      return res.status(400).json({ success: false, error: 'Resource title, subject, and course are required.' });
+    }
+    await db.runAsync(`
+      UPDATE study_resources
+      SET title = ?, subject = ?, course = ?, file_type = ?, file_url = ?, file_size = ?, description = ?
+      WHERE id = ?
+    `, [
+      title.trim(),
+      subject.trim(),
+      course.trim(),
+      file_type || 'PDF',
+      file_url || 'study-material.html',
+      file_size || '3.5 MB',
+      description ? description.trim() : null,
+      req.params.id
+    ]);
+
+    const updated = await db.getAsync('SELECT * FROM study_resources WHERE id = ?', [req.params.id]);
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Resource not found.' });
+    }
+    return res.json({ success: true, message: 'Study material updated successfully!', resource: updated });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: 'Failed to update resource.' });
   }
 });
 

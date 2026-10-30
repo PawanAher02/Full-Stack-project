@@ -165,6 +165,18 @@ db.serialize(() => {
     )
   `);
 
+  // 8. Admins Table (Authentication)
+  db.run(`
+    CREATE TABLE IF NOT EXISTS admins (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      full_name TEXT NOT NULL,
+      role TEXT DEFAULT 'Super Admin',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
   // Indexes for high performance
   db.run(`CREATE INDEX IF NOT EXISTS idx_enquiries_created ON enquiries(created_at DESC)`);
   db.run(`CREATE INDEX IF NOT EXISTS idx_enquiries_status ON enquiries(status)`);
@@ -174,6 +186,9 @@ db.serialize(() => {
   db.run(`CREATE INDEX IF NOT EXISTS idx_attendance_student_date ON attendance(student_id, date)`);
   db.run(`CREATE INDEX IF NOT EXISTS idx_test_results_student ON test_results(student_id)`);
 
+  // Ensure description column exists on study_resources
+  db.run(`ALTER TABLE study_resources ADD COLUMN description TEXT`, () => {});
+
   // Seed sample initial data if students table is empty
   seedDatabaseIfEmpty();
 });
@@ -181,6 +196,18 @@ db.serialize(() => {
 // Seed function for comprehensive mock data
 async function seedDatabaseIfEmpty() {
   try {
+    // Ensure default admin user exists
+    const adminUser = await db.getAsync(`SELECT * FROM admins WHERE username = 'admin'`);
+    if (!adminUser) {
+      const defaultUser = process.env.ADMIN_USERNAME || 'admin';
+      const defaultPass = process.env.ADMIN_PASSWORD || 'admin123';
+      await db.runAsync(`
+        INSERT INTO admins (username, password_hash, full_name, role)
+        VALUES (?, ?, ?, ?)
+      `, [defaultUser, defaultPass, 'Director Sir', 'Super Admin']);
+      console.log(`🔐 Default admin user created: "${defaultUser}"`);
+    }
+
     const studentCount = await db.getAsync(`SELECT COUNT(*) as count FROM students`);
     if (studentCount && studentCount.count > 0) {
       return; // Database already seeded

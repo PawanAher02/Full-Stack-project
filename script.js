@@ -21,9 +21,9 @@
 // BACKEND API CLIENT CONFIGURATION
 // Connects to local self-hosted Express backend (Default: port 5000)
 // ============================================================================
-const BACKEND_API_BASE = (window.location.origin && window.location.origin.includes('localhost:5000'))
-  ? ''
-  : 'http://localhost:5000';
+const BACKEND_API_BASE = (window.location.protocol === 'file:' || window.location.port === '5500' || window.location.port === '3000')
+  ? 'http://localhost:5000'
+  : '';
 
 async function submitEnquiryToBackend(payload) {
   const response = await fetch(`${BACKEND_API_BASE}/api/enquiries`, {
@@ -125,11 +125,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = "Submitting Enquiry... ⏳";
+        submitBtn.innerHTML = "Submitting to Admin Portal... ⏳";
       }
 
       try {
-        await submitEnquiryToBackend({
+        const result = await submitEnquiryToBackend({
           name: studentName,
           mobile: mobileNumber,
           email: emailAddress || null,
@@ -141,7 +141,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         showFormStatus(
           formStatus,
-          "✅ <strong>Thank you, " + studentName + "!</strong> Your enquiry for <em>" + selectedCourse + "</em> has been submitted. Our senior counsellor will call you shortly on <strong>" + mobileNumber + "</strong>.",
+          `<div style="display:flex; flex-direction:column; gap:8px;">
+            <div>✅ <strong>Enquiry Recorded Successfully! (Lead Reference #${result.id})</strong></div>
+            <div>Thank you, <strong>${studentName}</strong>. Your enquiry for <em>${selectedCourse}</em> has been securely stored in our Admin Management Portal.</div>
+            <div>Our senior academic counsellor will call you shortly on <strong>${mobileNumber}</strong>.</div>
+            <div style="margin-top:4px;">
+              <a href="https://wa.me/919822661307?text=Hi%2C%20I%20just%20submitted%20an%20admission%20enquiry%20(Lead%20%23${result.id})%20for%20${encodeURIComponent(selectedCourse)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; background:#25D366; color:#ffffff; text-decoration:none; padding:8px 16px; font-size:13px; font-weight:700; border-radius:6px;">
+                💬 Instant WhatsApp Confirmation
+              </a>
+            </div>
+          </div>`,
           "success"
         );
         contactForm.reset();
@@ -236,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const note = `[FREE 2-DAY DEMO BOOKING] Preferred Date: ${prefDate || "Anytime"}, Shift: ${shift}`;
 
       try {
-        await submitEnquiryToBackend({
+        const result = await submitEnquiryToBackend({
           name: name,
           mobile: mobile,
           course: course || "Free 2-Day Demo Class",
@@ -247,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         showFormStatus(
           demoStatus,
-          `🎉 <strong>Demo Class Confirmed for ${name}!</strong><br>A seat for <em>${course}</em> (${shift}) has been reserved. Our faculty coordinator will message you batch details on WhatsApp at <strong>${mobile}</strong>.`,
+          `🎉 <strong>Demo Class Confirmed for ${name}! (Booking #${result.id})</strong><br>A seat for <em>${course}</em> (${shift}) has been stored in the Director Portal. Our faculty coordinator will message you batch details on WhatsApp at <strong>${mobile}</strong>.`,
           "success"
         );
         demoForm.reset();
@@ -640,25 +649,31 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ------------------------------------------------------------------------
      7. COURSE & STUDY MATERIAL FILTERABLE TABS
   ------------------------------------------------------------------------ */
-  const filterButtons = document.querySelectorAll(".filter-btn");
-  const filterableItems = document.querySelectorAll(".filterable-item");
+  function applyCategoryFilter(category) {
+    const allItems = document.querySelectorAll(".filterable-item");
+    allItems.forEach((item) => {
+      const itemCat = (item.getAttribute("data-category") || "").toLowerCase();
+      const targetCat = (category || "all").toLowerCase();
+      const tags = itemCat.split(/\s+/);
+      if (targetCat === "all" || tags.includes(targetCat) || itemCat.includes(targetCat)) {
+        item.style.display = "";
+      } else {
+        item.style.display = "none";
+      }
+    });
+  }
 
+  // Expose globally so dynamic renderers can re-apply the active filter
+  window.applyCategoryFilter = applyCategoryFilter;
+
+  const filterButtons = document.querySelectorAll(".filter-btn");
   if (filterButtons.length > 0) {
     filterButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const category = btn.getAttribute("data-filter");
-
         filterButtons.forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
-
-        filterableItems.forEach((item) => {
-          const itemCat = item.getAttribute("data-category");
-          if (category === "all" || itemCat === category || (itemCat && itemCat.includes(category))) {
-            item.style.display = "";
-          } else {
-            item.style.display = "none";
-          }
-        });
+        applyCategoryFilter(category);
       });
     });
   }
@@ -947,5 +962,297 @@ admissions, visit our campus at Ishwar Sankul near Bytco Point, Nashik Road.
     });
   }
 
+  /* ------------------------------------------------------------------------
+     13. LIVE SYNC: ANNOUNCEMENTS & STUDY MATERIAL FROM ADMIN PORTAL
+  ------------------------------------------------------------------------ */
+  function escapeHtml(str) {
+    if (str === undefined || str === null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // --- A. DYNAMIC ANNOUNCEMENTS & NOTICEBOARD ---
+  let activeAnnouncementsList = [];
+  let announceTickerInterval = null;
+
+  async function loadDynamicAnnouncements() {
+    try {
+      const res = await fetch(`${BACKEND_API_BASE}/api/announcements`);
+      const data = await res.json();
+      if (!data.success || !Array.isArray(data.announcements)) return;
+
+      activeAnnouncementsList = data.announcements;
+      renderLiveAnnouncementTicker();
+      renderLiveNoticeBoard();
+    } catch (err) {
+      console.debug('Using default announcements (backend not reachable)');
+    }
+  }
+
+  function renderLiveAnnouncementTicker() {
+    const containerTexts = document.querySelectorAll(".announce .containertext");
+    if (containerTexts.length === 0) return;
+
+    if (activeAnnouncementsList.length === 0) {
+      containerTexts.forEach(el => {
+        el.innerHTML = "Admissions open for 2026–27 classroom batches • Class VII–X (State Board, ICSE), Class XI–XII Science, MHT-CET, JEE & NEET • Limited seats per batch.";
+      });
+      return;
+    }
+
+    if (announceTickerInterval) {
+      clearInterval(announceTickerInterval);
+      announceTickerInterval = null;
+    }
+
+    let currentIndex = 0;
+    function showItem(idx) {
+      const a = activeAnnouncementsList[idx % activeAnnouncementsList.length];
+      const isHigh = a.priority === 'High';
+      const categoryTag = a.category ? `<span style="background:rgba(255,255,255,0.22);color:#ffffff;padding:2px 7px;border-radius:4px;font-size:10.5px;font-weight:700;margin-right:6px;letter-spacing:0.5px;">${escapeHtml(a.category.toUpperCase())}</span>` : '';
+      const priorityTag = isHigh ? `<span style="background:#e53e3e;color:#ffffff;padding:2px 7px;border-radius:4px;font-size:10.5px;font-weight:800;margin-right:6px;">🔴 ALERT</span>` : '';
+      const countIndicator = activeAnnouncementsList.length > 1 ? ` <small style="opacity:0.75;font-size:11px;">(${((idx % activeAnnouncementsList.length) + 1)}/${activeAnnouncementsList.length})</small>` : '';
+
+      const content = `${priorityTag}${categoryTag}<strong>${escapeHtml(a.title)}:</strong> ${escapeHtml(a.content)}${countIndicator}`;
+
+      containerTexts.forEach(el => {
+        el.style.transition = 'opacity 0.22s ease-in-out';
+        el.style.opacity = '0';
+        setTimeout(() => {
+          el.innerHTML = content;
+          el.style.opacity = '1';
+        }, 180);
+      });
+    }
+
+    showItem(0);
+
+    if (activeAnnouncementsList.length > 1) {
+      announceTickerInterval = setInterval(() => {
+        currentIndex++;
+        showItem(currentIndex);
+      }, 5500);
+    }
+
+    // Allow user to click announcement bar to cycle to the next one
+    const bars = document.querySelectorAll(".announce");
+    bars.forEach(b => {
+      b.style.cursor = activeAnnouncementsList.length > 1 ? 'pointer' : 'default';
+      b.title = activeAnnouncementsList.length > 1 ? 'Click to view next announcement' : '';
+      b.onclick = () => {
+        if (activeAnnouncementsList.length > 1) {
+          currentIndex++;
+          showItem(currentIndex);
+        }
+      };
+    });
+  }
+
+  function renderLiveNoticeBoard() {
+    const noticeList = document.querySelector("#liveNoticeItems") || document.querySelector(".notice-items");
+    if (!noticeList) return;
+
+    if (activeAnnouncementsList.length === 0) {
+      noticeList.innerHTML = `<li style="padding:18px 0;text-align:center;color:var(--muted);font-size:13.5px;">No active announcements currently posted. Check back soon for batch updates.</li>`;
+      return;
+    }
+
+    noticeList.innerHTML = activeAnnouncementsList.map(a => {
+      const isHigh = a.priority === 'High';
+      const catText = (a.category || 'NOTICE').toUpperCase();
+
+      return `
+        <li style="${isHigh ? 'border-left: 3px solid #e53e3e; padding-left: 12px; background: #fffcfc;' : ''}">
+          <span class="notice-tag" style="${isHigh ? 'background:#fee2e2; color:#b91c1c; font-weight:800;' : ''}">${escapeHtml(catText)}</span>
+          <div style="flex-grow:1;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
+              <strong style="color:var(--navy);font-size:14.5px;">${escapeHtml(a.title)}:</strong>
+              ${isHigh ? '<span style="font-size:11px;font-weight:700;color:#e53e3e;background:#ffebeb;padding:2px 6px;border-radius:4px;">🔴 HIGH PRIORITY</span>' : ''}
+            </div>
+            <div style="color:var(--ink);font-size:13.5px;line-height:1.5;">${escapeHtml(a.content)}</div>
+            ${a.target_course && a.target_course !== 'All Batches' ? `<div style="font-size:11.5px;color:var(--blue);font-weight:600;margin-top:4px;">🎯 Target Batch: ${escapeHtml(a.target_course)}</div>` : ''}
+          </div>
+        </li>
+      `;
+    }).join('');
+  }
+
+  // --- B. DYNAMIC STUDY RESOURCES ON STUDY-MATERIAL.HTML ---
+  let activeStudyResourcesList = [];
+
+  function getResourceFilterCategory(r) {
+    const text = `${r.course || ''} ${r.title || ''} ${r.subject || ''}`.toLowerCase();
+    const cats = [];
+    if (text.includes('ssc') || text.includes('10th') || text.includes('state') || text.includes('class x ssc')) cats.push('ssc');
+    if (text.includes('icse') || text.includes('cbse') || text.includes('class x icse')) cats.push('icse');
+    if (text.includes('hsc') || text.includes('11th') || text.includes('12th') || text.includes('xi') || text.includes('xii') || text.includes('science')) cats.push('hsc');
+    if (text.includes('cet') || text.includes('mht') || text.includes('jee') || text.includes('neet') || text.includes('entrance')) cats.push('cet');
+    if (text.includes('sunday') || text.includes('test') || text.includes('mock') || text.includes('prelim') || text.includes('model exam')) cats.push('sunday');
+    if (cats.length === 0) cats.push('all');
+    return cats.join(' ');
+  }
+
+  async function loadDynamicStudyResources() {
+    const materialGrid = document.querySelector(".material-grid");
+    if (!materialGrid) return; // Only runs on study-material.html
+
+    try {
+      const res = await fetch(`${BACKEND_API_BASE}/api/resources`);
+      const data = await res.json();
+      if (!data.success || !Array.isArray(data.resources)) return;
+
+      activeStudyResourcesList = data.resources;
+      renderStudyMaterialCards(activeStudyResourcesList);
+    } catch (err) {
+      console.debug('Using fallback static study materials (backend unreachable)');
+    }
+  }
+
+  function renderStudyMaterialCards(list) {
+    const materialGrid = document.querySelector(".material-grid");
+    if (!materialGrid) return;
+
+    if (list.length === 0) {
+      materialGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: #ffffff; border: 1px dashed var(--line); border-radius: 8px;">
+          <div style="font-size: 32px; margin-bottom: 10px;">📚</div>
+          <h3 style="color: var(--navy); margin-bottom: 6px;">No Study Resources Currently Listed</h3>
+          <p style="color: var(--muted); font-size: 13.5px;">New chapter notes, formula sheets, and Sunday test papers are being uploaded by faculty. Check back shortly!</p>
+        </div>
+      `;
+      return;
+    }
+
+    materialGrid.innerHTML = list.map((r, idx) => {
+      const categoryAttr = getResourceFilterCategory(r);
+      const badgeLabel = `${r.course || 'Curated Batch'} • ${r.subject || 'Notes'}`;
+      const fileType = r.file_type || 'PDF';
+      const fileSize = r.file_size || 'Verified Free Guide';
+      const defaultDesc = `Comprehensive chapter notes, high-scoring presentation guidelines, solved model questions, and key formula summaries prepared by senior faculty for ${r.subject || 'this subject'}.`;
+      const description = r.description || defaultDesc;
+
+      return `
+        <div class="material-card filterable-item" data-category="${categoryAttr}" data-res-id="${r.id}">
+          <span class="material-type">${escapeHtml(badgeLabel)}</span>
+          <h3>${escapeHtml(r.title)}</h3>
+          <p>${escapeHtml(description)}</p>
+          <div class="material-meta-row">
+            <span>📄 ${escapeHtml(fileType)} Guide</span>
+            <span>⚡ ${escapeHtml(fileSize)}</span>
+          </div>
+          <div class="material-actions">
+            <button class="btn-preview dynamic-preview-trigger" data-item-idx="${idx}">
+              👁️ Preview Notes
+            </button>
+            <button class="btn-download dynamic-download-trigger" data-item-idx="${idx}">
+              📥 Download
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Attach click listeners for preview and download
+    materialGrid.querySelectorAll(".dynamic-preview-trigger").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const index = parseInt(btn.getAttribute("data-item-idx"), 10);
+        const item = list[index];
+        if (item) showStudyMaterialModal(item);
+      });
+    });
+
+    materialGrid.querySelectorAll(".dynamic-download-trigger").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const index = parseInt(btn.getAttribute("data-item-idx"), 10);
+        const item = list[index];
+        if (item) handleStudyMaterialDownload(item);
+      });
+    });
+
+    // Re-apply active category filter
+    const activeBtn = document.querySelector(".filter-btn.active");
+    if (activeBtn) {
+      const activeFilter = activeBtn.getAttribute("data-filter") || "all";
+      if (typeof window.applyCategoryFilter === 'function') {
+        window.applyCategoryFilter(activeFilter);
+      }
+    }
+  }
+
+  function showStudyMaterialModal(r) {
+    if (!previewModal) return;
+
+    const titleEl = previewModal.querySelector("#previewTitle");
+    const badgeEl = previewModal.querySelector("#previewBadge");
+    const pagesEl = previewModal.querySelector("#previewPages");
+    const bodyEl = previewModal.querySelector("#previewBody");
+    const downloadBtn = previewModal.querySelector("#downloadRealBtn");
+
+    if (titleEl) titleEl.textContent = r.title;
+    if (badgeEl) badgeEl.textContent = `${r.course} • ${r.subject}`;
+    if (pagesEl) pagesEl.textContent = `${r.file_type || 'PDF Document'} • ${r.file_size || 'Free Access'}`;
+
+    if (bodyEl) {
+      bodyEl.innerHTML = `
+        <h4>Faculty Guidelines & Key Chapter Coverage:</h4>
+        <ul>
+          <li><strong>Course / Standard:</strong> ${escapeHtml(r.course)}</li>
+          <li><strong>Subject Focus:</strong> ${escapeHtml(r.subject)}</li>
+          <li><strong>Overview:</strong> ${escapeHtml(r.description || 'Verified chapter theorems, standard step-marking blueprints, and model question walkthroughs.')}</li>
+          <li><strong>Prepared By:</strong> Senior Faculty Panel, Perfect Coaching Classes, Bytco Point, Nashik Road.</li>
+          <li><strong>Classroom Advantage:</strong> Enrolled students receive complete spiral-bound printed booklets, 10-year board solutions, and Sunday mock test paper-by-paper correction.</li>
+        </ul>
+      `;
+    }
+
+    if (downloadBtn) {
+      downloadBtn.onclick = () => {
+        handleStudyMaterialDownload(r);
+      };
+    }
+
+    previewModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function handleStudyMaterialDownload(r) {
+    if (r.file_url && (r.file_url.startsWith('http://') || r.file_url.startsWith('https://') || r.file_url.endsWith('.pdf'))) {
+      window.open(r.file_url, '_blank');
+      return;
+    }
+    downloadStudyGuide(r.title, `${r.course} - ${r.subject}`);
+  }
+
+  // --- C. REALTIME CROSS-TAB SYNC & AUTOMATIC REFRESH ---
+  loadDynamicAnnouncements();
+  loadDynamicStudyResources();
+
+  // Instant update when admin saves, updates, or deletes records in Admin Portal
+  window.addEventListener("storage", (event) => {
+    if (event.key === "pcc_data_sync") {
+      loadDynamicAnnouncements();
+      loadDynamicStudyResources();
+    }
+  });
+
+  // Re-sync when user switches back to the main website tab
+  window.addEventListener("focus", () => {
+    loadDynamicAnnouncements();
+    loadDynamicStudyResources();
+  });
+
+  // Background polling every 15 seconds to keep data live
+  setInterval(() => {
+    loadDynamicAnnouncements();
+    loadDynamicStudyResources();
+  }, 15000);
+
 });
+
 
