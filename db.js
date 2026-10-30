@@ -197,15 +197,19 @@ db.serialize(() => {
 async function seedDatabaseIfEmpty() {
   try {
     // Ensure default admin user exists
-    const adminUser = await db.getAsync(`SELECT * FROM admins WHERE username = 'admin'`);
+    const defaultUser = process.env.ADMIN_USERNAME || 'pawanaher';
+    const defaultPass = process.env.ADMIN_PASSWORD || '8569';
+    const adminUser = await db.getAsync(`SELECT * FROM admins WHERE username = ?`, [defaultUser]);
     if (!adminUser) {
-      const defaultUser = process.env.ADMIN_USERNAME || 'admin';
-      const defaultPass = process.env.ADMIN_PASSWORD || 'admin123';
       await db.runAsync(`
         INSERT INTO admins (username, password_hash, full_name, role)
         VALUES (?, ?, ?, ?)
-      `, [defaultUser, defaultPass, 'Director Sir', 'Super Admin']);
-      console.log(`🔐 Default admin user created: "${defaultUser}"`);
+      `, [defaultUser, defaultPass, 'Pawan Aher (Director)', 'Super Admin']);
+      console.log(`🔐 Admin user created: "${defaultUser}"`);
+    } else {
+      await db.runAsync(`
+        UPDATE admins SET password_hash = ?, full_name = ? WHERE username = ?
+      `, [defaultPass, 'Pawan Aher (Director)', defaultUser]);
     }
 
     const studentCount = await db.getAsync(`SELECT COUNT(*) as count FROM students`);

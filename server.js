@@ -76,8 +76,8 @@ app.post('/api/admin/login', async (req, res) => {
     }
 
     const cleanUser = username.trim().toLowerCase();
-    const envUser = (process.env.ADMIN_USERNAME || 'admin').toLowerCase();
-    const envPass = process.env.ADMIN_PASSWORD || 'admin123';
+    const envUser = (process.env.ADMIN_USERNAME || 'pawanaher').toLowerCase();
+    const envPass = process.env.ADMIN_PASSWORD || '8569';
 
     // Check against SQLite admins table or environment variables
     const dbAdmin = await db.getAsync('SELECT * FROM admins WHERE LOWER(username) = ?', [cleanUser]);
