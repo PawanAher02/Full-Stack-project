@@ -261,47 +261,6 @@
             transform: none;
         }
 
-        /* Demo credentials helper card */
-        .demo-credentials-box {
-            background: #f8fafc;
-            border: 1px dashed #cbd5e1;
-            border-radius: 10px;
-            padding: 12px 14px;
-            margin-top: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-align: left;
-            font-size: 12px;
-            color: #334155;
-        }
-
-        .demo-credentials-box code {
-            background: #e2e8f0;
-            padding: 2px 5px;
-            border-radius: 4px;
-            font-weight: 700;
-            color: var(--dash-navy);
-        }
-
-        .autofill-btn {
-            background: #ffffff;
-            border: 1px solid var(--dash-border);
-            padding: 6px 12px;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--dash-teal);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .autofill-btn:hover {
-            background: var(--dash-teal);
-            color: #ffffff;
-            border-color: var(--dash-teal);
-        }
 
         .back-link {
             display: inline-flex;
@@ -362,17 +321,6 @@
                     <span>🔐 Sign In to Admin Console</span>
                 </button>
             </form>
-
-            <!-- Quick Demo Credentials Box -->
-            <div class="demo-credentials-box">
-                <div>
-                    <div style="font-weight: 700; margin-bottom: 2px;">Administrator Credentials:</div>
-                    <span>User: <code>pawanaher</code> &bull; Pass: <code>8569</code></span>
-                </div>
-                <button type="button" class="autofill-btn" onclick="autofillCredentials()" title="Quick fill login inputs">
-                    ⚡ Quick Fill
-                </button>
-            </div>
         </div>
 
         <!-- Back to Website -->
@@ -417,13 +365,6 @@
             alertEl.innerHTML = (type === 'error' ? '⚠️ ' : '✅ ') + message;
         }
 
-        // Autofill Credentials
-        function autofillCredentials() {
-            document.getElementById('adminUsername').value = 'pawanaher';
-            document.getElementById('adminPassword').value = '8569';
-            const alertEl = document.getElementById('loginAlert');
-            alertEl.style.display = 'none';
-        }
 
         // Toggle Password Visibility
         function togglePasswordVisibility() {

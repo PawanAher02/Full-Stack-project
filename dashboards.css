@@ -1045,24 +1045,3 @@ table.dash-table tr:hover td {
   text-align: left;
 }
 
-.admin-login-demo-chip {
-  background: #f0f7fb;
-  border: 1px solid #cde4f2;
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-size: 12px;
-  color: var(--dash-navy);
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  text-align: left;
-}
-
-.admin-login-demo-chip code {
-  background: #e2eff7;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: 700;
-  color: var(--dash-orange);
-}
