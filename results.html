@@ -33,6 +33,9 @@
                 <a class="active" href="results.html">
                     Results
                 </a>
+                <a href="study-material.html">
+                    Free Study Material
+                </a>
             </div>
 
             <div>
@@ -63,17 +66,26 @@
 
             <!-- Navigation Menu -->
             <div class="menu">
-                <a href="index.html">HOME</a>
-                <a href="about.html">ABOUT US</a>
-                <a href="courses.html">COURSES</a>
-                <a class="active" href="results.html">RESULTS</a>
-                <a href="contact.html">CONTACT</a>
+                <div class="mobile-menu-header">
+                    <span class="mobile-menu-title">🌟 Perfect Coaching Classes</span>
+                    <small>Nashik Road • Estd. 2006 • Bytco Point</small>
+                </div>
+                <a href="index.html"><span class="menu-icon">🏠</span> HOME</a>
+                <a href="about.html"><span class="menu-icon">📖</span> ABOUT US</a>
+                <a href="courses.html"><span class="menu-icon">🎓</span> COURSES</a>
+                <a class="active" href="results.html"><span class="menu-icon">🏆</span> RESULTS</a>
+                <a href="study-material.html"><span class="menu-icon">📚</span> STUDY MATERIAL</a>
+                <a href="contact.html"><span class="menu-icon">📞</span> CONTACT</a>
+                <div class="mobile-menu-actions">
+                    <a href="tel:+919822661307" class="mob-menu-btn call">📞 Call Counsellor</a>
+                    <a href="https://wa.me/919822661307?text=Hi%2C%20I%20want%20to%20enquire%20about%20admissions" class="mob-menu-btn wa" target="_blank" rel="noopener noreferrer">💬 WhatsApp Chat</a>
+                </div>
             </div>
 
             <!-- Admission Button -->
-            <a class="admission" href="contact.html">
-                Admissions Open
-            </a>
+            <button class="admission" data-open-demo-modal style="border:none; cursor:pointer;">
+                Book Free Demo Class
+            </button>
 
             <!-- Mobile Toggle -->
             <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu">
@@ -117,44 +129,237 @@
             </div>
         </section>
 
-        <!-- ========== Student Gallery Section ========== -->
+        <!-- ========== Hall of Fame & Toppers Gallery ========== -->
         <section>
             <div class="container">
-                <p class="eyebrow">
-                    Our Proud Achievers
-                </p>
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <p class="eyebrow">Hall of Fame</p>
+                        <h2>Our Star Achievers & Board Toppers</h2>
+                        <p class="lead" style="margin-bottom: 0;">
+                            Filter our top scorers by examination stream to view verifiable scores and alumni testimonials.
+                        </p>
+                    </div>
 
-                <h2>
-                    Celebrating Academic Milestones Year After Year
-                </h2>
+                    <button class="btn" data-open-demo-modal>
+                        Join Toppers Batch 2026-27
+                    </button>
+                </div>
 
-                <p class="lead">
-                    These results reflect the relentless hard work of our students,
-                    the dedicated guidance of our faculty, and the continuous trust
-                    placed in Perfect Coaching Classes by Nashik families since 2006.
-                </p>
-
-                <!-- Student Gallery Cards -->
-                <div class="result-gallery">
-
-                    <div class="result-photo">
+                <!-- ========== Featured Toppers & Silk Book Awards Gallery ========== -->
+                <div class="topper-showcase-box">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
                         <div>
-                            <b>95%+ SSC & ICSE Toppers</b>
-                            <span>Consistent city-level top scores in 10th examinations.</span>
+                            <span class="badge" style="background:#e8f4fd; color:var(--navy); font-weight:700;">🎖️ Star Felicitations</span>
+                            <h3 style="font-family: Georgia, serif; font-size: 24px; color: var(--navy); margin-top: 6px; margin-bottom: 4px;">
+                                Silk Book Awards & Math Toppers Showcase
+                            </h3>
+                            <p style="color: var(--muted); font-size: 14px; margin-bottom: 0;">
+                                Celebrating student brilliance in Math, exemplary notebook presentation, and consistent test series results. Click any poster to view in full resolution.
+                            </p>
+                        </div>
+                        <span style="font-size: 12.5px; color: var(--orange); font-weight: 700; background: #fff5ee; padding: 6px 14px; border-radius: 20px; border: 1px solid #ffd4bd;">
+                            ✨ Verified PCC Felicitations
+                        </span>
+                    </div>
+
+                    <div class="result-gallery" style="margin-top: 0;">
+
+                        <!-- Topper Poster 1: School Math Toppers -->
+                        <div class="topper-poster-card" data-full-img="assets/topper-math-school.jpg" data-caption="Topper in Math at School — Felicitation Ceremony at Perfect Coaching Classes, Nashik Road">
+                            <div class="topper-poster-thumb">
+                                <img src="assets/topper-math-school.jpg" alt="Topper in Math at School - Perfect Coaching Classes Star Students" loading="lazy">
+                                <span class="topper-badge topper-badge--gold">🏆 School Math Toppers</span>
+                                <div class="topper-poster-hover">
+                                    <span class="topper-zoom-btn">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                                        View Full Poster
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="topper-poster-body">
+                                <span class="topper-meta">School & Board Examinations</span>
+                                <h3 class="topper-title">Topper in Math at School!</h3>
+                                <p class="topper-desc">
+                                    Celebrating our mathematics rankers with personalized mentorship and weekly Sunday test drills that turn complex formulas into top board scores.
+                                </p>
+                                <div class="topper-highlights">
+                                    <span>🎯 Focus & Consistency</span>
+                                    <span>📈 Smart Practice</span>
+                                    <span>⭐ High Scores</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Topper Poster 2: Silk Book Awards - Math Presentation -->
+                        <div class="topper-poster-card" data-full-img="assets/silk-book-awards.png" data-caption="Silk Book Awards: Best Book & Math Presentation Award — Perfect Coaching Classes">
+                            <div class="topper-poster-thumb">
+                                <img src="assets/silk-book-awards.png" alt="Silk Book Awards - Best Presentation Award in Math - Perfect Coaching Classes" loading="lazy">
+                                <span class="topper-badge topper-badge--silk">🍫 Silk Book Award</span>
+                                <div class="topper-poster-hover">
+                                    <span class="topper-zoom-btn">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                                        View Full Poster
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="topper-poster-body">
+                                <span class="topper-meta">Math Presentation & Clarity</span>
+                                <h3 class="topper-title">Silk Book Award: Math Presentation</h3>
+                                <p class="topper-desc">
+                                    Awarded for the most creative and clean mathematical presentation across all batches. Honoring conceptual clarity with our signature Cadbury Silk award!
+                                </p>
+                                <div class="topper-highlights">
+                                    <span>📐 Best Presentation</span>
+                                    <span>💡 Concept Clarity</span>
+                                    <span>🍫 Silk Recognition</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Topper Poster 3: Silk Book Presentation Champions -->
+                        <div class="topper-poster-card" data-full-img="assets/silk-book-presentation.jpg" data-caption="Silk Book Presentation Award: Same Notebooks, Big Dreams — Perfect Coaching Classes">
+                            <div class="topper-poster-thumb">
+                                <img src="assets/silk-book-presentation.jpg" alt="Silk Book Award - Same Notebooks Big Dreams - Perfect Coaching Classes" loading="lazy">
+                                <span class="topper-badge topper-badge--teal">✨ Presentation Champions</span>
+                                <div class="topper-poster-hover">
+                                    <span class="topper-zoom-btn">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                                        View Full Poster
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="topper-poster-body">
+                                <span class="topper-meta">Neat Work & Creative Minds</span>
+                                <h3 class="topper-title">Same Notebooks... Big Dreams!</h3>
+                                <p class="topper-desc">
+                                    Inspiring students to Plan, Prepare, Present, and Excel. Every Sunday test notebook is reviewed for step-by-step layout and immaculate presentation.
+                                </p>
+                                <div class="topper-highlights">
+                                    <span>📝 Neat Work</span>
+                                    <span>🌟 Creative Minds</span>
+                                    <span>🚀 Bright Futures</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Stream Filter Tabs -->
+                <div style="margin-top: 40px; margin-bottom: 20px;">
+                    <h3 style="font-family: Georgia, serif; font-size: 22px; color: var(--navy); margin-bottom: 6px;">
+                        Individual Board & Entrance Exam Rankers
+                    </h3>
+                    <p style="color: var(--muted); font-size: 14px; margin-bottom: 0;">
+                        Filter top scorers by examination stream to view verifiable marks, school names, and student quotes.
+                    </p>
+                </div>
+
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">All Achievers</button>
+                    <button class="filter-btn" data-filter="ssc">10th SSC Board</button>
+                    <button class="filter-btn" data-filter="icse">10th ICSE Board</button>
+                    <button class="filter-btn" data-filter="hsc">12th HSC Science</button>
+                    <button class="filter-btn" data-filter="cet">MHT-CET & JEE/NEET</button>
+                </div>
+
+                <!-- Filterable Topper Cards Grid -->
+                <div class="cards" style="grid-template-columns: repeat(3, 1fr);">
+
+                    <!-- Topper 1 -->
+                    <div class="topper-card filterable-item" data-category="ssc">
+                        <div class="topper-score-box">
+                            <b>97.40%</b>
+                            <small>SSC Board</small>
+                        </div>
+                        <div class="topper-info">
+                            <h4>Prathamesh Kadam</h4>
+                            <span class="topper-school">Purushottam English School, Nashik Road</span>
+                            <span class="badge" style="margin-bottom: 6px;">100/100 in Maths</span>
+                            <p class="topper-quote">
+                                "The Sunday test series was the turning point. Teachers personally sat with me to point out where I lost 1–2 marks in geometry theorems."
+                            </p>
                         </div>
                     </div>
 
-                    <div class="result-photo">
-                        <div>
-                            <b>HSC Science Distinctions</b>
-                            <span>Outstanding performance in Physics, Chemistry & Mathematics.</span>
+                    <!-- Topper 2 -->
+                    <div class="topper-card filterable-item" data-category="icse">
+                        <div class="topper-score-box" style="background: linear-gradient(135deg, #d96b27, #b85418);">
+                            <b>96.80%</b>
+                            <small>ICSE Board</small>
+                        </div>
+                        <div class="topper-info">
+                            <h4>Neha Deshmukh</h4>
+                            <span class="topper-school">Barnes School & Junior College, Deolali</span>
+                            <span class="badge" style="margin-bottom: 6px;">98/100 in Science</span>
+                            <p class="topper-quote">
+                                "Physics numericals and chemical equations became crystal clear. The faculty never rushed through any topic until our doubts were resolved."
+                            </p>
                         </div>
                     </div>
 
-                    <div class="result-photo">
-                        <div>
-                            <b>MHT-CET & Entrance Qualifiers</b>
-                            <span>High percentiles securing admissions into premier colleges.</span>
+                    <!-- Topper 3 -->
+                    <div class="topper-card filterable-item" data-category="cet">
+                        <div class="topper-score-box" style="background: linear-gradient(135deg, #10b981, #047857);">
+                            <b>99.12%tile</b>
+                            <small>MHT-CET</small>
+                        </div>
+                        <div class="topper-info">
+                            <h4>Rohan Shinde</h4>
+                            <span class="topper-school">K.T.H.M. College (Admitted to COEP Pune)</span>
+                            <span class="badge" style="margin-bottom: 6px;">COEP Mechanical</span>
+                            <p class="topper-quote">
+                                "Shortcut methods for Calculus and 3D vectors taught by Er. Rajesh More saved me crucial minutes during the real MHT-CET exam!"
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Topper 4 -->
+                    <div class="topper-card filterable-item" data-category="hsc">
+                        <div class="topper-score-box">
+                            <b>94.60%</b>
+                            <small>HSC Science</small>
+                        </div>
+                        <div class="topper-info">
+                            <h4>Ananya Joshi</h4>
+                            <span class="topper-school">R.Y.K. Science College, Nashik</span>
+                            <span class="badge" style="margin-bottom: 6px;">PCMB Distinction</span>
+                            <p class="topper-quote">
+                                "Derivations in Physics and textbook numericals in Chemistry were drilled thoroughly before board prelims. 100% credit to Perfect Classes!"
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Topper 5 -->
+                    <div class="topper-card filterable-item" data-category="ssc">
+                        <div class="topper-score-box">
+                            <b>95.80%</b>
+                            <small>SSC Board</small>
+                        </div>
+                        <div class="topper-info">
+                            <h4>Aditya Gaikwad</h4>
+                            <span class="topper-school">St. Philomena High School, Nashik Road</span>
+                            <span class="badge" style="margin-bottom: 6px;">99/100 in Science</span>
+                            <p class="topper-quote">
+                                "From 72% in preliminary school exams to 95.8% in the final board! The error register maintained every Sunday made all the difference."
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Topper 6 -->
+                    <div class="topper-card filterable-item" data-category="cet">
+                        <div class="topper-score-box" style="background: linear-gradient(135deg, #10b981, #047857);">
+                            <b>98.45%tile</b>
+                            <small>MHT-CET / JEE</small>
+                        </div>
+                        <div class="topper-info">
+                            <h4>Saurabh Patil</h4>
+                            <span class="topper-school">Nashik Road (VJTI Mumbai Selected)</span>
+                            <span class="badge" style="margin-bottom: 6px;">VJTI IT Selected</span>
+                            <p class="topper-quote">
+                                "Mock tests held on computers under timed exam environment prepared me psychologically for entrance pressure. Best coaching in Nashik Road."
+                            </p>
                         </div>
                     </div>
 
@@ -168,7 +373,7 @@
                         <h3>100% Board Pass Record</h3>
                         <p>
                             Unbroken tradition of 100% pass results in 10th SSC, ICSE,
-                            and 12th HSC Science board examinations across batches.
+                            and 12th HSC Science board examinations across 18 consecutive years.
                         </p>
                     </div>
 
@@ -177,7 +382,7 @@
                         <h3>5,000+ Students Guided</h3>
                         <p>
                             Over five thousand students mentored since 2006, now studying
-                            in leading engineering, medical, and professional institutions.
+                            in leading engineering, medical, and professional institutions (COEP, VJTI, PICT, GMC).
                         </p>
                     </div>
 
@@ -233,11 +438,11 @@
                             "I joined Perfect Coaching Classes for Class X ICSE. The faculty breaks down
                             difficult Physics and Chemistry problems with such ease.
                             The chapter-wise notes and doubt-clearing sessions before board exams
-                            were priceless. I scored 96.4%!"
+                            were priceless. I scored 96.8%!"
                         </p>
                         <div class="testimonial-author">
                             <b>Neha Deshmukh</b>
-                            <span>Class X ICSE Board Topper (96.4%)</span>
+                            <span>Class X ICSE Board Topper (96.8%)</span>
                         </div>
                     </div>
 
@@ -246,11 +451,11 @@
                         <p class="testimonial-quote">
                             "The coaching for 11th & 12th Science and MHT-CET here is second to none
                             in Nashik Road. The shortcut methods and mock tests helped me secure
-                            98.6 percentile in MHT-CET and an engineering seat in Pune!"
+                            99.12 percentile in MHT-CET and an engineering seat in COEP Pune!"
                         </p>
                         <div class="testimonial-author">
                             <b>Rohan Shinde</b>
-                            <span>HSC Science 91.8% & MHT-CET 98.6%tile</span>
+                            <span>HSC Science 91.8% & MHT-CET 99.12%tile</span>
                         </div>
                     </div>
 
@@ -274,7 +479,7 @@
                             <span style="font-weight: 800; color: var(--orange); font-size: 18px;">01.</span>
                             <div>
                                 <b style="color: var(--navy); font-size: 15px; display: block; margin-bottom: 4px;">Early Syllabus Completion</b>
-                                <span style="color: var(--muted); font-size: 13.5px;">We complete the core syllabus by November, leaving over 3 months dedicated solely to revision and full-length prelims.</span>
+                                <span style="color: var(--muted); font-size: 13.5px;">We complete the core syllabus by mid-November, leaving over 3 months dedicated solely to revision and full-length prelims.</span>
                             </div>
                         </div>
 
@@ -298,20 +503,123 @@
 
                 <div style="background: #eaf4f8; padding: 40px 32px; border-radius: 8px; border: 1px solid #cde4ef; display: flex; flex-direction: column; justify-content: center;">
                     <h3 style="font-family: Georgia, serif; font-size: 22px; color: var(--navy); margin: 0 0 14px;">
-                        Aiming for 90%+ in the Upcoming Board Exam?
+                        Ready to Write Your Success Story?
                     </h3>
-                    <p style="color: #4b6678; font-size: 14.5px; line-height: 1.65; margin: 0 0 24px;">
-                        Join our focused classroom batches or weekend Sunday test series.
-                        Get your diagnostic evaluation and personalized study plan today.
+                    <p style="color: #4b6678; font-size: 14px; line-height: 1.6; margin-bottom: 24px;">
+                        Admissions for the 2026–27 batch are filling quickly.
+                        Book a 2-day free trial class to experience the teaching quality firsthand.
                     </p>
-                    <a class="btn" href="contact.html">
-                        Apply for Admissions 2026–27
-                    </a>
+                    <button class="btn" data-open-demo-modal style="width: 100%; border:none; cursor:pointer;">
+                        Book 2-Day Free Trial Class
+                    </button>
                 </div>
             </div>
         </section>
 
     </main>
+
+    <!-- ================= Book 2-Day Free Demo Class Modal ================= -->
+    <div class="modal-overlay" id="demoClassModal">
+        <div class="modal-window">
+            <button class="modal-close-btn" data-close-demo-modal aria-label="Close modal">&times;</button>
+            <span class="badge" style="background:#fff3eb; color:var(--orange);">Limited Batch Seats</span>
+            <h3>Book 2-Day Free Trial Class</h3>
+            <p class="modal-sub">
+                Experience our teaching methodology, inspect our study material, and interact with senior faculty at our Nashik Road campus before enrolling.
+            </p>
+
+            <form id="demoForm">
+                <div class="form-group">
+                    <label for="demoName">Student Full Name *</label>
+                    <input type="text" id="demoName" placeholder="Enter student's name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoMobile">Parent / Student Mobile Number *</label>
+                    <input type="tel" id="demoMobile" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoCourse">Course / Standard *</label>
+                    <select id="demoCourse" required>
+                        <option value="Class X SSC (Maharashtra Board)">Class X SSC (Maharashtra State Board)</option>
+                        <option value="Class X ICSE & CBSE Board">Class X ICSE & CBSE Board</option>
+                        <option value="Class XI Science (HSC Board)">Class XI Science (HSC Board)</option>
+                        <option value="Class XII Science (HSC Board)">Class XII Science (HSC Board)</option>
+                        <option value="MHT-CET Entrance Batch">MHT-CET Entrance Batch</option>
+                        <option value="JEE Main & NEET Foundation">JEE Main & NEET Foundation</option>
+                        <option value="Class VII–IX Foundation">Class VII–IX Middle School Foundation</option>
+                        <option value="Sunday Test Series Only">Sunday Test Series Only</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoShift">Preferred Batch Shift</label>
+                    <select id="demoShift">
+                        <option value="Morning Batch">Morning Batch (7:00 AM – 10:30 AM)</option>
+                        <option value="Evening Batch">Evening Batch (4:00 PM – 8:00 PM)</option>
+                        <option value="Sunday Batch">Sunday Test & Doubt Session (8:30 AM – 1:00 PM)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoDate">Preferred Date / Comments</label>
+                    <input type="text" id="demoDate" placeholder="e.g. Tomorrow or this Saturday">
+                </div>
+
+                <button class="btn" type="submit" style="width: 100%; margin-top: 10px;">
+                    Confirm Free Demo Seat 🎓
+                </button>
+
+                <div id="demoStatus" class="form-status"></div>
+
+                <p style="font-size: 11.5px; color: var(--muted); margin-top: 12px; text-align: center;">
+                    🔒 100% Free • No obligation • Confirmation sent via WhatsApp & SMS.
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= Topper Poster Image Lightbox Modal ================= -->
+    <div class="image-lightbox-modal" id="topperLightboxModal" role="dialog" aria-modal="true" aria-label="Topper Poster Preview">
+        <div class="lightbox-dialog">
+            <button class="lightbox-close" aria-label="Close poster preview">&times;</button>
+            <div class="lightbox-img-wrapper">
+                <img id="lightboxImg" src="" alt="Topper Poster Preview">
+            </div>
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
+
+    <!-- ================= Floating Actions ================= -->
+    <div class="floating-actions">
+        <button class="floating-demo-pill" data-open-demo-modal aria-label="Book Free Demo Class">
+            <span>🎓 Free Demo Class</span>
+        </button>
+        <a class="floating-whatsapp" href="https://wa.me/919822661307?text=Hi%2C%20I%20am%20enquiring%20about%20results%20and%20admissions%20at%20Perfect%20Coaching%20Classes%20Nashik%20Road"
+            target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+            <svg viewBox="0 0 24 24">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.07-1.74-.388-1.416-.587-2.338-2.032-2.408-2.126-.07-.093-.578-.769-.578-1.467 0-.698.365-1.042.495-1.187.13-.146.286-.182.381-.182.095 0 .19.002.273.007.087.006.204-.033.318.242.118.286.402.98.437 1.052.035.072.059.156.012.25-.047.094-.07.153-.14.235-.07.083-.147.185-.21.248-.07.07-.144.147-.062.288.082.141.365.602.784.975.539.48 1 .632 1.144.704.144.07.228.059.312-.038.085-.097.365-.424.462-.57.097-.146.195-.122.327-.073.133.048.843.398.988.47.145.073.242.11.278.17.036.06.036.35-.108.755z"/>
+            </svg>
+            <span>WhatsApp Us</span>
+        </a>
+        <button class="back-to-top" id="backToTopBtn" aria-label="Back to Top">↑</button>
+    </div>
+
+    <!-- ================= Mobile Quick Action Bar ================= -->
+    <div class="mobile-action-bar">
+        <div class="mobile-action-bar-grid">
+            <a class="mob-act-btn mob-act-call" href="tel:+919822661307">
+                📞 Call Now
+            </a>
+            <a class="mob-act-btn mob-act-wa" href="https://wa.me/919822661307?text=Hi%2C%20I%20want%20to%20enquire%20about%20coaching%20classes" target="_blank" rel="noopener noreferrer">
+                💬 WhatsApp
+            </a>
+            <button class="mob-act-btn mob-act-demo" data-open-demo-modal>
+                🎓 Free Demo
+            </button>
+        </div>
+    </div>
 
     <!-- ================= Footer ================= -->
     <footer>
@@ -350,6 +658,7 @@
                 <a href="about.html">About Institute</a>
                 <a href="courses.html">Course Brochure</a>
                 <a href="results.html">Student Achievements</a>
+                <a href="study-material.html">Free Study Material</a>
                 <a href="contact.html">Admissions & Contact</a>
                 <a href="tel:+919822661307">📞 +91 98226 61307</a>
                 <a href="mailto:info@perfectcoachingclasses.com">✉️ info@perfectcoachingclasses.com</a>

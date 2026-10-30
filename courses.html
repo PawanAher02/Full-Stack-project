@@ -33,6 +33,9 @@
                 <a href="results.html">
                     Results
                 </a>
+                <a href="study-material.html">
+                    Free Study Material
+                </a>
             </div>
 
             <div>
@@ -63,17 +66,26 @@
 
             <!-- Navigation Menu -->
             <div class="menu">
-                <a href="index.html">HOME</a>
-                <a href="about.html">ABOUT US</a>
-                <a class="active" href="courses.html">COURSES</a>
-                <a href="results.html">RESULTS</a>
-                <a href="contact.html">CONTACT</a>
+                <div class="mobile-menu-header">
+                    <span class="mobile-menu-title">🌟 Perfect Coaching Classes</span>
+                    <small>Nashik Road • Estd. 2006 • Bytco Point</small>
+                </div>
+                <a href="index.html"><span class="menu-icon">🏠</span> HOME</a>
+                <a href="about.html"><span class="menu-icon">📖</span> ABOUT US</a>
+                <a class="active" href="courses.html"><span class="menu-icon">🎓</span> COURSES</a>
+                <a href="results.html"><span class="menu-icon">🏆</span> RESULTS</a>
+                <a href="study-material.html"><span class="menu-icon">📚</span> STUDY MATERIAL</a>
+                <a href="contact.html"><span class="menu-icon">📞</span> CONTACT</a>
+                <div class="mobile-menu-actions">
+                    <a href="tel:+919822661307" class="mob-menu-btn call">📞 Call Counsellor</a>
+                    <a href="https://wa.me/919822661307?text=Hi%2C%20I%20want%20to%20enquire%20about%20admissions" class="mob-menu-btn wa" target="_blank" rel="noopener noreferrer">💬 WhatsApp Chat</a>
+                </div>
             </div>
 
             <!-- Admission Button -->
-            <a class="admission" href="contact.html">
-                Admissions Open
-            </a>
+            <button class="admission" data-open-demo-modal style="border:none; cursor:pointer;">
+                Book Free Demo Class
+            </button>
 
             <!-- Mobile Toggle -->
             <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu">
@@ -121,26 +133,37 @@
         <!-- ========== Courses Section ========== -->
         <section>
             <div class="container">
-                <p class="eyebrow">
-                    Classroom Programs
-                </p>
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <p class="eyebrow">Classroom Programs</p>
+                        <h2>Courses Offered at Perfect Coaching Classes</h2>
+                        <p class="lead" style="margin-bottom: 0;">
+                            Every course includes comprehensive lectures, topic-wise study material,
+                            regular weekly Sunday tests, and dedicated doubt-clearing sessions at our Nashik Road campus.
+                        </p>
+                    </div>
 
-                <h2>
-                    Courses Offered at Perfect Coaching Classes
-                </h2>
+                    <button class="btn" data-open-demo-modal>
+                        Reserve 2-Day Trial Seat
+                    </button>
+                </div>
 
-                <p class="lead">
-                    Every course includes comprehensive lectures, topic-wise study material,
-                    regular weekly Sunday tests, and dedicated doubt-clearing sessions
-                    at our Nashik Road campus.
-                </p>
+                <!-- Course Category Filter Tabs -->
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">All Programs</button>
+                    <button class="filter-btn" data-filter="foundation">Middle School (VII–IX)</button>
+                    <button class="filter-btn" data-filter="class10">Class X Boards (SSC / ICSE)</button>
+                    <button class="filter-btn" data-filter="science">Class XI & XII Science (HSC)</button>
+                    <button class="filter-btn" data-filter="entrance">MHT-CET & JEE/NEET</button>
+                    <button class="filter-btn" data-filter="test-series">Sunday Test Series Only</button>
+                </div>
 
                 <!-- Course Cards Grid -->
                 <div class="cards">
 
                     <!-- Course 1 -->
-                    <div class="card">
-                        <span class="badge">Middle School</span>
+                    <div class="card filterable-item" data-category="foundation">
+                        <span class="badge">Middle School Foundation</span>
                         <h3>Class VII, VIII & IX Foundation</h3>
                         <p>
                             Builds an early, robust understanding of Mathematics, Science, and English.
@@ -153,12 +176,14 @@
                             <li>Foundation for Olympiads & NTSE exams</li>
                         </ul>
                         <div class="card-action">
-                            <a class="btn" href="contact.html">Inquire for Batch</a>
+                            <button class="btn" data-open-demo-modal data-course="Class VII–IX Foundation" style="width: 100%; border:none; cursor:pointer;">
+                                Book Free Demo Class
+                            </button>
                         </div>
                     </div>
 
                     <!-- Course 2 -->
-                    <div class="card">
+                    <div class="card filterable-item" data-category="class10">
                         <span class="badge">Board Topper Program</span>
                         <h3>Class X SSC (Maharashtra State Board)</h3>
                         <p>
@@ -172,13 +197,15 @@
                             <li>Special doubt counters & personalized revision sessions</li>
                         </ul>
                         <div class="card-action">
-                            <a class="btn" href="contact.html">Inquire for Batch</a>
+                            <button class="btn" data-open-demo-modal data-course="Class X SSC (Maharashtra Board)" style="width: 100%; border:none; cursor:pointer;">
+                                Book Free Demo Class
+                            </button>
                         </div>
                     </div>
 
                     <!-- Course 3 -->
-                    <div class="card">
-                        <span class="badge">ICSE & CBSE</span>
+                    <div class="card filterable-item" data-category="class10">
+                        <span class="badge">ICSE & CBSE Excellence</span>
                         <h3>Class X ICSE & CBSE Board Excellence</h3>
                         <p>
                             Tailored for students in ICSE and CBSE schools across Nashik.
@@ -192,13 +219,15 @@
                             <li>Comprehensive study notes & formula booklets</li>
                         </ul>
                         <div class="card-action">
-                            <a class="btn" href="contact.html">Inquire for Batch</a>
+                            <button class="btn" data-open-demo-modal data-course="Class X ICSE & CBSE Board" style="width: 100%; border:none; cursor:pointer;">
+                                Book Free Demo Class
+                            </button>
                         </div>
                     </div>
 
                     <!-- Course 4 -->
-                    <div class="card">
-                        <span class="badge">Junior College</span>
+                    <div class="card filterable-item" data-category="science">
+                        <span class="badge">Junior College (HSC)</span>
                         <h3>Class XI & XII Science (HSC Board)</h3>
                         <p>
                             Thorough preparation for Higher Secondary Certificate (HSC) examinations
@@ -212,12 +241,14 @@
                             <li>Practical exam viva and experiment guidance</li>
                         </ul>
                         <div class="card-action">
-                            <a class="btn" href="contact.html">Inquire for Batch</a>
+                            <button class="btn" data-open-demo-modal data-course="Class XI & XII Science (HSC Board)" style="width: 100%; border:none; cursor:pointer;">
+                                Book Free Demo Class
+                            </button>
                         </div>
                     </div>
 
                     <!-- Course 5 -->
-                    <div class="card">
+                    <div class="card filterable-item" data-category="entrance">
                         <span class="badge">Maharashtra Entrance</span>
                         <h3>MHT-CET Entrance Batch</h3>
                         <p>
@@ -231,12 +262,14 @@
                             <li>Past 10 years MHT-CET question analysis</li>
                         </ul>
                         <div class="card-action">
-                            <a class="btn" href="contact.html">Inquire for Batch</a>
+                            <button class="btn" data-open-demo-modal data-course="MHT-CET Entrance Batch" style="width: 100%; border:none; cursor:pointer;">
+                                Book Free Demo Class
+                            </button>
                         </div>
                     </div>
 
                     <!-- Course 6 -->
-                    <div class="card">
+                    <div class="card filterable-item" data-category="entrance">
                         <span class="badge">National Entrance</span>
                         <h3>JEE Main & NEET Medical Foundation</h3>
                         <p>
@@ -251,12 +284,293 @@
                             <li>Stress-free study plans and mentoring</li>
                         </ul>
                         <div class="card-action">
-                            <a class="btn" href="contact.html">Inquire for Batch</a>
+                            <button class="btn" data-open-demo-modal data-course="JEE Main & NEET Foundation" style="width: 100%; border:none; cursor:pointer;">
+                                Book Free Demo Class
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Course 7 -->
+                    <div class="card filterable-item" data-category="test-series">
+                        <span class="badge">Exclusive Testing</span>
+                        <h3>Sunday Test Series & Prelim Batch Only</h3>
+                        <p>
+                            Designed specifically for external candidates who wish to test their preparation
+                            under rigorous board exam conditions without full classroom enrollment.
+                        </p>
+                        <ul class="card-features">
+                            <li>35+ weekly Sunday test sessions on full board patterns</li>
+                            <li>Detailed paper correction with line-by-line teacher notes</li>
+                            <li>Rank cards & comparative analytics for parents</li>
+                            <li>3 Rounds of full-syllabus prelim simulations</li>
+                        </ul>
+                        <div class="card-action">
+                            <button class="btn" data-open-demo-modal data-course="Sunday Test Series Only" style="width: 100%; border:none; cursor:pointer;">
+                                Register for Test Series
+                            </button>
                         </div>
                     </div>
 
                 </div>
 
+            </div>
+        </section>
+
+        <!-- ========== Interactive Timetable & Sunday Test Schedule ========== -->
+        <section class="light" style="padding: 60px 0;">
+            <div class="container">
+                <div style="text-align: center; max-width: 720px; margin: 0 auto 30px;">
+                    <p class="eyebrow">Academic Timetable</p>
+                    <h2>Class Timetable & Sunday Test Schedule</h2>
+                    <p class="lead" style="margin: 0 auto;">
+                        We balance school and junior college shifts with convenient morning and evening options.
+                        Check our weekly schedule and Sunday test series calendar below.
+                    </p>
+                </div>
+
+                <!-- Schedule Nav Tabs -->
+                <div class="schedule-tabs-nav">
+                    <button class="schedule-tab-btn active" data-tab="tab-daily">Daily Classroom Batches</button>
+                    <button class="schedule-tab-btn" data-tab="tab-sunday">Sunday Test Series 2026-27</button>
+                    <button class="schedule-tab-btn" data-tab="tab-roadmap">Annual Board Roadmap</button>
+                </div>
+
+                <!-- Pane 1: Daily Batches -->
+                <div class="schedule-pane active" id="tab-daily">
+                    <div class="table-swipe-hint">👉 Swipe table sideways to view shifts</div>
+                    <div class="schedule-table-wrap">
+                        <table class="schedule-table">
+                            <thead>
+                                <tr>
+                                    <th>Standard / Course</th>
+                                    <th>Days</th>
+                                    <th>Morning Shift</th>
+                                    <th>Evening Shift</th>
+                                    <th>Focus Subjects</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Class VII – IX Foundation</strong></td>
+                                    <td>Mon to Fri</td>
+                                    <td>—</td>
+                                    <td><span class="time-badge">4:30 PM – 6:30 PM</span></td>
+                                    <td>Maths, Science, English Grammar</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Class X SSC (Maharashtra)</strong></td>
+                                    <td>Mon to Sat</td>
+                                    <td><span class="time-badge">7:00 AM – 9:30 AM</span></td>
+                                    <td><span class="time-badge">5:30 PM – 8:00 PM</span></td>
+                                    <td>Maths (Part 1 & 2), Science, Social Sciences</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Class X ICSE & CBSE</strong></td>
+                                    <td>Mon to Sat</td>
+                                    <td>—</td>
+                                    <td><span class="time-badge">4:00 PM – 7:00 PM</span></td>
+                                    <td>Physics, Chemistry, Biology, Advanced Maths</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Class XI Science (HSC)</strong></td>
+                                    <td>Mon to Sat</td>
+                                    <td><span class="time-badge">7:00 AM – 10:30 AM</span></td>
+                                    <td><span class="time-badge">4:00 PM – 7:30 PM</span></td>
+                                    <td>Physics, Chemistry, Maths, Biology (PCMB)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Class XII Science + MHT-CET</strong></td>
+                                    <td>Mon to Sat</td>
+                                    <td><span class="time-badge">6:45 AM – 10:30 AM</span></td>
+                                    <td><span class="time-badge">4:30 PM – 8:15 PM</span></td>
+                                    <td>HSC Theory + Daily 45-Min MCQ Speed Drills</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pane 2: Sunday Tests -->
+                <div class="schedule-pane" id="tab-sunday">
+                    <div class="table-swipe-hint">👉 Swipe table sideways to view test timings</div>
+                    <div class="schedule-table-wrap">
+                        <table class="schedule-table">
+                            <thead>
+                                <tr>
+                                    <th>Time Slot</th>
+                                    <th>Program</th>
+                                    <th>Test Pattern</th>
+                                    <th>Correction & Feedback</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="time-badge">8:30 AM – 10:30 AM</span></td>
+                                    <td>Class X SSC & ICSE</td>
+                                    <td>Chapter-wise & Cumulative Board Pattern (40/80 Marks)</td>
+                                    <td>Paper returned by next Wednesday with model solutions</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="time-badge">8:30 AM – 11:30 AM</span></td>
+                                    <td>Class XI & XII Science</td>
+                                    <td>HSC Subjective Theory + Numericals</td>
+                                    <td>Step-marking analysis and error register review</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="time-badge">10:45 AM – 12:15 PM</span></td>
+                                    <td>MHT-CET & JEE / NEET</td>
+                                    <td>Full-length Timed MCQ Test with Negative Marking</td>
+                                    <td>Instant percentile rank and shortcut discussion session</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="time-badge">12:30 PM – 1:30 PM</span></td>
+                                    <td>All Students</td>
+                                    <td>1-on-1 Faculty Doubt Clearance Desk</td>
+                                    <td>Individual consultation with Er. Sachin Patil & team</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pane 3: Annual Board Roadmap -->
+                <div class="schedule-pane" id="tab-roadmap">
+                    <div class="table-swipe-hint">👉 Swipe table sideways to view milestones</div>
+                    <div class="schedule-table-wrap">
+                        <table class="schedule-table">
+                            <thead>
+                                <tr>
+                                    <th>Phase</th>
+                                    <th>Timeline</th>
+                                    <th>Key Academic Milestones</th>
+                                    <th>Assessment Stage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Phase 1: Foundation</strong></td>
+                                    <td>June – August</td>
+                                    <td>In-depth chapter conceptual breakdown & fundamental problem solving</td>
+                                    <td>Weekly Chapter Unit Tests</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Phase 2: Full Syllabus Completion</strong></td>
+                                    <td>September – November 15</td>
+                                    <td>100% textbook syllabus completed with textbook numericals</td>
+                                    <td>Semester Mock Exams</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Phase 3: Prelim Round 1 & 2</strong></td>
+                                    <td>December – January</td>
+                                    <td>10-year board question banks, model answers, paper presentation training</td>
+                                    <td>Two Full Syllabus Board Simulations</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Phase 4: Final Prelim 3 & Topper Drills</strong></td>
+                                    <td>Late January – February</td>
+                                    <td>Final revision, time allocation mastery, personalized error resolution</td>
+                                    <td>Grand Pre-Board Prelim with Moderate Paper</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========== Interactive Fee & Merit Scholarship Calculator ========== -->
+        <section style="padding: 60px 0;">
+            <div class="container">
+                <div style="text-align: center; max-width: 720px; margin: 0 auto 30px;">
+                    <p class="eyebrow">Fee Transparency</p>
+                    <h2>Calculate Your Course Fee & Merit Scholarship</h2>
+                    <p class="lead" style="margin: 0 auto;">
+                        Calculate your fee based on your previous scores and choose between single upfront payment or 3 easy installments.
+                    </p>
+                </div>
+
+                <div class="calc-wrapper">
+                    <div class="calc-grid">
+
+                        <!-- Left: Input Controls -->
+                        <div class="calc-form-pane">
+                            <form id="feeCalculatorForm">
+                                <div class="calc-group">
+                                    <label for="calcCourse">1. Select Target Academic Program</label>
+                                    <select id="calcCourse">
+                                        <option value="class10-ssc" selected>Class X SSC (Maharashtra State Board)</option>
+                                        <option value="class10-icse">Class X ICSE / CBSE Board Excellence</option>
+                                        <option value="class11-science">Class XI Science (HSC Board Annual Course)</option>
+                                        <option value="class12-science">Class XII Science (HSC Board Annual Course)</option>
+                                        <option value="mht-cet">Class XII Science + MHT-CET Entrance Batch</option>
+                                        <option value="jee-neet">JEE Main / NEET Medical Foundation</option>
+                                        <option value="class7-9">Class VII–IX Middle School Foundation</option>
+                                        <option value="sunday-tests">Sunday Test Series & Prelim Batch Only</option>
+                                    </select>
+                                </div>
+
+                                <div class="calc-group">
+                                    <label for="calcPercentage">2. Previous Academic Score / Percentage</label>
+                                    <div class="percentage-slider-box">
+                                        <input type="range" id="calcPercentage" min="50" max="100" value="88" step="1">
+                                        <span class="percentage-display" id="calcPercentageDisplay">88%</span>
+                                    </div>
+                                    <small style="color: #647d90; font-size: 11.5px; margin-top: 4px; display: block;">
+                                        💡 Scores of 90%+ receive our highest merit scholarship grant.
+                                    </small>
+                                </div>
+
+                                <div class="calc-group">
+                                    <label>3. Payment Schedule Preference</label>
+                                    <div class="calc-radio-options">
+                                        <label class="calc-radio-label">
+                                            <input type="radio" name="paymentMode" value="lumpsum" checked>
+                                            <span>Full Upfront (Extra 5% Discount)</span>
+                                        </label>
+                                        <label class="calc-radio-label">
+                                            <input type="radio" name="paymentMode" value="installments">
+                                            <span>3 Easy Installments</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Right: Dynamic Calculation Result -->
+                        <div class="calc-result-pane">
+                            <div>
+                                <span class="calc-tier-badge" id="calcResBadge">🌟 20% Silver Merit Scholarship</span>
+                                <h3 class="calc-res-title" id="calcResCourse">Class X SSC (Maharashtra Board)</h3>
+
+                                <div class="calc-original-row">
+                                    <span>Standard Tuition:</span>
+                                    <span id="calcResOriginal">₹28,000</span>
+                                </div>
+
+                                <div class="calc-original-row">
+                                    <span>Scholarship Deduction:</span>
+                                    <span id="calcResDiscount" style="color: #a7f3d0; font-weight: 700;">-₹5,600 (20%)</span>
+                                </div>
+
+                                <div class="calc-final-price-box">
+                                    <small>Net Payable Course Fee</small>
+                                    <div class="calc-final-amount" id="calcResFinal">₹21,280</div>
+                                    <span class="calc-saving-tag">Includes Study Notes & Sunday Test Series</span>
+                                </div>
+
+                                <div class="calc-installment-info" id="calcResInstallments">
+                                    <strong>Single Payment:</strong> ₹21,280 (Includes additional upfront waiver)
+                                </div>
+                            </div>
+
+                            <button class="calc-claim-btn" id="lockScholarshipBtn">
+                                Lock In This Scholarship & Book Demo Seat 🎓
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -276,7 +590,9 @@
                         followed by line-by-line teacher corrections, pinpointing where marks are gained or lost.
                     </p>
                     <div style="margin-top: 24px;">
-                        <a class="btn" href="contact.html">Enroll for Sunday Test Series</a>
+                        <button class="btn" data-open-demo-modal data-course="Sunday Test Series Only">
+                            Enroll for Sunday Test Series
+                        </button>
                     </div>
                 </div>
 
@@ -297,50 +613,99 @@
             </div>
         </section>
 
-        <!-- ========== Batch Timings & Enrolment Info ========== -->
-        <section>
-            <div class="container">
-                <p class="eyebrow">Batch Timings & Enrolment</p>
-                <h2>Flexible Batches Tailored to School & College Hours</h2>
-                <p class="lead">
-                    We offer convenient morning and evening batches designed to smoothly coordinate with your school or college timings.
-                </p>
-
-                <div class="cards" style="grid-template-columns: repeat(3, 1fr);">
-                    <div class="card" style="border-top-color: var(--blue);">
-                        <span class="badge">Morning Batches</span>
-                        <h3>Morning Sessions</h3>
-                        <p>Ideal for junior college students and afternoon-shift school students.</p>
-                        <p style="font-weight: 700; color: var(--navy); margin-top: 10px;">⏰ 7:00 AM – 10:30 AM</p>
-                    </div>
-
-                    <div class="card" style="border-top-color: var(--orange);">
-                        <span class="badge">Evening Batches</span>
-                        <h3>Evening Sessions</h3>
-                        <p>Designed for regular morning-shift school and college students.</p>
-                        <p style="font-weight: 700; color: var(--navy); margin-top: 10px;">⏰ 4:00 PM – 8:00 PM</p>
-                    </div>
-
-                    <div class="card" style="border-top-color: var(--navy);">
-                        <span class="badge">Sunday Sessions</span>
-                        <h3>Sunday Test & Doubts</h3>
-                        <p>Dedicated exclusively to mock evaluations and personal doubt resolution.</p>
-                        <p style="font-weight: 700; color: var(--navy); margin-top: 10px;">⏰ 8:30 AM – 1:00 PM</p>
-                    </div>
-                </div>
-
-                <div style="margin-top: 40px; text-align: center;">
-                    <p style="font-size: 16px; color: var(--muted); margin-bottom: 20px;">
-                        Need guidance on selecting the right batch or course for your child?
-                    </p>
-                    <a class="btn" href="contact.html">
-                        Schedule a Free Counselling Session
-                    </a>
-                </div>
-            </div>
-        </section>
-
     </main>
+
+    <!-- ================= Book 2-Day Free Demo Class Modal ================= -->
+    <div class="modal-overlay" id="demoClassModal">
+        <div class="modal-window">
+            <button class="modal-close-btn" data-close-demo-modal aria-label="Close modal">&times;</button>
+            <span class="badge" style="background:#fff3eb; color:var(--orange);">Limited Batch Seats</span>
+            <h3>Book 2-Day Free Trial Class</h3>
+            <p class="modal-sub">
+                Experience our teaching methodology, inspect our study material, and interact with senior faculty at our Nashik Road campus before enrolling.
+            </p>
+
+            <form id="demoForm">
+                <div class="form-group">
+                    <label for="demoName">Student Full Name *</label>
+                    <input type="text" id="demoName" placeholder="Enter student's name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoMobile">Parent / Student Mobile Number *</label>
+                    <input type="tel" id="demoMobile" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoCourse">Course / Standard *</label>
+                    <select id="demoCourse" required>
+                        <option value="Class X SSC (Maharashtra Board)">Class X SSC (Maharashtra State Board)</option>
+                        <option value="Class X ICSE & CBSE Board">Class X ICSE & CBSE Board</option>
+                        <option value="Class XI Science (HSC Board)">Class XI Science (HSC Board)</option>
+                        <option value="Class XII Science (HSC Board)">Class XII Science (HSC Board)</option>
+                        <option value="MHT-CET Entrance Batch">MHT-CET Entrance Batch</option>
+                        <option value="JEE Main & NEET Foundation">JEE Main & NEET Foundation</option>
+                        <option value="Class VII–IX Foundation">Class VII–IX Middle School Foundation</option>
+                        <option value="Sunday Test Series Only">Sunday Test Series Only</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoShift">Preferred Batch Shift</label>
+                    <select id="demoShift">
+                        <option value="Morning Batch">Morning Batch (7:00 AM – 10:30 AM)</option>
+                        <option value="Evening Batch">Evening Batch (4:00 PM – 8:00 PM)</option>
+                        <option value="Sunday Batch">Sunday Test & Doubt Session (8:30 AM – 1:00 PM)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoDate">Preferred Date / Comments</label>
+                    <input type="text" id="demoDate" placeholder="e.g. Tomorrow or this Saturday">
+                </div>
+
+                <button class="btn" type="submit" style="width: 100%; margin-top: 10px;">
+                    Confirm Free Demo Seat 🎓
+                </button>
+
+                <div id="demoStatus" class="form-status"></div>
+
+                <p style="font-size: 11.5px; color: var(--muted); margin-top: 12px; text-align: center;">
+                    🔒 100% Free • No obligation • Confirmation sent via WhatsApp & SMS.
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= Floating Actions ================= -->
+    <div class="floating-actions">
+        <button class="floating-demo-pill" data-open-demo-modal aria-label="Book Free Demo Class">
+            <span>🎓 Free Demo Class</span>
+        </button>
+        <a class="floating-whatsapp" href="https://wa.me/919822661307?text=Hi%2C%20I%20am%20interested%20in%20courses%20at%20Perfect%20Coaching%20Classes%20Nashik%20Road"
+            target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+            <svg viewBox="0 0 24 24">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.07-1.74-.388-1.416-.587-2.338-2.032-2.408-2.126-.07-.093-.578-.769-.578-1.467 0-.698.365-1.042.495-1.187.13-.146.286-.182.381-.182.095 0 .19.002.273.007.087.006.204-.033.318.242.118.286.402.98.437 1.052.035.072.059.156.012.25-.047.094-.07.153-.14.235-.07.083-.147.185-.21.248-.07.07-.144.147-.062.288.082.141.365.602.784.975.539.48 1 .632 1.144.704.144.07.228.059.312-.038.085-.097.365-.424.462-.57.097-.146.195-.122.327-.073.133.048.843.398.988.47.145.073.242.11.278.17.036.06.036.35-.108.755z"/>
+            </svg>
+            <span>WhatsApp Us</span>
+        </a>
+        <button class="back-to-top" id="backToTopBtn" aria-label="Back to Top">↑</button>
+    </div>
+
+    <!-- ================= Mobile Quick Action Bar ================= -->
+    <div class="mobile-action-bar">
+        <div class="mobile-action-bar-grid">
+            <a class="mob-act-btn mob-act-call" href="tel:+919822661307">
+                📞 Call Now
+            </a>
+            <a class="mob-act-btn mob-act-wa" href="https://wa.me/919822661307?text=Hi%2C%20I%20want%20to%20enquire%20about%20coaching%20classes" target="_blank" rel="noopener noreferrer">
+                💬 WhatsApp
+            </a>
+            <button class="mob-act-btn mob-act-demo" data-open-demo-modal>
+                🎓 Free Demo
+            </button>
+        </div>
+    </div>
 
     <!-- ================= Footer ================= -->
     <footer>
@@ -379,6 +744,7 @@
                 <a href="about.html">About Institute</a>
                 <a href="courses.html">Course Brochure</a>
                 <a href="results.html">Student Achievements</a>
+                <a href="study-material.html">Free Study Material</a>
                 <a href="contact.html">Admissions & Contact</a>
                 <a href="tel:+919822661307">📞 +91 98226 61307</a>
                 <a href="mailto:info@perfectcoachingclasses.com">✉️ info@perfectcoachingclasses.com</a>

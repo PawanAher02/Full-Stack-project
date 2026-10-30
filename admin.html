@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Perfect Coaching Classes</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #f4f8fb;
+            color: var(--ink);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, var(--navy) 0%, #083454 100%);
+            color: #ffffff;
+            padding: 18px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .admin-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .admin-brand .logo-mark {
+            background: var(--orange);
+            color: #ffffff;
+            font-weight: 800;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 20px;
+        }
+
+        .admin-brand h1 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-brand span {
+            display: block;
+            font-size: 11px;
+            color: #a5cde3;
+            font-weight: 400;
+        }
+
+        .admin-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 8px 14px;
+            font-size: 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+            border: none;
+        }
+
+        .btn-white {
+            background: #ffffff;
+            color: var(--navy);
+        }
+
+        .btn-white:hover {
+            background: #e6f1f8;
+        }
+
+        .btn-csv {
+            background: var(--green);
+            color: #ffffff;
+        }
+
+        .btn-csv:hover {
+            background: #059669;
+        }
+
+        /* Stats Grid */
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin: 30px 0 25px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--blue);
+        }
+
+        .stat-card--new::before {
+            background: var(--orange);
+        }
+
+        .stat-card--demo::before {
+            background: #8b5cf6;
+        }
+
+        .stat-card--enrolled::before {
+            background: var(--green);
+        }
+
+        .stat-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: var(--pale);
+            flex-shrink: 0;
+        }
+
+        .stat-info b {
+            display: block;
+            font-size: 26px;
+            font-family: 'Outfit', sans-serif;
+            color: var(--navy);
+            line-height: 1.1;
+        }
+
+        .stat-info span {
+            font-size: 12.5px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        /* Control Bar */
+        .admin-controls {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            position: relative;
+            flex-grow: 1;
+            max-width: 360px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 9px 12px 9px 34px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font-size: 13.5px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(217, 107, 39, 0.15);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 10px;
+            color: var(--muted);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn-pill {
+            background: var(--pale);
+            border: 1px solid var(--line);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--ink);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .filter-btn-pill:hover,
+        .filter-btn-pill.active {
+            background: var(--navy);
+            color: #ffffff;
+            border-color: var(--navy);
+        }
+
+        /* Enquiries Table */
+        .table-container {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            overflow-x: auto;
+            margin-bottom: 40px;
+        }
+
+        table.admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        table.admin-table th {
+            background: #f8fafc;
+            color: var(--navy);
+            font-weight: 700;
+            padding: 14px 16px;
+            border-bottom: 2px solid var(--line);
+            white-space: nowrap;
+        }
+
+        table.admin-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #eef3f7;
+            vertical-align: middle;
+        }
+
+        table.admin-table tr:hover td {
+            background-color: #fafcfe;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge--New {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .status-badge--Contacted {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-badge--Demo {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .status-badge--Enrolled {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge--Closed {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .source-pill {
+            font-size: 10.5px;
+            padding: 2px 7px;
+            background: #eaf4f8;
+            color: var(--navy);
+            border-radius: 4px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .action-btns {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .act-icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--line);
+            background: #ffffff;
+            color: var(--ink);
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .act-icon-btn:hover {
+            border-color: var(--navy);
+            background: #f0f6f9;
+        }
+
+        .act-icon-btn--wa {
+            color: #10b981;
+        }
+
+        .act-icon-btn--wa:hover {
+            background: #ecfdf5;
+            border-color: #10b981;
+        }
+
+        .act-icon-btn--del {
+            color: #ef4444;
+        }
+
+        .act-icon-btn--del:hover {
+            background: #fef2f2;
+            border-color: #ef4444;
+        }
+
+        .select-status {
+            padding: 5px 8px;
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #ffffff;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .select-status:focus {
+            border-color: var(--orange);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--muted);
+        }
+
+        .empty-state svg {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 12px;
+            color: #94a3b8;
+        }
+
+        /* Modal for Counsellor Notes */
+        .notes-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(4, 18, 30, 0.7);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            padding: 20px;
+        }
+
+        .notes-modal-overlay.active {
+            display: flex;
+        }
+
+        .notes-modal-box {
+            background: #ffffff;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .notes-modal-box h3 {
+            margin-top: 0;
+            color: var(--navy);
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .notes-modal-box p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .notes-modal-box textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13.5px;
+            box-sizing: border-box;
+            outline: none;
+            resize: vertical;
+        }
+
+        .notes-modal-box textarea:focus {
+            border-color: var(--orange);
+        }
+
+        .notes-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 900px) {
+            .admin-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .admin-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="container">
+            <a href="admin.html" class="admin-brand">
+                <span class="logo-mark">P</span>
+                <div>
+                    <h1>PERFECT COACHING CLASSES</h1>
+                    <span>Admission Enquiries & Demo Bookings Management</span>
+                </div>
+            </a>
+
+            <div class="admin-actions">
+                <a href="index.html" class="btn-sm btn-white" target="_blank">
+                    🌐 Open Website
+                </a>
+                <button id="exportCsvBtn" class="btn-sm btn-csv">
+                    📥 Export CSV
+                </button>
+                <button id="refreshBtn" class="btn-sm btn-white">
+                    🔄 Refresh
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="flex-grow: 1;">
+
+        <!-- Stats Overview -->
+        <div class="admin-stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📋</div>
+                <div class="stat-info">
+                    <b id="statTotal">0</b>
+                    <span>Total Submissions</span>
+                </div>
+            </div>
+
+            <div class="stat-card stat-card--new">
+                <div class="stat-icon">🔔</div>
+                <div class="stat-info">
+                    <b id="statNew">0</b>
+                    <span>New / Uncontacted</span>
+                </div>
+            </div>
+
+            <div class="stat-card stat-card--demo">
+                <div class="stat-icon">🎓</div>
+                <div class="stat-info">
+                    <b id="statDemo">0</b>
+                    <span>Demo Class Bookings</span>
+                </div>
+            </div>
+
+            <div class="stat-card stat-card--enrolled">
+                <div class="stat-icon">🎉</div>
+                <div class="stat-info">
+                    <b id="statEnrolled">0</b>
+                    <span>Enrolled Students</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls: Search & Filter Tabs -->
+        <div class="admin-controls">
+            <div class="search-box">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search by name, mobile, course...">
+            </div>
+
+            <div class="filter-group">
+                <button class="filter-btn-pill active" data-status="All">All</button>
+                <button class="filter-btn-pill" data-status="New">New</button>
+                <button class="filter-btn-pill" data-status="Contacted">Contacted</button>
+                <button class="filter-btn-pill" data-status="Demo Scheduled">Demo Scheduled</button>
+                <button class="filter-btn-pill" data-status="Enrolled">Enrolled</button>
+                <button class="filter-btn-pill" data-status="Closed">Closed</button>
+            </div>
+        </div>
+
+        <!-- Enquiries Table -->
+        <div class="table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date & Time</th>
+                        <th>Student Name</th>
+                        <th>Mobile & WhatsApp</th>
+                        <th>Course / Standard</th>
+                        <th>Preferred Shift</th>
+                        <th>Message / Notes</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="enquiriesTableBody">
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 40px; color: var(--muted);">
+                            Loading enquiries from database... ⏳
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <!-- Notes Modal -->
+    <div class="notes-modal-overlay" id="notesModal">
+        <div class="notes-modal-box">
+            <h3 id="notesModalTitle">Counsellor Notes</h3>
+            <p id="notesModalSub">Save private follow-up details and counselling remarks for this student.</p>
+            <textarea id="notesModalText" placeholder="e.g. Called parent on Friday. Interested in Sunday test series and morning classroom batch. Scheduled trial class for Oct 12."></textarea>
+            <div class="notes-modal-actions">
+                <button class="btn-sm btn-white" id="closeNotesModalBtn">Cancel</button>
+                <button class="btn-sm" style="background:var(--navy); color:#fff;" id="saveNotesBtn">Save Notes 💾</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Client Script -->
+    <script>
+        const API_BASE = window.location.origin.includes('localhost:5000') 
+            ? '' 
+            : 'http://localhost:5000';
+
+        let currentStatusFilter = 'All';
+        let searchQuery = '';
+        let activeEnquiryIdForNotes = null;
+
+        // Elements
+        const tableBody = document.querySelector('#enquiriesTableBody');
+        const searchInput = document.querySelector('#searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn-pill');
+        const refreshBtn = document.querySelector('#refreshBtn');
+        const exportCsvBtn = document.querySelector('#exportCsvBtn');
+
+        const statTotal = document.querySelector('#statTotal');
+        const statNew = document.querySelector('#statNew');
+        const statDemo = document.querySelector('#statDemo');
+        const statEnrolled = document.querySelector('#statEnrolled');
+
+        const notesModal = document.querySelector('#notesModal');
+        const notesModalTitle = document.querySelector('#notesModalTitle');
+        const notesModalText = document.querySelector('#notesModalText');
+        const closeNotesModalBtn = document.querySelector('#closeNotesModalBtn');
+        const saveNotesBtn = document.querySelector('#saveNotesBtn');
+
+        // Fetch & Render Stats
+        async function fetchStats() {
+            try {
+                const res = await fetch(`${API_BASE}/api/stats`);
+                const data = await res.json();
+                if (data.success && data.stats) {
+                    statTotal.textContent = data.stats.total;
+                    statNew.textContent = data.stats.newCount;
+                    statDemo.textContent = data.stats.demoCount;
+                    statEnrolled.textContent = data.stats.enrolledCount;
+                }
+            } catch (err) {
+                console.error('Error loading stats:', err);
+            }
+        }
+
+        // Fetch & Render Enquiries
+        async function fetchEnquiries() {
+            try {
+                let url = `${API_BASE}/api/enquiries?limit=200`;
+                if (currentStatusFilter !== 'All') url += `&status=${encodeURIComponent(currentStatusFilter)}`;
+                if (searchQuery.trim().length > 0) url += `&search=${encodeURIComponent(searchQuery.trim())}`;
+
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (!data.success || !data.enquiries || data.enquiries.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="9">
+                                <div class="empty-state">
+                                    <div style="font-size:36px; margin-bottom:8px;">📭</div>
+                                    <b>No enquiries found</b>
+                                    <p style="margin-top:4px; font-size:13px;">No student submissions match the current filter or search criteria.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tableBody.innerHTML = data.enquiries.map(e => {
+                    const dateFormatted = new Date(e.created_at).toLocaleDateString('en-IN', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    const cleanWaMobile = (e.mobile || '').replace(/[^0-9]/g, '');
+                    const waText = encodeURIComponent(`Hello ${e.name}, greetings from Perfect Coaching Classes Nashik Road! Regarding your enquiry for ${e.course}:`);
+                    const waLink = `https://wa.me/91${cleanWaMobile}?text=${waText}`;
+
+                    const statusClass = `status-badge--${e.status.replace(/\s+/g, '')}`;
+
+                    return `
+                        <tr data-id="${e.id}">
+                            <td><b>#${e.id}</b></td>
+                            <td style="white-space:nowrap; color:var(--muted); font-size:12px;">${dateFormatted}</td>
+                            <td>
+                                <strong style="color:var(--navy); font-size:14px;">${escapeHtml(e.name)}</strong>
+                                <div><span class="source-pill">${escapeHtml(e.source || 'Website')}</span></div>
+                            </td>
+                            <td>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span style="font-weight:600;">${escapeHtml(e.mobile)}</span>
+                                    <a class="act-icon-btn act-icon-btn--wa" href="${waLink}" target="_blank" title="Chat on WhatsApp">
+                                        💬
+                                    </a>
+                                    <a class="act-icon-btn" href="tel:+91${cleanWaMobile}" title="Call Phone">
+                                        📞
+                                    </a>
+                                </div>
+                                ${e.email ? `<div style="font-size:11px; color:var(--muted); margin-top:3px;">${escapeHtml(e.email)}</div>` : ''}
+                            </td>
+                            <td><strong style="color:var(--ink);">${escapeHtml(e.course)}</strong></td>
+                            <td style="color:var(--muted);">${escapeHtml(e.timing || 'Flexible')}</td>
+                            <td style="max-width:240px;">
+                                ${e.message ? `<div style="font-size:12px; line-height:1.4; color:#334155; margin-bottom:4px;">${escapeHtml(e.message)}</div>` : '<em style="color:#94a3b8; font-size:12px;">No message</em>'}
+                                ${e.counsellor_notes ? `<div style="background:#fffbeb; border-left:3px solid #f59e0b; padding:4px 8px; font-size:11.5px; color:#92400e; border-radius:2px; margin-top:4px;"><strong>Note:</strong> ${escapeHtml(e.counsellor_notes)}</div>` : ''}
+                            </td>
+                            <td>
+                                <select class="select-status" onchange="updateStatus(${e.id}, this.value)">
+                                    <option value="New" ${e.status === 'New' ? 'selected' : ''}>New</option>
+                                    <option value="Contacted" ${e.status === 'Contacted' ? 'selected' : ''}>Contacted</option>
+                                    <option value="Demo Scheduled" ${e.status === 'Demo Scheduled' ? 'selected' : ''}>Demo Scheduled</option>
+                                    <option value="Enrolled" ${e.status === 'Enrolled' ? 'selected' : ''}>Enrolled</option>
+                                    <option value="Closed" ${e.status === 'Closed' ? 'selected' : ''}>Closed</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="act-icon-btn" onclick="openNotesModal(${e.id}, '${escapeJs(e.name)}', '${escapeJs(e.counsellor_notes || '')}')" title="Edit Counsellor Notes">
+                                        📝
+                                    </button>
+                                    <button class="act-icon-btn act-icon-btn--del" onclick="deleteEnquiry(${e.id}, '${escapeJs(e.name)}')" title="Delete Enquiry">
+                                        🗑️
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (err) {
+                console.error('Error fetching enquiries:', err);
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align:center; padding:30px; color:#ef4444;">
+                            ⚠️ Could not connect to backend server. Make sure <code>node server.js</code> is running on port 5000.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Update Enquiry Status
+        async function updateStatus(id, newStatus) {
+            try {
+                const res = await fetch(`${API_BASE}/api/enquiries/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    fetchStats();
+                } else {
+                    alert('Error updating status: ' + data.error);
+                }
+            } catch (err) {
+                alert('Connection error while updating status.');
+            }
+        }
+
+        // Delete Enquiry
+        async function deleteEnquiry(id, name) {
+            if (!confirm(`Are you sure you want to permanently delete enquiry #${id} for ${name}?`)) {
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/enquiries/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    fetchEnquiries();
+                    fetchStats();
+                } else {
+                    alert('Error deleting enquiry: ' + data.error);
+                }
+            } catch (err) {
+                alert('Connection error while deleting enquiry.');
+            }
+        }
+
+        // Counsellor Notes Modal
+        function openNotesModal(id, studentName, existingNotes) {
+            activeEnquiryIdForNotes = id;
+            notesModalTitle.textContent = `Counsellor Notes for ${studentName}`;
+            notesModalText.value = existingNotes;
+            notesModal.classList.add('active');
+            notesModalText.focus();
+        }
+
+        function closeNotesModal() {
+            notesModal.classList.remove('active');
+            activeEnquiryIdForNotes = null;
+        }
+
+        closeNotesModalBtn.addEventListener('click', closeNotesModal);
+        notesModal.addEventListener('click', (e) => {
+            if (e.target === notesModal) closeNotesModal();
+        });
+
+        saveNotesBtn.addEventListener('click', async () => {
+            if (!activeEnquiryIdForNotes) return;
+            const notes = notesModalText.value.trim();
+
+            try {
+                const res = await fetch(`${API_BASE}/api/enquiries/${activeEnquiryIdForNotes}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ counsellor_notes: notes })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    closeNotesModal();
+                    fetchEnquiries();
+                } else {
+                    alert('Failed to save notes: ' + data.error);
+                }
+            } catch (err) {
+                alert('Connection error while saving notes.');
+            }
+        });
+
+        // Filter Pills
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentStatusFilter = btn.getAttribute('data-status');
+                fetchEnquiries();
+            });
+        });
+
+        // Search Input (with debounce)
+        let searchTimer = null;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+                searchQuery = searchInput.value;
+                fetchEnquiries();
+            }, 300);
+        });
+
+        // Refresh Button
+        refreshBtn.addEventListener('click', () => {
+            fetchStats();
+            fetchEnquiries();
+        });
+
+        // Export CSV
+        exportCsvBtn.addEventListener('click', () => {
+            window.location.href = `${API_BASE}/api/enquiries/export/csv`;
+        });
+
+        // Helper escaping functions
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function escapeJs(str) {
+            if (!str) return '';
+            return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '');
+        }
+
+        // Initial Load
+        fetchStats();
+        fetchEnquiries();
+    </script>
+</body>
+
+</html>

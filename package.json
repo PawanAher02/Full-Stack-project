@@ -1,0 +1,28 @@
+{
+  "name": "coaching-classes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PawanAher02/Full-Stack-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/PawanAher02/Full-Stack-project/issues"
+  },
+  "homepage": "https://github.com/PawanAher02/Full-Stack-project#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.7",
+    "express": "^5.3.0",
+    "sqlite3": "^6.0.1"
+  }
+}

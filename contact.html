@@ -14,9 +14,6 @@
     <!-- ================= CSS ================= -->
     <link rel="stylesheet" href="pages.css">
 
-    <!-- ================= Supabase Client Library ================= -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <!-- ================= JavaScript ================= -->
     <script src="script.js" defer></script>
 </head>
@@ -35,6 +32,9 @@
                 </a>
                 <a href="results.html">
                     Results
+                </a>
+                <a href="study-material.html">
+                    Free Study Material
                 </a>
             </div>
 
@@ -66,17 +66,26 @@
 
             <!-- Navigation Menu -->
             <div class="menu">
-                <a href="index.html">HOME</a>
-                <a href="about.html">ABOUT US</a>
-                <a href="courses.html">COURSES</a>
-                <a href="results.html">RESULTS</a>
-                <a class="active" href="contact.html">CONTACT</a>
+                <div class="mobile-menu-header">
+                    <span class="mobile-menu-title">🌟 Perfect Coaching Classes</span>
+                    <small>Nashik Road • Estd. 2006 • Bytco Point</small>
+                </div>
+                <a href="index.html"><span class="menu-icon">🏠</span> HOME</a>
+                <a href="about.html"><span class="menu-icon">📖</span> ABOUT US</a>
+                <a href="courses.html"><span class="menu-icon">🎓</span> COURSES</a>
+                <a href="results.html"><span class="menu-icon">🏆</span> RESULTS</a>
+                <a href="study-material.html"><span class="menu-icon">📚</span> STUDY MATERIAL</a>
+                <a class="active" href="contact.html"><span class="menu-icon">📞</span> CONTACT</a>
+                <div class="mobile-menu-actions">
+                    <a href="tel:+919822661307" class="mob-menu-btn call">📞 Call Counsellor</a>
+                    <a href="https://wa.me/919822661307?text=Hi%2C%20I%20want%20to%20enquire%20about%20admissions" class="mob-menu-btn wa" target="_blank" rel="noopener noreferrer">💬 WhatsApp Chat</a>
+                </div>
             </div>
 
             <!-- Admission Button -->
-            <a class="admission" href="contact.html">
-                Admissions Open
-            </a>
+            <button class="admission" data-open-demo-modal style="border:none; cursor:pointer;">
+                Book Free Demo Class
+            </button>
 
             <!-- Mobile Toggle -->
             <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu">
@@ -119,6 +128,35 @@
                 </p>
             </div>
         </section>
+
+        <!-- ========== Quick Connect Action Banner (Mobile First) ========== -->
+        <div class="quick-connect-banner">
+            <div class="container">
+                <div class="quick-connect-grid">
+                    <a href="tel:+919822661307" class="quick-connect-card call">
+                        <span class="qc-icon">📞</span>
+                        <div class="qc-info">
+                            <strong>Call Counsellor</strong>
+                            <small>+91 98226 61307</small>
+                        </div>
+                    </a>
+                    <a href="https://wa.me/919822661307?text=Hi%2C%20I%20am%20interested%20in%20visiting%20Perfect%20Coaching%20Classes%20Nashik%20Road" class="quick-connect-card whatsapp" target="_blank" rel="noopener noreferrer">
+                        <span class="qc-icon">💬</span>
+                        <div class="qc-info">
+                            <strong>WhatsApp Chat</strong>
+                            <small>Instant Callback</small>
+                        </div>
+                    </a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Perfect+Coaching+Classes+Ishwar+Sankul+Bytco+Point+Nashik+Road+Nashik" class="quick-connect-card maps" target="_blank" rel="noopener noreferrer">
+                        <span class="qc-icon">📍</span>
+                        <div class="qc-info">
+                            <strong>Get Directions</strong>
+                            <small>Bytco Point Campus</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <!-- ========== Contact Section ========== -->
         <section>
@@ -219,6 +257,11 @@
                         Request a Callback & Batch Info
                     </h2>
 
+                    <div class="form-reassurance-banner">
+                        <span>⚡ Quick 15-Minute Callback Guarantee</span>
+                        <small>Direct discussion with Er. Sachin Patil & senior academic counsellors.</small>
+                    </div>
+
                     <!-- Full Name -->
                     <div class="form-group">
                         <label for="name">Student Full Name *</label>
@@ -311,8 +354,50 @@
             </div>
         </section>
 
+        <!-- ========== Admissions FAQ Section ========== -->
+        <section class="light" style="padding: 50px 0;">
+            <div class="container" style="max-width: 860px;">
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <p class="eyebrow">Need Instant Clarification?</p>
+                    <h2>Frequently Asked Admissions Questions</h2>
+                </div>
+
+                <div class="faq-list">
+                    <div class="faq-item open">
+                        <div class="faq-header">
+                            <h4>Can we attend a trial lecture before taking admission?</h4>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-body">
+                            Absolutely! We encourage parents and students to attend our 2-day free trial class. This gives the student complete clarity on the teaching pace, atmosphere, and faculty approach before taking admission.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-header">
+                            <h4>What documents are required during admission?</h4>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-body">
+                            Please bring 2 passport-size photographs of the student and a photocopy of the latest school/college progress card (mark sheet) to verify eligibility for merit scholarship concessions.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-header">
+                            <h4>Is parking available at the Bytco Point campus?</h4>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-body">
+                            Yes, Ishwar Sankul has dedicated two-wheeler and bicycle parking space inside the complex for students attending morning and evening batches.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ========== Interactive Map Section ========== -->
-        <section class="light" style="padding-top: 40px; padding-bottom: 50px;">
+        <section style="padding-top: 40px; padding-bottom: 50px;">
             <div class="container">
                 <div style="text-align: center; margin-bottom: 24px;">
                     <p class="eyebrow">Interactive Location</p>
@@ -320,7 +405,7 @@
                     <p style="color: var(--muted); font-size: 14.5px;">Located in the educational heart of Nashik Road near Bytco Point</p>
                 </div>
 
-                <div style="border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid var(--line); background: #ffffff;">
+                <div style="border-radius: 6px; overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid var(--line); background: #ffffff;">
                     <iframe
                         title="Perfect Coaching Classes Nashik Road Location"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3749.957597144211!2d73.8398462!3d19.9682548!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bddebb09a27909d%3A0xb35a0cf07b8a7dbb!2sBytco%20Point%2C%20Nashik%20Road%2C%20Nashik%2C%20Maharashtra%20422101!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
@@ -336,6 +421,98 @@
         </section>
 
     </main>
+
+    <!-- ================= Book 2-Day Free Demo Class Modal ================= -->
+    <div class="modal-overlay" id="demoClassModal">
+        <div class="modal-window">
+            <button class="modal-close-btn" data-close-demo-modal aria-label="Close modal">&times;</button>
+            <span class="badge" style="background:#fff3eb; color:var(--orange);">Limited Batch Seats</span>
+            <h3>Book 2-Day Free Trial Class</h3>
+            <p class="modal-sub">
+                Experience our teaching methodology, inspect our study material, and interact with senior faculty at our Nashik Road campus before enrolling.
+            </p>
+
+            <form id="demoForm">
+                <div class="form-group">
+                    <label for="demoName">Student Full Name *</label>
+                    <input type="text" id="demoName" placeholder="Enter student's name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoMobile">Parent / Student Mobile Number *</label>
+                    <input type="tel" id="demoMobile" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoCourse">Course / Standard *</label>
+                    <select id="demoCourse" required>
+                        <option value="Class X SSC (Maharashtra Board)">Class X SSC (Maharashtra State Board)</option>
+                        <option value="Class X ICSE & CBSE Board">Class X ICSE & CBSE Board</option>
+                        <option value="Class XI Science (HSC Board)">Class XI Science (HSC Board)</option>
+                        <option value="Class XII Science (HSC Board)">Class XII Science (HSC Board)</option>
+                        <option value="MHT-CET Entrance Batch">MHT-CET Entrance Batch</option>
+                        <option value="JEE Main & NEET Foundation">JEE Main & NEET Foundation</option>
+                        <option value="Class VII–IX Foundation">Class VII–IX Middle School Foundation</option>
+                        <option value="Sunday Test Series Only">Sunday Test Series Only</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoShift">Preferred Batch Shift</label>
+                    <select id="demoShift">
+                        <option value="Morning Batch">Morning Batch (7:00 AM – 10:30 AM)</option>
+                        <option value="Evening Batch">Evening Batch (4:00 PM – 8:00 PM)</option>
+                        <option value="Sunday Batch">Sunday Test & Doubt Session (8:30 AM – 1:00 PM)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="demoDate">Preferred Date / Comments</label>
+                    <input type="text" id="demoDate" placeholder="e.g. Tomorrow or this Saturday">
+                </div>
+
+                <button class="btn" type="submit" style="width: 100%; margin-top: 10px;">
+                    Confirm Free Demo Seat 🎓
+                </button>
+
+                <div id="demoStatus" class="form-status"></div>
+
+                <p style="font-size: 11.5px; color: var(--muted); margin-top: 12px; text-align: center;">
+                    🔒 100% Free • No obligation • Confirmation sent via WhatsApp & SMS.
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= Floating Actions ================= -->
+    <div class="floating-actions">
+        <button class="floating-demo-pill" data-open-demo-modal aria-label="Book Free Demo Class">
+            <span>🎓 Free Demo Class</span>
+        </button>
+        <a class="floating-whatsapp" href="https://wa.me/919822661307?text=Hi%2C%20I%20am%20interested%20in%20visiting%20Perfect%20Coaching%20Classes%20Nashik%20Road"
+            target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+            <svg viewBox="0 0 24 24">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.07-1.74-.388-1.416-.587-2.338-2.032-2.408-2.126-.07-.093-.578-.769-.578-1.467 0-.698.365-1.042.495-1.187.13-.146.286-.182.381-.182.095 0 .19.002.273.007.087.006.204-.033.318.242.118.286.402.98.437 1.052.035.072.059.156.012.25-.047.094-.07.153-.14.235-.07.083-.147.185-.21.248-.07.07-.144.147-.062.288.082.141.365.602.784.975.539.48 1 .632 1.144.704.144.07.228.059.312-.038.085-.097.365-.424.462-.57.097-.146.195-.122.327-.073.133.048.843.398.988.47.145.073.242.11.278.17.036.06.036.35-.108.755z"/>
+            </svg>
+            <span>WhatsApp Us</span>
+        </a>
+        <button class="back-to-top" id="backToTopBtn" aria-label="Back to Top">↑</button>
+    </div>
+
+    <!-- ================= Mobile Quick Action Bar ================= -->
+    <div class="mobile-action-bar">
+        <div class="mobile-action-bar-grid">
+            <a class="mob-act-btn mob-act-call" href="tel:+919822661307">
+                📞 Call Now
+            </a>
+            <a class="mob-act-btn mob-act-wa" href="https://wa.me/919822661307?text=Hi%2C%20I%20want%20to%20enquire%20about%20coaching%20classes" target="_blank" rel="noopener noreferrer">
+                💬 WhatsApp
+            </a>
+            <button class="mob-act-btn mob-act-demo" data-open-demo-modal>
+                🎓 Free Demo
+            </button>
+        </div>
+    </div>
 
     <!-- ================= Footer ================= -->
     <footer>
@@ -374,6 +551,7 @@
                 <a href="about.html">About Institute</a>
                 <a href="courses.html">Course Brochure</a>
                 <a href="results.html">Student Achievements</a>
+                <a href="study-material.html">Free Study Material</a>
                 <a href="contact.html">Admissions & Contact</a>
                 <a href="tel:+919822661307">📞 +91 98226 61307</a>
                 <a href="mailto:info@perfectcoachingclasses.com">✉️ info@perfectcoachingclasses.com</a>
