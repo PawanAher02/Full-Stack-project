@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="dashboards.css">
     <script>
-        // Synchronous auth check before page render
+        // Synchronous auth check before page render (requires active session)
         (function() {
-            var token = localStorage.getItem('pcc_admin_token');
+            var token = sessionStorage.getItem('pcc_admin_token');
             if (!token) {
                 window.location.replace('login.html');
             }
@@ -945,7 +945,7 @@
 
             // Real-time synchronization polling every 5 seconds for new leads & stats
             setInterval(async () => {
-                const token = localStorage.getItem('pcc_admin_token');
+                const token = sessionStorage.getItem('pcc_admin_token');
                 const appContent = document.getElementById('adminAppContent');
                 if (token && appContent && appContent.style.display !== 'none') {
                     const prevCount = state.enquiries ? state.enquiries.length : 0;
@@ -963,7 +963,7 @@
         // AUTHENTICATION & LOGIN MANAGEMENT
         // =====================================================================
         async function checkAdminAuth() {
-            const token = localStorage.getItem('pcc_admin_token');
+            const token = sessionStorage.getItem('pcc_admin_token');
             const loginScreen = document.getElementById('adminLoginScreen');
             const appContent = document.getElementById('adminAppContent');
 
@@ -984,24 +984,21 @@
                     if (appContent) appContent.style.display = 'block';
                     const adminLabel = document.getElementById('activeAdminLabel');
                     if (adminLabel && data.user) {
-                        adminLabel.textContent = data.user.name || 'Director Sir';
+                        adminLabel.textContent = data.user.name || 'Pawan Aher (Director)';
                     }
                     return true;
                 } else {
+                    sessionStorage.clear();
                     localStorage.removeItem('pcc_admin_token');
                     localStorage.removeItem('pcc_admin_user');
                     if (appContent) appContent.style.display = 'none';
                     if (loginScreen) loginScreen.classList.remove('hidden');
-                    window.location.replace('login.html');
+                    window.location.replace('login.html?expired=1');
                     return false;
                 }
             } catch (err) {
                 console.warn('Admin auth verification server offline or network error:', err);
-                if (token && token.startsWith('pcc_token_')) {
-                    if (loginScreen) loginScreen.classList.add('hidden');
-                    if (appContent) appContent.style.display = 'block';
-                    return true;
-                }
+                sessionStorage.clear();
                 window.location.replace('login.html');
                 return false;
             }
@@ -1031,14 +1028,18 @@
 
                 const data = await res.json();
                 if (data.success && data.token) {
-                    localStorage.setItem('pcc_admin_token', data.token);
+                    // Save in sessionStorage only (deleted automatically when browser or tab is closed)
+                    sessionStorage.setItem('pcc_admin_token', data.token);
                     if (data.user) {
-                        localStorage.setItem('pcc_admin_user', JSON.stringify(data.user));
-                        document.getElementById('activeAdminLabel').textContent = data.user.name || 'Director Sir';
+                        sessionStorage.setItem('pcc_admin_user', JSON.stringify(data.user));
+                        document.getElementById('activeAdminLabel').textContent = data.user.name || 'Pawan Aher (Director)';
                     }
+                    localStorage.removeItem('pcc_admin_token');
+                    localStorage.removeItem('pcc_admin_user');
+
                     document.getElementById('adminLoginScreen').classList.add('hidden');
                     if (appContent) appContent.style.display = 'block';
-                    showToast(`Welcome back, ${data.user ? data.user.name : 'Director Sir'}!`);
+                    showToast(`Welcome back, ${data.user ? data.user.name : 'Pawan Aher'}!`);
                     refreshAllData();
                 } else {
                     errorAlert.textContent = data.error || 'Invalid credentials. Please try again.';
@@ -1055,7 +1056,7 @@
 
         async function handleAdminLogout() {
             if (!confirm('Are you sure you want to log out of the Admin Portal?')) return;
-            const token = localStorage.getItem('pcc_admin_token');
+            const token = sessionStorage.getItem('pcc_admin_token');
             if (token) {
                 try {
                     await fetch(`${API_BASE}/api/admin/logout`, {
@@ -1064,6 +1065,7 @@
                     });
                 } catch (e) {}
             }
+            sessionStorage.clear();
             localStorage.removeItem('pcc_admin_token');
             localStorage.removeItem('pcc_admin_user');
             window.location.replace('login.html?logged_out=1');

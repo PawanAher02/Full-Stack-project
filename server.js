@@ -133,8 +133,17 @@ app.get('/api/admin/verify', (req, res) => {
   const authHeader = req.headers['authorization'] || '';
   const token = authHeader.replace(/^Bearer\s+/i, '') || req.headers['x-admin-token'] || req.query.token;
 
+  // Enforce session timeout (30 minutes of inactivity)
+  const MAX_SESSION_DURATION = 30 * 60 * 1000;
+
   if (token && activeAdminSessions.has(token)) {
     const session = activeAdminSessions.get(token);
+    if (Date.now() - session.timestamp > MAX_SESSION_DURATION) {
+      activeAdminSessions.delete(token);
+      return res.status(401).json({ success: false, authenticated: false, error: 'Session expired. Please enter password again.' });
+    }
+    // Refresh activity timestamp
+    session.timestamp = Date.now();
     return res.json({
       success: true,
       authenticated: true,

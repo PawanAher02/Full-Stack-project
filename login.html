@@ -389,34 +389,24 @@
             ? 'http://localhost:5000'
             : '';
 
-        // Check if already authenticated on load
-        document.addEventListener('DOMContentLoaded', async () => {
-            const token = localStorage.getItem('pcc_admin_token');
-            if (token) {
-                try {
-                    const res = await fetch(`${API_BASE}/api/admin/verify`, {
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    });
-                    const data = await res.json();
-                    if (data.success && data.authenticated) {
-                        showAlert('Already logged in. Redirecting to dashboard...', 'success');
-                        setTimeout(() => {
-                            window.location.replace('admin.html');
-                        }, 400);
-                        return;
-                    } else {
-                        localStorage.removeItem('pcc_admin_token');
-                        localStorage.removeItem('pcc_admin_user');
-                    }
-                } catch (e) {
-                    // Server offline or connection issue, stay on login screen
-                }
-            }
+        // Always enforce fresh login each time user visits login page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Clear any lingering tokens so login is strictly required
+            sessionStorage.removeItem('pcc_admin_token');
+            sessionStorage.removeItem('pcc_admin_user');
+            localStorage.removeItem('pcc_admin_token');
+            localStorage.removeItem('pcc_admin_user');
 
-            // Check if there is a logout notification
+            // Reset password field to blank
+            const passInput = document.getElementById('adminPassword');
+            if (passInput) passInput.value = '';
+
+            // Check if there is a notification message
             const params = new URLSearchParams(window.location.search);
             if (params.get('logged_out') === '1') {
-                showAlert('You have been logged out successfully.', 'success');
+                showAlert('You have been logged out. Please enter your password to sign in.', 'success');
+            } else if (params.get('expired') === '1') {
+                showAlert('Your session has expired. Please enter password to continue.', 'error');
             }
         });
 
@@ -476,14 +466,18 @@
                 const result = await response.json().catch(() => ({}));
 
                 if (response.ok && result.success && result.token) {
-                    localStorage.setItem('pcc_admin_token', result.token);
+                    // Save in sessionStorage only (deleted automatically when browser or tab is closed)
+                    sessionStorage.setItem('pcc_admin_token', result.token);
                     if (result.user) {
-                        localStorage.setItem('pcc_admin_user', JSON.stringify(result.user));
+                        sessionStorage.setItem('pcc_admin_user', JSON.stringify(result.user));
                     }
-                    showAlert(`Login successful! Welcome back, ${result.user?.name || 'Director Sir'}. Redirecting...`, 'success');
+                    localStorage.removeItem('pcc_admin_token');
+                    localStorage.removeItem('pcc_admin_user');
+
+                    showAlert(`Login successful! Redirecting to admin console...`, 'success');
                     setTimeout(() => {
                         window.location.replace('admin.html');
-                    }, 500);
+                    }, 400);
                 } else {
                     showAlert(result.error || 'Invalid username or password. Please check and try again.');
                     submitBtn.disabled = false;
