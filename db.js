@@ -198,7 +198,7 @@ async function seedDatabaseIfEmpty() {
   try {
     // Ensure default admin user exists
     const defaultUser = process.env.ADMIN_USERNAME || 'pawanaher';
-    const defaultPass = process.env.ADMIN_PASSWORD || '8569';
+    const defaultPass = process.env.ADMIN_PASSWORD || '8546';
     const adminUser = await db.getAsync(`SELECT * FROM admins WHERE username = ?`, [defaultUser]);
     if (!adminUser) {
       await db.runAsync(`

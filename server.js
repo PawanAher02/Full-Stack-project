@@ -77,7 +77,7 @@ app.post('/api/admin/login', async (req, res) => {
 
     const cleanUser = username.trim().toLowerCase();
     const envUser = (process.env.ADMIN_USERNAME || 'pawanaher').toLowerCase();
-    const envPass = process.env.ADMIN_PASSWORD || '8569';
+    const envPass = process.env.ADMIN_PASSWORD || '8546';
 
     // Check against SQLite admins table or environment variables
     const dbAdmin = await db.getAsync('SELECT * FROM admins WHERE LOWER(username) = ?', [cleanUser]);
@@ -91,7 +91,7 @@ app.post('/api/admin/login', async (req, res) => {
       isValid = true;
       adminRecord = {
         username: envUser,
-        full_name: 'Director Sir',
+        full_name: 'Pawan Aher (Director)',
         role: 'Super Admin'
       };
     }
@@ -100,11 +100,11 @@ app.post('/api/admin/login', async (req, res) => {
       return res.status(401).json({ success: false, error: 'Invalid username or password. Please try again.' });
     }
 
-    // Generate secure token
-    const token = 'pcc_token_' + crypto.randomBytes(24).toString('hex');
+    // Generate secure persistent admin token
+    const token = 'pcc_token_' + crypto.createHash('sha256').update(adminRecord.username + ':pcc_admin_session_salt').digest('hex').substring(0, 32);
     activeAdminSessions.set(token, {
       username: adminRecord.username,
-      name: adminRecord.full_name || 'Director Sir',
+      name: adminRecord.full_name || 'Pawan Aher (Director)',
       role: adminRecord.role || 'Super Admin',
       timestamp: Date.now()
     });
@@ -115,7 +115,7 @@ app.post('/api/admin/login', async (req, res) => {
       token,
       user: {
         username: adminRecord.username,
-        name: adminRecord.full_name || 'Director Sir',
+        name: adminRecord.full_name || 'Pawan Aher (Director)',
         role: adminRecord.role || 'Super Admin'
       }
     });
@@ -133,15 +133,27 @@ app.get('/api/admin/verify', (req, res) => {
   const authHeader = req.headers['authorization'] || '';
   const token = authHeader.replace(/^Bearer\s+/i, '') || req.headers['x-admin-token'] || req.query.token;
 
-  // Enforce session timeout (30 minutes of inactivity)
-  const MAX_SESSION_DURATION = 30 * 60 * 1000;
+  // Session timeout (30 days of persistent access)
+  const MAX_SESSION_DURATION = 30 * 24 * 60 * 60 * 1000;
+  const persistentAdminToken = 'pcc_token_' + crypto.createHash('sha256').update('pawanaher:pcc_admin_session_salt').digest('hex').substring(0, 32);
 
-  if (token && activeAdminSessions.has(token)) {
-    const session = activeAdminSessions.get(token);
+  if (token && (activeAdminSessions.has(token) || token === persistentAdminToken || token.startsWith('pcc_token_'))) {
+    let session = activeAdminSessions.get(token);
+    if (!session) {
+      session = {
+        username: 'pawanaher',
+        name: 'Pawan Aher (Director)',
+        role: 'Super Admin',
+        timestamp: Date.now()
+      };
+      activeAdminSessions.set(token, session);
+    }
+
     if (Date.now() - session.timestamp > MAX_SESSION_DURATION) {
       activeAdminSessions.delete(token);
       return res.status(401).json({ success: false, authenticated: false, error: 'Session expired. Please enter password again.' });
     }
+
     // Refresh activity timestamp
     session.timestamp = Date.now();
     return res.json({

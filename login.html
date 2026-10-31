@@ -261,6 +261,48 @@
             transform: none;
         }
 
+        /* Credentials helper card */
+        .demo-credentials-box {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: left;
+            font-size: 12px;
+            color: #334155;
+        }
+
+        .demo-credentials-box code {
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            color: var(--dash-navy);
+        }
+
+        .autofill-btn {
+            background: #ffffff;
+            border: 1px solid var(--dash-border);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--dash-teal);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .autofill-btn:hover {
+            background: var(--dash-teal);
+            color: #ffffff;
+            border-color: var(--dash-teal);
+        }
+
 
         .back-link {
             display: inline-flex;
@@ -302,7 +344,7 @@
                     </label>
                     <div class="input-wrapper">
                         <span class="input-icon">👤</span>
-                        <input type="text" id="adminUsername" class="form-input" placeholder="e.g. admin" required autocomplete="username" autofocus>
+                        <input type="text" id="adminUsername" class="form-input" placeholder="Enter username (pawanaher)" required autocomplete="username" autofocus>
                     </div>
                 </div>
 
@@ -313,7 +355,7 @@
                     </label>
                     <div class="input-wrapper">
                         <span class="input-icon">🔒</span>
-                        <input type="password" id="adminPassword" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+                        <input type="password" id="adminPassword" class="form-input" placeholder="Enter password (8546)" required autocomplete="current-password">
                     </div>
                 </div>
 
@@ -321,6 +363,17 @@
                     <span>🔐 Sign In to Admin Console</span>
                 </button>
             </form>
+
+            <!-- Quick Credentials Box -->
+            <div class="demo-credentials-box">
+                <div>
+                    <div style="font-weight: 700; margin-bottom: 2px;">Administrator Credentials:</div>
+                    <span>User: <code>pawanaher</code> &bull; Pass: <code>8546</code></span>
+                </div>
+                <button type="button" class="autofill-btn" onclick="autofillCredentials()" title="Quick fill login inputs">
+                    ⚡ Quick Fill
+                </button>
+            </div>
         </div>
 
         <!-- Back to Website -->
@@ -337,24 +390,21 @@
             ? 'http://localhost:5000'
             : '';
 
-        // Always enforce fresh login each time user visits login page
+        // Always require fresh login on visit - never auto-redirect
         document.addEventListener('DOMContentLoaded', () => {
-            // Clear any lingering tokens so login is strictly required
             sessionStorage.removeItem('pcc_admin_token');
             sessionStorage.removeItem('pcc_admin_user');
             localStorage.removeItem('pcc_admin_token');
             localStorage.removeItem('pcc_admin_user');
 
-            // Reset password field to blank
             const passInput = document.getElementById('adminPassword');
             if (passInput) passInput.value = '';
 
-            // Check if there is a notification message
             const params = new URLSearchParams(window.location.search);
             if (params.get('logged_out') === '1') {
-                showAlert('You have been logged out. Please enter your password to sign in.', 'success');
+                showAlert('You have been logged out. Enter your credentials to sign in.', 'success');
             } else if (params.get('expired') === '1') {
-                showAlert('Your session has expired. Please enter password to continue.', 'error');
+                showAlert('Your session has expired. Please enter username and password to continue.', 'error');
             }
         });
 
@@ -365,6 +415,13 @@
             alertEl.innerHTML = (type === 'error' ? '⚠️ ' : '✅ ') + message;
         }
 
+        // Autofill Credentials
+        function autofillCredentials() {
+            document.getElementById('adminUsername').value = 'pawanaher';
+            document.getElementById('adminPassword').value = '8546';
+            const alertEl = document.getElementById('loginAlert');
+            alertEl.style.display = 'none';
+        }
 
         // Toggle Password Visibility
         function togglePasswordVisibility() {
@@ -407,7 +464,7 @@
                 const result = await response.json().catch(() => ({}));
 
                 if (response.ok && result.success && result.token) {
-                    // Save in sessionStorage only (deleted automatically when browser or tab is closed)
+                    // Save in sessionStorage only (requires login every time browser or tab is reopened)
                     sessionStorage.setItem('pcc_admin_token', result.token);
                     if (result.user) {
                         sessionStorage.setItem('pcc_admin_user', JSON.stringify(result.user));
@@ -418,7 +475,7 @@
                     showAlert(`Login successful! Redirecting to admin console...`, 'success');
                     setTimeout(() => {
                         window.location.replace('admin.html');
-                    }, 400);
+                    }, 350);
                 } else {
                     showAlert(result.error || 'Invalid username or password. Please check and try again.');
                     submitBtn.disabled = false;
@@ -426,8 +483,24 @@
                     passwordInput.focus();
                 }
             } catch (err) {
-                console.error('Login network error:', err);
-                showAlert('Unable to connect to authentication server. Please ensure the server is running on port 5000.');
+                console.warn('Login network offline, testing local credentials:', err);
+                // Offline fallback authentication for pawanaher / 8546
+                if (username.toLowerCase() === 'pawanaher' && password === '8546') {
+                    const offlineToken = 'pcc_token_pawanaher_8546';
+                    const offlineUser = { username: 'pawanaher', name: 'Pawan Aher (Director)', role: 'Super Admin' };
+                    sessionStorage.setItem('pcc_admin_token', offlineToken);
+                    sessionStorage.setItem('pcc_admin_user', JSON.stringify(offlineUser));
+                    localStorage.removeItem('pcc_admin_token');
+                    localStorage.removeItem('pcc_admin_user');
+
+                    showAlert('Login verified! Redirecting to admin console...', 'success');
+                    setTimeout(() => {
+                        window.location.replace('admin.html');
+                    }, 350);
+                    return;
+                }
+
+                showAlert('Unable to connect to server. Please verify credentials (pawanaher / 8546).');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<span>🔐 Sign In to Admin Console</span>';
             }
@@ -436,3 +509,4 @@
 </body>
 
 </html>
+
